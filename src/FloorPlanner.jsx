@@ -30,8 +30,8 @@ export default function FloorPlanner() {
   const [dragging, setDragging] = useState(null)
   const [saved, setSaved] = useState(false)
   const selected = rooms.find(room => room.id === selectedId) || rooms[0]
-  const totalArea = useMemo(() => rooms.reduce((sum, room) => sum + (room.w / 20 * 12) * (room.h / 20 * 12), 0), [rooms])
-  const roomArea = room => Math.round((room.w / 20 * 12) * (room.h / 20 * 12))
+  const totalArea = useMemo(() => rooms.reduce((sum, room) => sum + (room.w / GRID) * (room.h / GRID), 0), [rooms])
+  const roomArea = room => Math.round((room.w / GRID) * (room.h / GRID))
   useEffect(() => { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)) }, [rooms])
 
   const addRoom = preset => {
@@ -39,7 +39,7 @@ export default function FloorPlanner() {
     const room = {
       id: `${preset.type}-${Date.now()}`, name: preset.type === 'bedroom' ? `Bedroom ${count + 1}` : preset.name,
       type: preset.type, x: 400 + (rooms.length % 3) * 35, y: 210 + (rooms.length % 3) * 35,
-      w: preset.w * (GRID / 12), h: preset.h * (GRID / 12), fill: preset.fill,
+      w: preset.w * GRID, h: preset.h * GRID, fill: preset.fill,
     }
     setRooms(prev => [...prev, room]); setSelectedId(room.id); setSaved(false)
   }
@@ -48,7 +48,7 @@ export default function FloorPlanner() {
   const resetPlan = () => { setRooms(freshRooms()); setSelectedId('living'); setSaved(false) }
   const savePlan = () => { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)); setSaved(true) }
   const pointFromEvent = event => {
-    const bounds = event.currentTarget.getBoundingClientRect()
+    const bounds = (event.currentTarget.ownerSVGElement || event.currentTarget).getBoundingClientRect()
     return { x: (event.clientX - bounds.left) * CANVAS_W / bounds.width, y: (event.clientY - bounds.top) * CANVAS_H / bounds.height }
   }
   const startDrag = (event, room) => {
@@ -109,7 +109,7 @@ export default function FloorPlanner() {
         {selected ? <><div className="inspector-room-preview" style={{ background: selected.fill }}><div className="inspector-room-lines"/><span>{selected.name}</span><small>{selected.type.toUpperCase()}</small></div>
           <label className="field-label" htmlFor="room-name">Room name</label><input id="room-name" className="inspector-input" value={selected.name} maxLength={28} onChange={e => updateSelected({ name: e.target.value })}/>
           <div className="inspector-size-heading"><strong>Room dimensions</strong><span>feet</span></div>
-          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max="30" value={Math.round(selected.w / GRID * 12)} onChange={e => updateSelected({ w: Math.max(4, Math.min(30, Number(e.target.value) || 4)) * GRID / 12 })}/></label><span>×</span><label>Length<input type="number" min="4" max="30" value={Math.round(selected.h / GRID * 12)} onChange={e => updateSelected({ h: Math.max(4, Math.min(30, Number(e.target.value) || 4)) * GRID / 12 })}/></label></div>
+          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max="30" value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(30, Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max="30" value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(30, Number(e.target.value) || 4)) * GRID / 12 })}/></label></div>
           <div className="room-area-total"><span>Estimated room area</span><strong>{roomArea(selected).toLocaleString('en-IN')} sq. ft.</strong></div>
           <button className="remove-room-button" onClick={removeSelected}><Trash2 size={15}/> Remove room</button>
         </> : <div className="inspector-empty"><Grid2X2 size={25}/><p>Add a room to start shaping your layout.</p></div>}
