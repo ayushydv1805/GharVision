@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import FloorPlanner from './FloorPlanner.jsx'
 import {
   House, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette,
   Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
@@ -20,7 +21,7 @@ const navGroups = [
     { id: 'Explore ideas', icon: Compass },
   ]},
   { label: 'DESIGN STUDIO', items: [
-    { id: 'Floor planner', icon: PanelsTopLeft, tag: 'Soon' },
+    { id: 'Floor planner', icon: PanelsTopLeft },
     { id: 'Interior design', icon: Sofa, tag: 'Soon' },
     { id: 'Paint & materials', icon: Palette, tag: 'Soon' },
     { id: '3D home view', icon: Box, tag: 'Soon' },
@@ -28,7 +29,7 @@ const navGroups = [
 ]
 
 const toolCards = [
-  { icon: PanelsTopLeft, title: 'Floor planner', desc: 'Bring your layout to life', tone: 'green', badge: 'COMING SOON' },
+  { icon: PanelsTopLeft, title: 'Floor planner', desc: 'Bring your layout to life', tone: 'green', badge: 'READY TO USE' },
   { icon: Sofa, title: 'Interior studio', desc: 'Make every room feel like you', tone: 'peach', badge: 'COMING SOON' },
   { icon: Paintbrush, title: 'Paint & materials', desc: 'Find your perfect finish', tone: 'lavender', badge: 'COMING SOON' },
   { icon: Box, title: '3D home view', desc: 'See the bigger picture', tone: 'blue', badge: 'COMING SOON' },
@@ -121,7 +122,7 @@ export default function App() {
   const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')
   const createProject = data => { const p = { ...data, id: Date.now(), location: 'Location not set', updated: 'Created just now', progress: 8, image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=85' }; setProjects(prev => [p, ...prev]); setModalOpen(false); setActive('My projects'); setToast('Your new project is ready to explore.'); window.setTimeout(() => setToast(''), 3200) }
   const openProject = project => { setSelectedProject(project); setToast(`Opening ${project.name} — detailed design tools arrive in upcoming phases.`); window.setTimeout(() => setToast(''), 3600) }
-  const pageTitles = { 'Floor planner': 'Floor planner', 'Interior design': 'Interior design', 'Paint & materials': 'Paint & materials', '3D home view': '3D home view', 'Explore ideas': 'Explore ideas' }
+  const pageTitles = { 'Interior design': 'Interior design', 'Paint & materials': 'Paint & materials', '3D home view': '3D home view', 'Explore ideas': 'Explore ideas' }
   const visibleProjects = projects.filter(p => (p.name + ' ' + p.type + ' ' + p.location).toLowerCase().includes(search.toLowerCase()))
   return <div className="app-shell">
     <Sidebar active={active} setActive={setActive} onCreate={() => setModalOpen(true)} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}/>
@@ -137,6 +138,7 @@ export default function App() {
         <footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer>
       </div>}
       {active === 'My projects' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">YOUR IDEAS, ALL IN ONE PLACE</p><h1>My projects<span className="wave">✳</span></h1><p className="heading-subtitle">A little progress is still progress.</p></div><button className="primary-button welcome-cta" onClick={() => setModalOpen(true)}><Plus size={17}/> New project</button></section><div className="projects-toolbar"><label className="project-search"><Search size={16}/><input placeholder="Find a project..." value={search} onChange={e => setSearch(e.target.value)}/></label><button className="filter-button" onClick={() => { setSearch(''); setToast('Showing all projects.'); window.setTimeout(() => setToast(''),2200) }}><SlidersHorizontal size={15}/> Clear filters</button></div>{visibleProjects.length ? <div className="projects-grid projects-all-grid">{visibleProjects.map(p => <ProjectCard key={p.id} project={p} onOpen={openProject}/>)}<button className="add-project-card" onClick={() => setModalOpen(true)}><span className="add-project-icon"><Plus size={22}/></span><strong>Something new?</strong><span>Start a fresh project</span><span className="add-project-arrow"><ArrowUpRight size={16}/></span></button></div> : <div className="empty-state"><Search size={25}/><h3>No projects found</h3><p>Try another search, or start a new project.</p><button className="primary-button" onClick={() => { setSearch(''); setModalOpen(true) }}>Create a project <Plus size={15}/></button></div>}<footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
+      {active === 'Floor planner' && <div className="page-content"><FloorPlanner/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 02</span></footer></div>}
       {active === 'Settings' && <div className="page-content"><SettingsPage theme={theme} toggleTheme={toggleTheme}/></div>}
       {active === 'Explore ideas' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">COLLECT THE FEELING</p><h1>Ideas worth coming home to<span className="wave">✳</span></h1><p className="heading-subtitle">A few starting points for the space you want to create.</p></div></section><div className="inspiration-grid"><button className="inspiration-card" onClick={() => setToast('Warm minimal style added to your inspiration list.') }><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85" alt="Warm minimal living room"/><span>01 / LESS, BUT BETTER</span><h3>Warm minimal</h3><p>Soft textures, honest materials, room to breathe.</p></button><button className="inspiration-card" onClick={() => setToast('Natural modern style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Natural modern architecture"/><span>02 / ROOTED IN NATURE</span><h3>Natural modern</h3><p>Wood, stone, greenery and light in harmony.</p></button><button className="inspiration-card" onClick={() => setToast('Modern Indian style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85" alt="Modern contemporary home"/><span>03 / OLD SOUL, NEW LINES</span><h3>Modern Indian</h3><p>Contemporary comfort with a sense of place.</p></button></div><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
       {pageTitles[active] && <div className="page-content"><ComingSoon title={pageTitles[active]} setActive={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
