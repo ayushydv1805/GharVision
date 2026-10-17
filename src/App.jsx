@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import FloorPlanner from './FloorPlanner.jsx'
 import AIPlanGenerator from './AIPlanGenerator.jsx'
 import RoomMakeover from './RoomMakeover.jsx'
@@ -72,7 +72,7 @@ function ProjectCard({ project, onOpen }) {
       <span className="image-open"><ArrowUpRight size={17}/></span>
     </button>
     <div className="project-card-body">
-      <div className="project-title-line"><div><h3>{project.name}</h3><p>{project.type}</p></div><button className="icon-button small-icon" aria-label="Project options"><MoreHorizontal size={18}/></button></div>
+      <div className="project-title-line"><div><h3>{project.name}</h3><p>{project.type}</p></div><button className="icon-button small-icon" onClick={() => onOpen(project)} aria-label={`Open options for ${project.name}`} title="Open project"><MoreHorizontal size={18}/></button></div>
       <div className="project-location"><MapPin size={13}/>{project.location}</div>
       <div className="progress-meta"><span>Project progress</span><strong>{project.progress}%</strong></div>
       <div className="progress-track"><span style={{width: project.progress + '%'}} /></div>
@@ -111,18 +111,20 @@ function SettingsPage({ theme, toggleTheme }) {
 }
 
 export default function App() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('gharvision-theme') || 'light')
+  const [theme, setTheme] = useState(() => { try { return localStorage.getItem('gharvision-theme') || 'light' } catch { return 'light' } })
   const [active, setActive] = useState('Overview')
   const [projects, setProjects] = useState(() => { try { const saved = localStorage.getItem('gharvision-projects'); return saved ? [...JSON.parse(saved), ...initialProjects.filter(p => !JSON.parse(saved).some(s => s.name === p.name))] : initialProjects } catch { return initialProjects } })
   const [modalOpen, setModalOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [search, setSearch] = useState('')
+  const searchInputRef = useRef(null)
   const [notificationOpen, setNotificationOpen] = useState(false)
   const [toast, setToast] = useState('')
   const [selectedProject, setSelectedProject] = useState(null)
-  useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('gharvision-theme', theme) }, [theme])
-  useEffect(() => { localStorage.setItem('gharvision-projects', JSON.stringify(projects.filter(p => !initialProjects.some(i => i.id === p.id)))) }, [projects])
+  useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('gharvision-theme', theme) } catch { /* Storage may be unavailable in restricted browser contexts. */ } }, [theme])
+  useEffect(() => { try { localStorage.setItem('gharvision-projects', JSON.stringify(projects.filter(p => !initialProjects.some(i => i.id === p.id)))) } catch { /* Keep the current session usable when storage is blocked or full. */ } }, [projects])
   useEffect(() => { if (!modalOpen) return; const handler = e => e.key === 'Escape' && setModalOpen(false); window.addEventListener('keydown', handler); return () => window.removeEventListener('keydown', handler) }, [modalOpen])
+  useEffect(() => { const handler = e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); searchInputRef.current?.focus() } }; window.addEventListener('keydown', handler); return () => window.removeEventListener('keydown', handler) }, [])
   const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')
   const createProject = data => { const p = { ...data, id: Date.now(), location: 'Location not set', updated: 'Created just now', progress: 8, image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=85' }; setProjects(prev => [p, ...prev]); setModalOpen(false); setActive('My projects'); setToast('Your new project is ready to explore.'); window.setTimeout(() => setToast(''), 3200) }
   const openProject = project => { setSelectedProject(project); setToast(`Opening ${project.name} — detailed design tools arrive in upcoming phases.`); window.setTimeout(() => setToast(''), 3600) }
@@ -132,7 +134,7 @@ export default function App() {
   return <div className="app-shell">
     <Sidebar active={active} setActive={setActive} onCreate={() => setModalOpen(true)} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}/>
     <main className="main-area">
-      <header className="topbar"><div className="breadcrumbs"><button className="mobile-menu-button icon-button" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Menu size={20}/></button><span>Workspace</span><span className="crumb-slash">/</span><strong>{active}</strong></div><div className="topbar-actions"><label className="top-search"><Search size={16}/><input aria-label="Search projects" placeholder="Search anything..." value={search} onChange={e => { setSearch(e.target.value); if(e.target.value) setActive('My projects') }}/><kbd>⌘ K</kbd></label><button className="icon-button theme-toggle" onClick={toggleTheme} aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>{theme === 'light' ? <Moon size={18}/> : <Sun size={18}/>}</button><div className="notification-wrap"><button className={`icon-button notification-button ${notificationOpen ? 'icon-selected' : ''}`} onClick={() => setNotificationOpen(v => !v)} aria-label="Notifications"><Bell size={18}/><i/></button>{notificationOpen && <div className="notification-popover"><div className="notification-head"><strong>You're all caught up</strong><span>Just now</span></div><p>Your GharVision workspace is ready. Your next big idea starts here.</p><button onClick={() => setNotificationOpen(false)}>Got it <Check size={14}/></button></div>}</div><div className="top-avatar">AY</div></div></header>
+      <header className="topbar"><div className="breadcrumbs"><button className="mobile-menu-button icon-button" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Menu size={20}/></button><span>Workspace</span><span className="crumb-slash">/</span><strong>{active}</strong></div><div className="topbar-actions"><label className="top-search"><Search size={16}/><input ref={searchInputRef} aria-label="Search projects" placeholder="Search anything..." value={search} onChange={e => { setSearch(e.target.value); if(e.target.value) setActive('My projects') }}/><kbd>⌘ K</kbd></label><button className="icon-button theme-toggle" onClick={toggleTheme} aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>{theme === 'light' ? <Moon size={18}/> : <Sun size={18}/>}</button><div className="notification-wrap"><button className={`icon-button notification-button ${notificationOpen ? 'icon-selected' : ''}`} onClick={() => setNotificationOpen(v => !v)} aria-label="Notifications"><Bell size={18}/><i/></button>{notificationOpen && <div className="notification-popover"><div className="notification-head"><strong>You're all caught up</strong><span>Just now</span></div><p>Your GharVision workspace is ready. Your next big idea starts here.</p><button onClick={() => setNotificationOpen(false)}>Got it <Check size={14}/></button></div>}</div><div className="top-avatar">AY</div></div></header>
       {active === 'Overview' && <div className="page-content">
         <section className="welcome-row"><div><p className="eyebrow"><span className="eyebrow-star">✳</span> YOUR SPACE TO IMAGINE</p><h1>Good afternoon, Ayush<span className="wave">✳</span></h1><p className="heading-subtitle">Big dreams start with a little imagination. Let's build yours.</p></div><button className="primary-button welcome-cta" onClick={() => setModalOpen(true)}><Plus size={17}/> New project</button></section>
         <section className="hero-banner"><div className="hero-copy"><div className="hero-overline"><Sparkles size={14}/> A LITTLE INSPIRATION</div><h2>Your dream home<br/>starts <em>with an idea.</em></h2><p>From the first rough sketch to the final finishing touch, create a home that feels unmistakably yours.</p><button className="hero-button" onClick={() => setActive('Explore ideas')}>Find your inspiration <ArrowRight size={15}/></button><div className="hero-note"><span className="hero-note-line"/> Made for the way you live.</div></div><div className="hero-image-side"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1300&q=90" alt="Warm, light-filled contemporary home interior"/><div className="hero-image-caption"><span className="caption-spark">✳</span><div><strong>Quietly beautiful.</strong><span>Warm minimal · Natural light</span></div><Heart size={17}/></div><div className="hero-stamp"><span>YOUR</span><strong>HOME</strong><span>YOUR STORY</span></div></div><div className="hero-decoration deco-a"/><div className="hero-decoration deco-b"/></section>
