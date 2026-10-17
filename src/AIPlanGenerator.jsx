@@ -53,7 +53,7 @@ export default function AIPlanGenerator({ onOpenPlanner }) {
   const exportLayout = () => {
     const data = { app: 'GharVision', feature: 'Phase 04 AI Floor Plan Generator', method: 'rule-based concept generator (not a trained AI model)', plot: { widthFeet: plotWidth, depthFeet: plotDepth }, layout: active }
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
-    const a = document.createElement('a'); a.href = url; a.download = 'gharvision-generated-layout.json'; a.click(); URL.revokeObjectURL(url)
+    const a = document.createElement('a'); a.href = url; a.download = 'gharvision-generated-layout.json'; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
   return <div className="ai-planner-page">
     <header className="ai-planner-heading"><div><p className="eyebrow"><WandSparkles size={14}/> DESIGN STUDIO · PHASE 04</p><h1>AI floor plan generator <span className="wave">✳</span></h1><p className="heading-subtitle">Explore three concept layouts, compare their flow, then open your favourite in the editable floor planner.</p></div><button className="filter-button" onClick={generate}><RefreshCw size={15}/> Regenerate</button></header>
