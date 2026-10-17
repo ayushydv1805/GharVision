@@ -8,46 +8,35 @@ const CANVAS_W = 900
 const CANVAS_H = 560
 
 function makeLayout({ bedrooms, bathrooms, plotWidth, plotDepth, style }, variant) {
-  const maxW = Math.min(900, plotWidth * GRID)
-  const maxH = Math.min(560, plotDepth * GRID)
   const pad = 24
-  const usableW = Math.max(500, maxW - pad * 2)
-  const usableH = Math.max(320, maxH - pad * 2)
+  const usableW = Math.max(360, Math.min(900, plotWidth * GRID) - pad * 2)
+  const usableH = Math.max(280, Math.min(560, plotDepth * GRID) - pad * 2)
+  const roomSpecs = [
+    { type: 'living', name: 'Living room' },
+    { type: 'kitchen', name: 'Kitchen' },
+    { type: 'dining', name: 'Dining' },
+    ...Array.from({ length: bedrooms }, (_, i) => ({ type: 'bedroom', name: 'Bedroom ' + (i + 1) })),
+    ...Array.from({ length: bathrooms }, (_, i) => ({ type: 'bathroom', name: 'Bathroom ' + (i + 1) })),
+  ]
+  if (style === 'compact') roomSpecs.splice(3, 0, { type: 'study', name: 'Study nook' })
+  const columns = [3, 2, 4][variant]
+  const rows = Math.ceil(roomSpecs.length / columns)
   const gap = 8
-  const leftW = Math.round(usableW * (variant === 1 ? 0.56 : 0.52))
-  const rightW = usableW - leftW - gap
-  const topH = Math.round(usableH * (variant === 2 ? 0.36 : 0.42))
-  const bottomH = usableH - topH - gap
-  const rooms = []
-  const add = (type, name, x, y, w, h) => rooms.push({ id: type + '-' + rooms.length, type, name, x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h), fill: palette[type] })
-  const x0 = pad, y0 = pad
-  if (variant === 0) {
-    add('living', 'Living room', x0, y0, leftW, topH)
-    add('kitchen', 'Kitchen', x0 + leftW + gap, y0, rightW, topH)
-    add('dining', 'Dining', x0, y0 + topH + gap, Math.round(leftW * .48), bottomH)
-    add('bedroom', 'Bedroom 1', x0 + Math.round(leftW * .48) + gap, y0 + topH + gap, Math.round(leftW * .52) - gap, Math.round(bottomH * .56))
-    add('bathroom', 'Bathroom 1', x0 + Math.round(leftW * .48) + gap, y0 + topH + gap + Math.round(bottomH * .56) + gap, Math.round(leftW * .52) - gap, Math.round(bottomH * .44) - gap)
-    add('bedroom', 'Bedroom 2', x0 + leftW + gap, y0 + topH + gap, rightW, Math.round(bottomH * .62))
-    if (bedrooms > 2) add('bedroom', 'Bedroom 3', x0 + leftW + gap, y0 + topH + gap + Math.round(bottomH * .62) + gap, rightW, Math.round(bottomH * .38) - gap)
-  } else if (variant === 1) {
-    add('living', 'Living room', x0, y0, leftW, Math.round(usableH * .57))
-    add('dining', 'Dining', x0, y0 + Math.round(usableH * .57) + gap, leftW, Math.round(usableH * .43) - gap)
-    add('kitchen', 'Kitchen', x0 + leftW + gap, y0, rightW, Math.round(usableH * .34))
-    add('bedroom', 'Bedroom 1', x0 + leftW + gap, y0 + Math.round(usableH * .34) + gap, rightW, Math.round(usableH * .34))
-    add('bathroom', 'Bathroom 1', x0 + leftW + gap, y0 + Math.round(usableH * .68) + gap * 2, rightW, Math.round(usableH * .32) - gap * 2)
-    if (bedrooms > 1) add('bedroom', 'Bedroom 2', x0, y0 + Math.round(usableH * .57) + gap, Math.round(leftW * .55), Math.round(usableH * .43) - gap)
-  } else {
-    add('living', 'Living room', x0, y0, Math.round(usableW * .52), Math.round(usableH * .55))
-    add('dining', 'Dining', x0 + Math.round(usableW * .52) + gap, y0, Math.round(usableW * .48) - gap, Math.round(usableH * .32))
-    add('kitchen', 'Kitchen', x0 + Math.round(usableW * .52) + gap, y0 + Math.round(usableH * .32) + gap, Math.round(usableW * .48) - gap, Math.round(usableH * .23) - gap)
-    const bedY = y0 + Math.round(usableH * .55) + gap
-    const bedH = Math.round(usableH * .45) - gap
-    const bedW = Math.round(usableW / Math.max(2, bedrooms + 1))
-    for (let i = 0; i < bedrooms; i++) add('bedroom', 'Bedroom ' + (i + 1), x0 + i * (bedW + gap), bedY, bedW, bedH)
-    for (let i = 0; i < bathrooms; i++) add('bathroom', 'Bathroom ' + (i + 1), x0 + usableW - (i + 1) * (Math.round(usableW * .16) + gap), y0 + Math.round(usableH * .32) + gap, Math.round(usableW * .16), Math.round(usableH * .23) - gap)
-  }
-  if (style === 'compact') rooms.forEach(r => { r.name = r.name.replace('Living room', 'Family lounge') })
-  return { id: 'layout-' + variant, title: ['Balanced family layout', 'Open social layout', 'Bedroom-wing layout'][variant], style, rooms, area: rooms.reduce((sum, r) => sum + (r.w / GRID) * (r.h / GRID), 0), plotWidth, plotDepth, note: ['Living and kitchen zones sit near each other for everyday use.', 'Shared living and dining spaces form a social centre.', 'Private bedrooms are grouped away from the main living zone.'][variant] }
+  const cellW = (usableW - gap * (columns - 1)) / columns
+  const cellH = (usableH - gap * (rows - 1)) / rows
+  const rooms = roomSpecs.map((spec, index) => {
+    const row = Math.floor(index / columns)
+    const column = variant === 1 && row % 2 === 1 ? columns - 1 - (index % columns) : index % columns
+    const aspect = spec.type === 'living' ? 1.12 : spec.type === 'bedroom' ? 1.0 : 0.92
+    const w = Math.min(cellW, cellH * aspect * (variant === 2 ? 1.05 : 1))
+    const h = Math.min(cellH, cellW / aspect)
+    const x = pad + column * (cellW + gap) + (cellW - w) / 2
+    const y = pad + row * (cellH + gap) + (cellH - h) / 2
+    return { id: spec.type + '-' + index, type: spec.type, name: spec.name, x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h), fill: palette[spec.type] || '#e6def5' }
+  })
+  const title = ['Balanced family layout', 'Open social layout', 'Bedroom-wing layout'][variant]
+  const note = ['Rooms are arranged in a balanced grid for straightforward circulation planning.', 'A compact two-column arrangement keeps the concept easy to read and compare.', 'A wider four-column arrangement groups rooms into a more segmented layout.'][variant]
+  return { id: 'layout-' + variant, title, style, rooms, area: rooms.reduce((sum, r) => sum + (r.w / GRID) * (r.h / GRID), 0), plotWidth, plotDepth, note }
 }
 
 export default function AIPlanGenerator({ onOpenPlanner }) {
