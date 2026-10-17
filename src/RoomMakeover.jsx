@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Camera, Check, Download, ImagePlus, Lightbulb, Palette, RotateCcw, Sofa, Sparkles, Trash2 } from 'lucide-react'
 
 const ideas = {
-  Living room: {
-    Warm minimal: ['Move the sofa 15–25 cm away from the wall to create visual breathing room.', 'Use one larger rug so the front legs of the sofa and chairs sit on it.', 'Add a warm floor lamp beside the seating area and layer it with indirect light.', 'Keep everyday objects in one closed-storage zone; style the coffee table with only 2–3 pieces.'],
+  'Living room': {
+    'Warm minimal': ['Move the sofa 15–25 cm away from the wall to create visual breathing room.', 'Use one larger rug so the front legs of the sofa and chairs sit on it.', 'Add a warm floor lamp beside the seating area and layer it with indirect light.', 'Keep everyday objects in one closed-storage zone; style the coffee table with only 2–3 pieces.'],
     Modern: ['Create one focal point behind the sofa with art or a textured accent wall.', 'Align the main seating toward the focal point and keep a clear walking route.', 'Use two or three coordinated materials instead of many competing finishes.', 'Add dimmable ambient lighting plus a task lamp near reading seats.'],
     Natural: ['Bring in one medium or large plant near natural light, away from the main walkway.', 'Mix wood, linen and woven textures for warmth without visual clutter.', 'Use sheer curtains to soften daylight while preserving privacy.', 'Group cushions in a tight palette of earthy greens, creams and terracotta.'],
   },
