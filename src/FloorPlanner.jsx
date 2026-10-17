@@ -25,8 +25,12 @@ export default function FloorPlanner() {
     try { const saved = localStorage.getItem('gharvision-floorplan'); return saved ? JSON.parse(saved) : freshRooms() } catch { return freshRooms() }
   })
   const [selectedId, setSelectedId] = useState('living')
-  const [plotWidth, setPlotWidth] = useState(40)
-  const [plotHeight, setPlotHeight] = useState(28)
+  const [plotWidth, setPlotWidth] = useState(() => {
+    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(200, Number(generated?.width) || 40)) } catch { return 40 }
+  })
+  const [plotHeight, setPlotHeight] = useState(() => {
+    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(200, Number(generated?.depth) || 28)) } catch { return 28 }
+  })
   const [dragging, setDragging] = useState(null)
   const [saved, setSaved] = useState(false)
   const selected = rooms.find(room => room.id === selectedId) || rooms[0]
@@ -109,14 +113,14 @@ export default function FloorPlanner() {
         {selected ? <><div className="inspector-room-preview" style={{ background: selected.fill }}><div className="inspector-room-lines"/><span>{selected.name}</span><small>{selected.type.toUpperCase()}</small></div>
           <label className="field-label" htmlFor="room-name">Room name</label><input id="room-name" className="inspector-input" value={selected.name} maxLength={28} onChange={e => updateSelected({ name: e.target.value })}/>
           <div className="inspector-size-heading"><strong>Room dimensions</strong><span>feet</span></div>
-          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max="100" value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(100, Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max="100" value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(100, Number(e.target.value) || 4)) * GRID })}/></label></div>
+          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max="45" value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(45, Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max="28" value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(28, Number(e.target.value) || 4)) * GRID })}/></label></div>
           <div className="room-area-total"><span>Estimated room area</span><strong>{roomArea(selected).toLocaleString('en-IN')} sq. ft.</strong></div>
           <button className="remove-room-button" onClick={removeSelected}><Trash2 size={15}/> Remove room</button>
         </> : <div className="inspector-empty"><Grid2X2 size={25}/><p>Add a room to start shaping your layout.</p></div>}
         <button className="export-plan-button" onClick={exportPlan}><ArrowDownToLine size={15}/> Export plan data <ArrowRight size={14}/></button>
       </aside>
     </div>
-    <p className="planner-disclaimer">Concept planning tool for early ideas only. This is not a construction-ready architectural drawing; confirm dimensions, structure, setbacks and local building rules with a qualified professional.</p>
+    <p className="planner-disclaimer">The canvas is a schematic concept view; plot dimensions are saved as project metadata and room sizes are approximate. This is not a construction-ready architectural drawing; confirm dimensions, structure, setbacks and local building rules with a qualified professional.</p>
   </div>
 }
 
