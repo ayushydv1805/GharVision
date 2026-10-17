@@ -76,7 +76,7 @@ export default function FloorPlanner() {
     const payload = { app: 'GharVision', version: 1, plot: { widthFeet: plotWidth, heightFeet: plotHeight }, rooms: rooms.map(({ id, name, type, x, y, w, h }) => ({ id, name, type, x, y, widthPixels: w, heightPixels: h, areaSqFt: roomArea({ w, h }) })) }
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
-    const link = document.createElement('a'); link.href = url; link.download = 'gharvision-floor-plan.json'; link.click(); URL.revokeObjectURL(url)
+    const link = document.createElement('a'); link.href = url; link.download = 'gharvision-floor-plan.json'; document.body.appendChild(link); link.click(); link.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
 
   return <div className="planner-page">
@@ -113,7 +113,7 @@ export default function FloorPlanner() {
         {selected ? <><div className="inspector-room-preview" style={{ background: selected.fill }}><div className="inspector-room-lines"/><span>{selected.name}</span><small>{selected.type.toUpperCase()}</small></div>
           <label className="field-label" htmlFor="room-name">Room name</label><input id="room-name" className="inspector-input" value={selected.name} maxLength={28} onChange={e => updateSelected({ name: e.target.value })}/>
           <div className="inspector-size-heading"><strong>Room dimensions</strong><span>feet</span></div>
-          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max="45" value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(45, Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max="28" value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(28, Number(e.target.value) || 4)) * GRID })}/></label></div>
+          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max={Math.max(4, Math.floor((CANVAS_W - selected.x) / GRID))} value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(Math.floor((CANVAS_W - selected.x) / GRID), Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max={Math.max(4, Math.floor((CANVAS_H - selected.y) / GRID))} value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(Math.floor((CANVAS_H - selected.y) / GRID), Number(e.target.value) || 4)) * GRID })}/></label></div>
           <div className="room-area-total"><span>Estimated room area</span><strong>{roomArea(selected).toLocaleString('en-IN')} sq. ft.</strong></div>
           <button className="remove-room-button" onClick={removeSelected}><Trash2 size={15}/> Remove room</button>
         </> : <div className="inspector-empty"><Grid2X2 size={25}/><p>Add a room to start shaping your layout.</p></div>}
