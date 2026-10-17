@@ -36,14 +36,16 @@ export default function FloorPlanner() {
   const selected = rooms.find(room => room.id === selectedId) || rooms[0]
   const totalArea = useMemo(() => rooms.reduce((sum, room) => sum + (room.w / GRID) * (room.h / GRID), 0), [rooms])
   const roomArea = room => Math.round((room.w / GRID) * (room.h / GRID))
-  useEffect(() => { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)) }, [rooms])
+  useEffect(() => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)) } catch { /* The planner remains usable when browser storage is unavailable. */ } }, [rooms])
 
   const addRoom = preset => {
     const count = rooms.filter(r => r.type === preset.type).length
     const room = {
       id: `${preset.type}-${Date.now()}`, name: preset.type === 'bedroom' ? `Bedroom ${count + 1}` : preset.name,
-      type: preset.type, x: 400 + (rooms.length % 3) * 35, y: 210 + (rooms.length % 3) * 35,
-      w: preset.w * GRID, h: preset.h * GRID, fill: preset.fill,
+      type: preset.type,
+      x: Math.max(0, Math.min(CANVAS_W - preset.w * GRID, 400 + (rooms.length % 3) * 35)),
+      y: Math.max(0, Math.min(CANVAS_H - preset.h * GRID, 210 + (rooms.length % 3) * 35)),
+      w: Math.min(CANVAS_W, preset.w * GRID), h: Math.min(CANVAS_H, preset.h * GRID), fill: preset.fill,
     }
     setRooms(prev => [...prev, room]); setSelectedId(room.id); setSaved(false)
   }
