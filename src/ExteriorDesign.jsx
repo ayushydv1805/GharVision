@@ -1,0 +1,71 @@
+import { useEffect, useMemo, useState } from 'react'
+import { Building2, Check, Copy, Download, Fence, Flower2, House, Layers3, Paintbrush, RotateCcw, Save, Sparkles, Trees, Info } from 'lucide-react'
+
+const styles = [
+  { id: 'modern', name: 'Modern minimal', subtitle: 'Clean geometry and quiet contrast', wall: '#e8e4da', trim: '#454b48', roof: '#343a3b', accent: '#a5b39a', ground: '#d3d8c8' },
+  { id: 'indian', name: 'Contemporary Indian', subtitle: 'Warm earth tones and a welcoming entry', wall: '#d8b89a', trim: '#f0e8d9', roof: '#665044', accent: '#7c8a69', ground: '#c7c1ae' },
+  { id: 'natural', name: 'Natural retreat', subtitle: 'Stone-inspired colours and organic greens', wall: '#c7c4b8', trim: '#e9e5d9', roof: '#555b51', accent: '#81917a', ground: '#c6d0bc' },
+  { id: 'classic', name: 'Classic residence', subtitle: 'Balanced proportions with soft detailing', wall: '#f0e8dc', trim: '#b9a58c', roof: '#5e6264', accent: '#8e9b8a', ground: '#d8d6c7' },
+]
+const paintOptions = [
+  { name: 'Limestone', hex: '#e8e4da' }, { name: 'Warm ivory', hex: '#f0e8dc' }, { name: 'Sandstone', hex: '#d8b89a' },
+  { name: 'Sage', hex: '#a5b39a' }, { name: 'Olive', hex: '#7c8a69' }, { name: 'Graphite', hex: '#454b48' },
+  { name: 'Terracotta', hex: '#b9795d' }, { name: 'Slate', hex: '#5e6264' },
+]
+const finishes = [
+  { id: 'plaster', name: 'Smooth exterior plaster', rate: 85, unit: 'sq. ft.', note: 'A simple, clean painted finish' },
+  { id: 'stone', name: 'Stone-look accent', rate: 190, unit: 'sq. ft.', note: 'Use on a feature wall or entry' },
+  { id: 'wood', name: 'Wood-look cladding', rate: 240, unit: 'sq. ft.', note: 'Adds warmth around a porch' },
+  { id: 'brick', name: 'Exposed brick accent', rate: 155, unit: 'sq. ft.', note: 'A textured, earthy focal point' },
+]
+const landscaping = [
+  { id: 'plants', label: 'Layered planting beds', cost: 18000 },
+  { id: 'lawn', label: 'Compact lawn', cost: 25000 },
+  { id: 'path', label: 'Stone entry path', cost: 16000 },
+  { id: 'lights', label: 'Outdoor accent lighting', cost: 12000 },
+  { id: 'boundary', label: 'Boundary greenery', cost: 22000 },
+]
+const storageKey = 'gharvision-exterior-design-v1'
+const initial = { style: 'modern', wall: '#e8e4da', trim: '#454b48', roof: '#343a3b', finish: 'plaster', facadeArea: '1200', storeys: '2', landscape: ['plants', 'path'] }
+const readInitial = () => { try { const v = JSON.parse(localStorage.getItem(storageKey) || 'null'); return v && typeof v === 'object' ? { ...initial, ...v, landscape: Array.isArray(v.landscape) ? v.landscape.filter(x => landscaping.some(item => item.id === x)) : initial.landscape } : initial } catch { return initial } }
+
+function FacadePreview({ design, selectedStyle }) {
+  const wall = design.wall, trim = design.trim, roof = design.roof, green = selectedStyle.accent, ground = selectedStyle.ground
+  return <svg viewBox="0 0 760 410" role="img" aria-label={selectedStyle.name + ' conceptual front facade preview'} className="exterior-facade-svg">
+    <defs><linearGradient id="exterior-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#e9eff0"/><stop offset="100%" stopColor="#f8f4e9"/></linearGradient><linearGradient id="exterior-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={ground}/><stop offset="100%" stopColor="#b5bba9"/></linearGradient></defs>
+    <rect width="760" height="410" fill="url(#exterior-sky)"/><circle cx="620" cy="70" r="29" fill="#f6dca4" opacity=".9"/><path d="M0 260 Q180 220 360 258 T760 250 V410 H0Z" fill="url(#exterior-ground)"/>
+    <g opacity=".35" fill={green}><circle cx="85" cy="210" r="34"/><circle cx="115" cy="225" r="25"/><circle cx="660" cy="215" r="38"/><circle cx="690" cy="228" r="25"/></g>
+    <rect x="150" y="158" width="450" height="177" rx="2" fill={wall} stroke={trim} strokeWidth="2"/>
+    <path d="M125 160 L375 56 L625 160Z" fill={roof} stroke={trim} strokeWidth="3"/><path d="M157 151 L375 66 L593 151" fill="none" stroke={trim} strokeWidth="2" opacity=".65"/>
+    <rect x="185" y="180" width="140" height="110" fill={trim} rx="1"/><rect x="193" y="188" width="124" height="94" fill="#b7cdd1"/><path d="M255 188V282 M193 235H317" stroke="#f7f3e9" strokeWidth="5"/><path d="M201 198 L242 198 L201 244Z M267 198 L309 198 L309 244Z" fill="#ffffff" opacity=".2"/>
+    <rect x="405" y="180" width="145" height="155" fill={trim}/><rect x="416" y="190" width="123" height="145" fill={wall}/><rect x="431" y="204" width="94" height="131" fill="#8c6d54"/><rect x="439" y="212" width="78" height="123" fill="#c4a487"/><circle cx="503" cy="276" r="3" fill="#e5d6bd"/>
+    <rect x="350" y="146" width="20" height="189" fill={trim} opacity=".75"/><rect x="150" y="325" width="450" height="12" fill={trim}/><rect x="135" y="337" width="480" height="10" fill="#8e8d80"/><path d="M370 347 L415 410 H325Z" fill="#d9d4c8"/><path d="M370 347 L392 410 M370 347 L348 410" stroke="#b6b2a7" strokeWidth="2"/>
+    <g fill={green}><ellipse cx="115" cy="328" rx="27" ry="17"/><ellipse cx="142" cy="331" rx="23" ry="14"/><ellipse cx="618" cy="329" rx="27" ry="18"/><ellipse cx="646" cy="331" rx="22" ry="14"/></g><g fill="#87906e"><rect x="109" y="330" width="4" height="23"/><rect x="616" y="331" width="4" height="22"/></g>
+    <text x="22" y="30" fill="#4f5d54" fontSize="12" letterSpacing="2">GHARVISION · FACADE CONCEPT</text><text x="738" y="388" textAnchor="end" fill="#4f5d54" fontSize="10">ILLUSTRATIVE · NOT TO SCALE</text>
+  </svg>
+}
+
+export default function ExteriorDesign() {
+  const [design, setDesign] = useState(readInitial)
+  const [message, setMessage] = useState('')
+  const style = styles.find(s => s.id === design.style) || styles[0]
+  const finish = finishes.find(f => f.id === design.finish) || finishes[0]
+  const landscapeCost = landscaping.filter(x => design.landscape.includes(x.id)).reduce((sum, x) => sum + x.cost, 0)
+  const estimate = useMemo(() => Math.max(0, Number(design.facadeArea) || 0) * finish.rate + landscapeCost, [design.facadeArea, finish.rate, landscapeCost])
+  useEffect(() => { try { localStorage.setItem(storageKey, JSON.stringify(design)) } catch { /* Keep this session usable when storage is blocked. */ } }, [design])
+  const updateStyle = id => { const next = styles.find(s => s.id === id); setDesign(d => ({ ...d, style: id, wall: next.wall, trim: next.trim, roof: next.roof })) }
+  const toggleLandscape = id => setDesign(d => ({ ...d, landscape: d.landscape.includes(id) ? d.landscape.filter(x => x !== id) : [...d.landscape, id] }))
+  const exportDesign = () => { const payload = { app: 'GharVision', phase: 9, feature: 'Exterior Design Studio', conceptOnly: true, style: style.name, wallColor: design.wall, trimColor: design.trim, roofColor: design.roof, facadeFinish: finish.name, facadeAreaSqFt: Number(design.facadeArea) || 0, storeys: Number(design.storeys) || 1, landscaping: landscaping.filter(x => design.landscape.includes(x.id)).map(x => ({ name: x.label, indicativeCostINR: x.cost })), indicativeBudgetINR: Math.round(estimate) }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'gharvision-exterior-concept.json'; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000); setMessage('Exterior concept exported as JSON.') }
+  const copySummary = async () => { const summary = [`GharVision exterior concept — ${style.name}`, `Wall: ${design.wall} · Trim: ${design.trim} · Roof: ${design.roof}`, `Finish: ${finish.name} · Facade area: ${design.facadeArea} sq. ft.`, `Storeys: ${design.storeys}`, `Landscaping: ${landscaping.filter(x => design.landscape.includes(x.id)).map(x => x.label).join(', ') || 'None selected'}`, `Indicative budget: ₹${Math.round(estimate).toLocaleString('en-IN')}`, 'Concept estimate only; not a contractor quote.']; try { await navigator.clipboard.writeText(summary.join('\n')); setMessage('Concept summary copied.') } catch { setMessage('Copy is not available in this browser. Use Export concept instead.') } }
+  return <div className="exterior-page">
+    <header className="exterior-heading"><div><p className="eyebrow"><House size={14}/> DESIGN STUDIO · PHASE 09</p><h1>Exterior design <span className="wave">✳</span></h1><p className="heading-subtitle">Shape the first impression: facade style, exterior colours, finishes and the landscape around your home.</p></div><div className="exterior-heading-actions"><button className="filter-button" onClick={() => { setDesign(readInitial()); setMessage('Concept reset to the starting design.') }}><RotateCcw size={15}/> Reset</button><button className="primary-button" onClick={exportDesign}><Download size={15}/> Export concept</button></div></header>
+    <div className="exterior-layout"><section className="exterior-main"><div className="exterior-preview-card"><div className="exterior-preview-head"><div><span className="eyebrow">LIVE CONCEPT</span><h3>{style.name}</h3><p>{style.subtitle}</p></div><span className="exterior-preview-badge"><Sparkles size={13}/> Customisable</span></div><FacadePreview design={design} selectedStyle={style}/><div className="exterior-colour-strip">{[{label:'Wall',color:design.wall},{label:'Trim',color:design.trim},{label:'Roof',color:design.roof}].map(c => <div key={c.label}><i style={{background:c.color}}/><span>{c.label}</span><strong>{c.color.toUpperCase()}</strong></div>)}</div></div>
+      <section className="exterior-panel"><div className="exterior-panel-title"><span className="exterior-panel-icon"><Building2 size={17}/></span><div><h3>Choose an architectural mood</h3><p>Start with a facade direction, then customise its colours.</p></div></div><div className="exterior-style-grid">{styles.map(s => <button key={s.id} onClick={() => updateStyle(s.id)} className={`exterior-style-card ${design.style === s.id ? 'selected' : ''}`}><span className="exterior-mini-facade"><i style={{background:s.roof}}/><i style={{background:s.wall}}/><i style={{background:s.trim}}/></span><strong>{s.name}</strong><span>{s.subtitle}</span>{design.style === s.id && <Check size={15} className="exterior-style-check"/>}</button>)}</div></section>
+      <section className="exterior-panel"><div className="exterior-panel-title"><span className="exterior-panel-icon"><Paintbrush size={17}/></span><div><h3>Exterior colour palette</h3><p>Choose a paint colour for each major facade surface.</p></div></div>{[{key:'wall',label:'Main wall colour'},{key:'trim',label:'Trim and frames'},{key:'roof',label:'Roof colour'}].map(group => <div className="exterior-paint-row" key={group.key}><span>{group.label}</span><div className="exterior-paint-swatches">{paintOptions.map(p => <button key={p.hex} className={`exterior-swatch ${design[group.key] === p.hex ? 'selected' : ''}`} style={{background:p.hex}} title={p.name} aria-label={`${group.label}: ${p.name}`} onClick={() => setDesign(d => ({...d,[group.key]:p.hex}))}>{design[group.key] === p.hex && <Check size={14} color={['#e8e4da','#f0e8dc','#d8b89a'].includes(p.hex) ? '#333' : '#fff'}/>}</button>)}</div><code>{design[group.key].toUpperCase()}</code></div>)}</section>
+    </section><aside className="exterior-sidebar"><section className="exterior-panel"><div className="exterior-panel-title"><span className="exterior-panel-icon"><Layers3 size={17}/></span><div><h3>Facade details</h3><p>Adjust quantities for a rough material allowance.</p></div></div><label className="exterior-field">Approx. facade area (sq. ft.)<input type="number" min="0" max="100000" value={design.facadeArea} onChange={e => setDesign(d => ({...d,facadeArea:e.target.value}))}/></label><label className="exterior-field">Number of storeys<select value={design.storeys} onChange={e => setDesign(d => ({...d,storeys:e.target.value}))}><option value="1">Single storey</option><option value="2">Two storeys</option><option value="3">Three storeys</option><option value="4">Four storeys</option></select></label><div className="exterior-finish-list"><strong>Wall finish</strong>{finishes.map(f => <button key={f.id} className={`exterior-finish-option ${design.finish === f.id ? 'selected' : ''}`} onClick={() => setDesign(d => ({...d,finish:f.id}))}><span><b>{f.name}</b><small>{f.note}</small></span><span className="exterior-finish-price">₹{f.rate}<small>/ sq. ft.</small></span></button>)}</div></section>
+      <section className="exterior-panel"><div className="exterior-panel-title"><span className="exterior-panel-icon"><Trees size={17}/></span><div><h3>Landscape touches</h3><p>Tick the features you'd like around the entry.</p></div></div><div className="exterior-landscape-list">{landscaping.map(item => <label key={item.id} className="exterior-landscape-item"><input type="checkbox" checked={design.landscape.includes(item.id)} onChange={() => toggleLandscape(item.id)}/><span>{item.label}</span><strong>₹{item.cost.toLocaleString('en-IN')}</strong></label>)}</div></section>
+      <section className="exterior-budget-card"><span className="eyebrow"><Fence size={13}/> INDICATIVE CONCEPT BUDGET</span><strong>₹{Math.round(estimate).toLocaleString('en-IN')}</strong><div className="exterior-budget-line"><span>{finish.name}</span><b>₹{Math.round((Number(design.facadeArea)||0)*finish.rate).toLocaleString('en-IN')}</b></div><div className="exterior-budget-line"><span>Landscape features</span><b>₹{landscapeCost.toLocaleString('en-IN')}</b></div><p>Illustrative rates only. Excludes labour differences, taxes, site preparation, structural work and local supplier variations.</p><button className="filter-button exterior-copy" onClick={copySummary}><Copy size={14}/> Copy summary</button></section></aside></div>
+    <div className="exterior-disclaimer"><Info size={16}/><p><strong>Design concept, not an architectural drawing.</strong> The facade preview is an illustrative elevation. It does not calculate structural loads, building-code compliance, waterproofing, drainage or accurate material quantities. Confirm colours, finishes, costs and approvals with qualified local professionals before construction.</p></div>
+    {message && <div className="exterior-message" role="status">{message}<button onClick={() => setMessage('')} aria-label="Dismiss message">×</button></div>}
+  </div>
+}
