@@ -333,3 +333,20 @@ body{background:var(--bg);color:var(--text);transition:background .2s,color .2s}
 @media(max-width:1050px){.interior-items-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.interior-bottom-grid{grid-template-columns:minmax(0,1fr) 250px}}
 @media(max-width:850px){.interior-hero{grid-template-columns:1fr}.interior-hero-copy{padding:3px 0}.interior-room-visual{height:280px}.interior-bottom-grid{grid-template-columns:1fr}.interior-estimate{order:-1}}
 @media(max-width:650px){.interior-heading{align-items:flex-start;flex-direction:column}.interior-heading .planner-heading-actions{width:100%}.interior-heading .planner-heading-actions button{flex:1;justify-content:center}.interior-controls{grid-template-columns:1fr;padding:12px}.interior-hero,.interior-library{padding:14px}.interior-room-visual{height:235px}.interior-items-grid{grid-template-columns:1fr}.interior-section-heading{align-items:flex-start}.interior-section-heading>.filter-button{font-size:9px;white-space:nowrap}.interior-saved-item strong{font-size:10px}}
+
+/* Accessibility and project detail follow-up fixes */
+.setting-select{max-width:150px;min-width:120px;border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:var(--panel);color:var(--text);font-size:10px}
+.project-detail-modal{max-width:560px}
+.project-detail-image{height:150px;border-radius:9px;overflow:hidden;background:var(--panel-soft);margin:15px 0}
+.project-detail-image img{width:100%;height:100%;object-fit:cover}
+.project-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.project-detail-grid>div{display:grid;gap:5px;min-width:0;padding:11px;border:1px solid var(--line);border-radius:8px}
+.project-detail-grid span{font-size:9px;color:var(--muted)}
+.project-detail-grid strong{font-size:11px;color:var(--text);overflow-wrap:anywhere}
+.project-detail-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:17px}
+html[data-text-size="small"] .main-area .page-content{font-size:90%}
+html[data-text-size="small"] .main-area .page-content p,html[data-text-size="small"] .main-area .page-content label,html[data-text-size="small"] .main-area .page-content button,html[data-text-size="small"] .main-area .page-content input,html[data-text-size="small"] .main-area .page-content select{font-size:90%}
+html[data-text-size="large"] .main-area .page-content p,html[data-text-size="large"] .main-area .page-content label,html[data-text-size="large"] .main-area .page-content button,html[data-text-size="large"] .main-area .page-content input,html[data-text-size="large"] .main-area .page-content select{font-size:110%}
+html[data-text-size="large"] .main-area .page-content .heading-subtitle{font-size:14px}
+html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
+@media(max-width:600px){.project-detail-modal{max-height:90vh;overflow:auto}.project-detail-grid{grid-template-columns:1fr 1fr}.project-detail-actions{flex-wrap:wrap}.setting-select{min-width:105px}}
