@@ -52,7 +52,7 @@ export default function FloorPlanner() {
   const updateSelected = patch => { if (!selected) return; setRooms(prev => prev.map(room => room.id === selected.id ? { ...room, ...patch } : room)); setSaved(false) }
   const removeSelected = () => { if (!selected) return; const next = rooms.filter(room => room.id !== selected.id); setRooms(next); setSelectedId(next[0]?.id || null); setSaved(false) }
   const resetPlan = () => { setRooms(freshRooms()); setSelectedId('living'); setSaved(false) }
-  const savePlan = () => { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)); setSaved(true) }
+  const savePlan = () => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)); setSaved(true) } catch { setSaved(false); window.alert('Browser storage is unavailable. Your plan remains on screen, but could not be saved. Export the plan to keep a copy.') } }
   const pointFromEvent = event => {
     const bounds = (event.currentTarget.ownerSVGElement || event.currentTarget).getBoundingClientRect()
     return { x: (event.clientX - bounds.left) * CANVAS_W / bounds.width, y: (event.clientY - bounds.top) * CANVAS_H / bounds.height }
