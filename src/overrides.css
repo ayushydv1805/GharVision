@@ -613,3 +613,77 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 @media(max-width:1050px){.inventory-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.inventory-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:720px){.inventory-heading{align-items:flex-start;flex-direction:column}.inventory-heading h1{font-size:27px}.inventory-actions{width:100%}.inventory-actions button{flex:1;justify-content:center}.inventory-page .panel{padding:13px}.inventory-grid{grid-template-columns:1fr}}
 @media(max-width:440px){.inventory-stats{grid-template-columns:1fr}.inventory-fields{grid-template-columns:1fr}.inventory-fields .inventory-notes-field{grid-column:auto}.inventory-tools{flex-direction:column}.inventory-tools select{max-width:none;width:100%}.inventory-list-head{align-items:flex-start}.inventory-heading h1{font-size:24px}}
+
+/* Phase 16 — household utility and bill tracker */
+.utility-page{min-width:0;color:var(--text)}
+.utility-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:22px}
+.utility-heading h1{font-size:32px;letter-spacing:-1.2px;margin:8px 0}
+.utility-heading .eyebrow{display:flex;align-items:center;gap:6px}
+.utility-actions{display:flex;gap:8px;flex-wrap:wrap}
+.utility-actions button{min-height:40px}
+.utility-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:14px}
+.utility-stats article{display:flex;align-items:center;gap:11px;min-width:0;padding:15px;background:var(--panel);border:1px solid var(--line);border-radius:13px}
+.utility-stats article>span{display:grid;place-items:center;width:37px;height:37px;flex-shrink:0;border-radius:10px;background:var(--panel-soft);color:var(--green-deep)}
+.utility-stats small{display:block;font-size:9px;letter-spacing:.45px;font-weight:750;color:var(--muted);margin-bottom:6px}
+.utility-stats strong{display:block;font-size:19px;letter-spacing:-.4px;overflow-wrap:anywhere}
+.utility-stats p{font-size:10px;color:var(--muted);margin:5px 0 0;line-height:1.4}
+.utility-panel{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;min-width:0}
+.utility-top-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.utility-panel-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.utility-panel-title h3{font-size:14px;margin:0 0 5px}
+.utility-panel-title p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.utility-panel-title>svg{color:var(--green-deep);flex-shrink:0}
+.utility-budget-input{display:grid;gap:7px;font-size:11px;font-weight:650;color:var(--muted)}
+.utility-budget-input input{width:100%;min-height:39px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;font-size:12px}
+.utility-budget-numbers{display:flex;justify-content:space-between;gap:12px;margin-top:14px}
+.utility-budget-numbers strong{font-size:14px;overflow-wrap:anywhere}
+.utility-budget-numbers span{font-size:10px;font-weight:500;color:var(--muted)}
+.utility-progress{height:7px;background:var(--panel-soft);border-radius:99px;overflow:hidden;margin-top:10px}
+.utility-progress span{display:block;height:100%;border-radius:99px;background:var(--green-deep);transition:width .2s ease}
+.utility-muted{font-size:10px;line-height:1.5;color:var(--muted);margin:10px 0 0}
+.utility-budget-alert{font-size:10px;color:#c56a55;margin:10px 0 0;font-weight:700}
+.utility-bars{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;align-items:end;height:130px;margin-top:7px}
+.utility-bar-column{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;min-width:0}
+.utility-bar-track{height:77px;width:100%;max-width:30px;display:flex;align-items:flex-end;justify-content:center;background:var(--panel-soft);border-radius:7px 7px 3px 3px;overflow:hidden;margin-top:auto}
+.utility-bar-track span{display:block;width:100%;min-height:0;background:var(--green-deep);border-radius:6px 6px 2px 2px}
+.utility-bar-column strong{font-size:9px;color:var(--text);overflow-wrap:anywhere;text-align:center}
+.utility-bar-column small{font-size:10px;color:var(--muted)}
+.utility-form{margin-bottom:14px}
+.utility-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.utility-fields label{display:grid;gap:7px;font-size:11px;font-weight:650;color:var(--muted);min-width:0}
+.utility-fields input:not([type=checkbox]),.utility-fields select{width:100%;min-width:0;min-height:39px;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;font-size:12px}
+.utility-fields .utility-notes-field{grid-column:span 2}
+.utility-fields .utility-paid-field{display:flex;align-items:center;gap:8px;align-self:end;min-height:39px}
+.utility-paid-field input{accent-color:var(--green-deep)}
+.utility-form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:15px}
+.utility-bills{margin-top:0}
+.utility-tools{display:flex;gap:8px;margin-bottom:13px}
+.utility-tools input,.utility-tools select{min-width:0;min-height:39px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text);font:inherit;font-size:11px}
+.utility-tools input{flex:1}
+.utility-tools select{width:auto;max-width:200px}
+.utility-table-wrap{width:100%;overflow-x:auto}
+.utility-table{width:100%;border-collapse:collapse;font-size:11px;text-align:left}
+.utility-table th{padding:10px 9px;color:var(--muted);font-size:9px;letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--line);white-space:nowrap}
+.utility-table td{padding:12px 9px;border-bottom:1px solid var(--line);vertical-align:middle}
+.utility-table tbody tr:last-child td{border-bottom:0}
+.utility-table td:first-child{min-width:150px}
+.utility-table td:first-child strong,.utility-table td:first-child small{display:block}
+.utility-table td:first-child strong{font-size:11px}
+.utility-table td:first-child small{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4;max-width:240px;overflow-wrap:anywhere}
+.utility-table td:nth-child(2),.utility-table td:nth-child(4){white-space:nowrap}
+.utility-amount{font-weight:750;white-space:nowrap}
+.utility-status{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:10px;white-space:nowrap;cursor:pointer}
+.utility-status.is-paid{background:rgba(80,145,106,.12);border-color:rgba(80,145,106,.22);color:var(--green-deep)}
+.utility-status.is-unpaid{background:rgba(196,135,48,.12);border-color:rgba(196,135,48,.25);color:#b7791f}
+.utility-delete{display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);cursor:pointer}
+.utility-delete:hover{color:#c56a55;border-color:#c56a55}
+.utility-empty{display:grid;justify-items:center;gap:8px;text-align:center;padding:30px 10px;color:var(--muted);font-size:11px}
+.utility-empty strong{font-size:12px;color:var(--text)}
+.utility-disclaimer{display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:13px;border-radius:11px;background:var(--panel-soft);color:var(--muted)}
+.utility-disclaimer>svg{flex-shrink:0;color:var(--green-deep)}
+.utility-disclaimer p{font-size:10px;line-height:1.6;margin:0}
+.utility-disclaimer strong{display:block;color:var(--text);margin-bottom:3px}
+.utility-save-note{font-size:10px;color:var(--muted);text-align:right;margin-top:10px}
+@media(max-width:1050px){.utility-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.utility-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.utility-top-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.utility-heading{align-items:flex-start;flex-direction:column}.utility-heading h1{font-size:27px}.utility-actions{width:100%}.utility-actions button{flex:1;justify-content:center}.utility-panel{padding:13px}.utility-tools{flex-direction:column}.utility-tools select{width:100%;max-width:none}.utility-table{min-width:680px}}
+@media(max-width:440px){.utility-stats{grid-template-columns:1fr}.utility-fields{grid-template-columns:1fr}.utility-fields .utility-notes-field{grid-column:auto}.utility-budget-numbers{flex-direction:column;gap:6px}.utility-heading h1{font-size:24px}}
