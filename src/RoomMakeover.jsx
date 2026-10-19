@@ -43,7 +43,7 @@ export default function RoomMakeover() {
     const file = event.target.files?.[0]
     if (!file) return
     setError('')
-    if (!file.type.startsWith('image/')) { setError('Please choose an image file such as JPG, PNG or WEBP.'); event.target.value = ''; return }
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) { setError('Please choose a JPG, PNG or WEBP image.'); event.target.value = ''; return }
     if (file.size > 8 * 1024 * 1024) { setError('That image is larger than 8 MB. Choose a smaller photo.'); event.target.value = ''; return }
     const nextUrl = URL.createObjectURL(file)
     setPhoto(previous => { if (previous) URL.revokeObjectURL(previous); return nextUrl })
