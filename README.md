@@ -8,9 +8,10 @@
 - **Phase 2 — 2D Floor Planner:** add, select, move, rename, resize and remove rooms; plot settings; save locally; export plan data as JSON.
 - **Phase 4 — Floor Plan Concepts:** generate three rule-based layout concepts from plot size, bedroom/bathroom counts and layout preference; compare and export concepts; open a selected layout in the planner.
 - **Phase 5 — Room Makeover:** preview a room photo locally, choose room type and design mood, tick practical suggestions and export a checklist.
+- **Phase 6 — Paint & Materials Studio:** select paint swatches, build a persistent colour palette, save flooring/wall/countertop finishes, estimate paint quantity and indicative cost, and export/copy a material board.
 
 ### Honest limitations
-The floor-plan generator and room-makeover suggestions are **rule-based demos, not a trained AI model**. Room photos are previewed locally in the browser and are not sent to a server by this feature. The current app does not automatically detect objects, move furniture in photos, provide true 3D rendering, or sync data across devices. Floor plans are conceptual only and are not construction-ready architectural drawings.
+The floor-plan generator and room-makeover suggestions are **rule-based demos, not a trained AI model**. Paint coverage and material costs are planning estimates with sample rates, not supplier quotes. Room photos are previewed locally in the browser and are not sent to a server by this feature. The current app does not automatically detect objects, move furniture in photos, provide true 3D rendering, or sync data across devices. Floor plans are conceptual only and are not construction-ready architectural drawings.
 
 ## Run locally
 
