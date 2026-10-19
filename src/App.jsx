@@ -39,7 +39,7 @@ const toolCards = [
   { icon: PanelsTopLeft, title: 'Floor planner', desc: 'Bring your layout to life', tone: 'green', badge: 'READY TO USE' },
   { icon: Sofa, title: 'Interior studio', desc: 'Make every room feel like you', tone: 'peach', badge: 'READY TO USE' },
   { icon: Paintbrush, title: 'Paint & materials', desc: 'Find your perfect finish', tone: 'lavender', badge: 'READY TO USE' },
-  { icon: Box, title: '3D home view', desc: 'See the bigger picture', tone: 'blue', badge: 'COMING SOON' },
+  { icon: Box, title: '3D home view', desc: 'See the bigger picture', tone: 'blue', badge: 'READY TO USE' },
 ]
 
 function Logo() {
