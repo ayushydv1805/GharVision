@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import FloorPlanner from './FloorPlanner.jsx'
 import AIPlanGenerator from './AIPlanGenerator.jsx'
 import RoomMakeover from './RoomMakeover.jsx'
+import PaintMaterials from './PaintMaterials.jsx'
 import {
   House, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus,
   Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
@@ -27,7 +28,7 @@ const navGroups = [
     { id: 'AI floor plan', icon: WandSparkles, tag: 'NEW' },
     { id: 'Room makeover', icon: ImagePlus, tag: 'NEW' },
     { id: 'Interior design', icon: Sofa, tag: 'Soon' },
-    { id: 'Paint & materials', icon: Palette, tag: 'Soon' },
+    { id: 'Paint & materials', icon: Palette, tag: 'NEW' },
     { id: '3D home view', icon: Box, tag: 'Soon' },
   ]},
 ]
@@ -148,6 +149,7 @@ export default function App() {
       {active === 'Floor planner' && <div className="page-content"><FloorPlanner/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 02</span></footer></div>}
       {active === 'AI floor plan' && <div className="page-content"><AIPlanGenerator onOpenPlanner={openGeneratedPlan}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 04</span></footer></div>}
       {active === 'Room makeover' && <div className="page-content"><RoomMakeover/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 05</span></footer></div>}
+      {active === 'Paint & materials' && <div className="page-content"><PaintMaterials/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 06</span></footer></div>}
       {active === 'Settings' && <div className="page-content"><SettingsPage theme={theme} toggleTheme={toggleTheme}/></div>}
       {active === 'Explore ideas' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">COLLECT THE FEELING</p><h1>Ideas worth coming home to<span className="wave">✳</span></h1><p className="heading-subtitle">A few starting points for the space you want to create.</p></div></section><div className="inspiration-grid"><button className="inspiration-card" onClick={() => setToast('Warm minimal style added to your inspiration list.') }><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85" alt="Warm minimal living room"/><span>01 / LESS, BUT BETTER</span><h3>Warm minimal</h3><p>Soft textures, honest materials, room to breathe.</p></button><button className="inspiration-card" onClick={() => setToast('Natural modern style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Natural modern architecture"/><span>02 / ROOTED IN NATURE</span><h3>Natural modern</h3><p>Wood, stone, greenery and light in harmony.</p></button><button className="inspiration-card" onClick={() => setToast('Modern Indian style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85" alt="Modern contemporary home"/><span>03 / OLD SOUL, NEW LINES</span><h3>Modern Indian</h3><p>Contemporary comfort with a sense of place.</p></button></div><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
       {pageTitles[active] && <div className="page-content"><ComingSoon title={pageTitles[active]} setActive={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
