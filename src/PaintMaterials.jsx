@@ -19,7 +19,7 @@ const materials = [
   { id: 'charcoal', name: 'Charcoal slate', type: 'Countertop', look: 'Deep natural stone', cost: 260, unit: 'sq. ft.', durability: 'High', note: 'Creates contrast with light cabinetry.', color: '#5D625F' },
   { id: 'microcement', name: 'Warm microcement', type: 'Wall finish', look: 'Seamless matte surface', cost: 125, unit: 'sq. ft.', durability: 'Medium-high', note: 'A clean backdrop for modern interiors.', color: '#B9B0A2' },
 ]
-const readSaved = (key, fallback) => { try { const value = localStorage.getItem(key); return value ? JSON.parse(value) : fallback } catch { return fallback } }
+const readSaved = (key, fallback) => { try { const value = localStorage.getItem(key); const parsed = value ? JSON.parse(value) : fallback; return Array.isArray(parsed) && parsed.every(item => typeof item === 'string') ? parsed : fallback } catch { return fallback } }
 
 export default function PaintMaterials() {
   const [room, setRoom] = useState('Living room')
