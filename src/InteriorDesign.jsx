@@ -15,7 +15,7 @@ const roomPresets = {
   'Home office': [{name:'Work desk',icon:'table',zone:'Work',price:9500},{name:'Ergonomic chair',icon:'chair',zone:'Seating',price:11500},{name:'Desk lamp',icon:'lamp',zone:'Lighting',price:1800},{name:'Bookcase',icon:'cabinet',zone:'Storage',price:7800},{name:'Area rug',icon:'rug',zone:'Textiles',price:3500},{name:'Indoor plant',icon:'plant',zone:'Decor',price:1200}],
 }
 const formatINR = n => '₹' + Number(n).toLocaleString('en-IN')
-const loadSaved = () => { try { const raw=localStorage.getItem('gharvision-interior-board'); const parsed=raw?JSON.parse(raw):null; return parsed && typeof parsed==='object' ? parsed : {} } catch { return {} } }
+const loadSaved = () => { try { const raw=localStorage.getItem('gharvision-interior-board'); const parsed=raw?JSON.parse(raw):null; if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return {}; return Object.fromEntries(Object.entries(parsed).filter(([key,value]) => typeof key === 'string' && Array.isArray(value) && value.every(item => typeof item === 'string'))) } catch { return {} } }
 function ItemIcon({type,size=17}) {
   const common={size,strokeWidth:1.7}
   if(type==='sofa') return <Sofa {...common}/>
