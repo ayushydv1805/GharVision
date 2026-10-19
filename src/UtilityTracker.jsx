@@ -36,7 +36,7 @@ export default function UtilityTracker() {
   const unpaid = bills.filter(b => !b.paid).reduce((sum, b) => sum + (Number(b.amount) || 0), 0)
   const previousPeriod = (() => { const d = new Date(); d.setMonth(d.getMonth() - 1); return d.toISOString().slice(0, 7) })()
   const previousSpend = bills.filter(b => b.period === previousPeriod).reduce((sum, b) => sum + (Number(b.amount) || 0), 0)
-  const change = previousSpend ? Math.round(((monthlySpend - previousSpend) / previousSpend) * 100) : null
+  const change = previousSpend && current.length ? Math.round(((monthlySpend - previousSpend) / previousSpend) * 100) : null
   const monthlyHistory = useMemo(() => {
     const periods = Array.from({ length: 6 }, (_, i) => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - (5 - i)); return d.toISOString().slice(0, 7) })
     return periods.map(period => ({ period, total: bills.filter(b => b.period === period).reduce((sum, b) => sum + (Number(b.amount) || 0), 0) }))
