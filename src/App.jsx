@@ -3,6 +3,7 @@ import FloorPlanner from './FloorPlanner.jsx'
 import AIPlanGenerator from './AIPlanGenerator.jsx'
 import RoomMakeover from './RoomMakeover.jsx'
 import PaintMaterials from './PaintMaterials.jsx'
+import InteriorDesign from './InteriorDesign.jsx'
 import {
   House, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus,
   Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
@@ -27,7 +28,7 @@ const navGroups = [
     { id: 'Floor planner', icon: PanelsTopLeft },
     { id: 'AI floor plan', icon: WandSparkles, tag: 'NEW' },
     { id: 'Room makeover', icon: ImagePlus, tag: 'NEW' },
-    { id: 'Interior design', icon: Sofa, tag: 'Soon' },
+    { id: 'Interior design', icon: Sofa, tag: 'NEW' },
     { id: 'Paint & materials', icon: Palette, tag: 'NEW' },
     { id: '3D home view', icon: Box, tag: 'Soon' },
   ]},
@@ -35,7 +36,7 @@ const navGroups = [
 
 const toolCards = [
   { icon: PanelsTopLeft, title: 'Floor planner', desc: 'Bring your layout to life', tone: 'green', badge: 'READY TO USE' },
-  { icon: Sofa, title: 'Interior studio', desc: 'Make every room feel like you', tone: 'peach', badge: 'COMING SOON' },
+  { icon: Sofa, title: 'Interior studio', desc: 'Make every room feel like you', tone: 'peach', badge: 'READY TO USE' },
   { icon: Paintbrush, title: 'Paint & materials', desc: 'Find your perfect finish', tone: 'lavender', badge: 'COMING SOON' },
   { icon: Box, title: '3D home view', desc: 'See the bigger picture', tone: 'blue', badge: 'COMING SOON' },
 ]
@@ -130,7 +131,7 @@ export default function App() {
   const createProject = data => { const p = { ...data, id: Date.now(), location: 'Location not set', updated: 'Created just now', progress: 8, image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=85' }; setProjects(prev => [p, ...prev]); setModalOpen(false); setActive('My projects'); setToast('Your new project is ready to explore.'); window.setTimeout(() => setToast(''), 3200) }
   const openProject = project => { setSelectedProject(project); setToast(`Opening ${project.name} — detailed design tools arrive in upcoming phases.`); window.setTimeout(() => setToast(''), 3600) }
   const openGeneratedPlan = (rooms, plot) => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)); localStorage.setItem('gharvision-generated-plot', JSON.stringify(plot)) } catch { setToast('Browser storage is unavailable. Enable site storage to transfer this layout.'); window.setTimeout(() => setToast(''), 3200); return } setActive('Floor planner'); setToast('Layout opened in Floor Planner. You can now move, resize and rename rooms.'); window.setTimeout(() => setToast(''), 3200) }
-  const pageTitles = { 'Interior design': 'Interior design', 'Paint & materials': 'Paint & materials', '3D home view': '3D home view', 'Explore ideas': 'Explore ideas' }
+  const pageTitles = { '3D home view': '3D home view' }
   const visibleProjects = projects.filter(p => (p.name + ' ' + p.type + ' ' + p.location).toLowerCase().includes(search.toLowerCase()))
   return <div className="app-shell">
     <Sidebar active={active} setActive={setActive} onCreate={() => setModalOpen(true)} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}/>
@@ -150,6 +151,7 @@ export default function App() {
       {active === 'AI floor plan' && <div className="page-content"><AIPlanGenerator onOpenPlanner={openGeneratedPlan}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 04</span></footer></div>}
       {active === 'Room makeover' && <div className="page-content"><RoomMakeover/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 05</span></footer></div>}
       {active === 'Paint & materials' && <div className="page-content"><PaintMaterials/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 06</span></footer></div>}
+      {active === 'Interior design' && <div className="page-content"><InteriorDesign/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 07</span></footer></div>}
       {active === 'Settings' && <div className="page-content"><SettingsPage theme={theme} toggleTheme={toggleTheme}/></div>}
       {active === 'Explore ideas' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">COLLECT THE FEELING</p><h1>Ideas worth coming home to<span className="wave">✳</span></h1><p className="heading-subtitle">A few starting points for the space you want to create.</p></div></section><div className="inspiration-grid"><button className="inspiration-card" onClick={() => setToast('Warm minimal style added to your inspiration list.') }><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85" alt="Warm minimal living room"/><span>01 / LESS, BUT BETTER</span><h3>Warm minimal</h3><p>Soft textures, honest materials, room to breathe.</p></button><button className="inspiration-card" onClick={() => setToast('Natural modern style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Natural modern architecture"/><span>02 / ROOTED IN NATURE</span><h3>Natural modern</h3><p>Wood, stone, greenery and light in harmony.</p></button><button className="inspiration-card" onClick={() => setToast('Modern Indian style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85" alt="Modern contemporary home"/><span>03 / OLD SOUL, NEW LINES</span><h3>Modern Indian</h3><p>Contemporary comfort with a sense of place.</p></button></div><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
       {pageTitles[active] && <div className="page-content"><ComingSoon title={pageTitles[active]} setActive={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
