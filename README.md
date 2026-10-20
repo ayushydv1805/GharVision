@@ -62,3 +62,6 @@ To redeploy manually, open the repository's **Actions** tab, select **Deploy Gha
 ## Stack
 
 React, Vite, Lucide, custom CSS and browser local storage.
+
+
+- **Stability fixes:** the floor planner now keeps room positions and resize limits within the configured plot, clamps plot dimensions to the canvas-supported range (10–43 ft), and clamps existing rooms when plot dimensions change. Vendor quote loading now ignores malformed saved data, and CSV export keeps its temporary download URL alive long enough for browsers to process the download.
