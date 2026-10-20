@@ -73,3 +73,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search and filter tasks; mark work complete or reopen it; edit due dates/status and remove tasks.
 - Dashboard counts highlight overdue work, tasks due within 14 days, and completed tasks.
 - Export the task list as CSV. Data is stored in this browser only; it does not sync between devices or send notifications. Recurrence is recorded as a label and does not automatically generate future tasks. Seed tasks are clearly labelled examples.
+
+
+## Phase 24 — Insurance & renewal tracker
+
+- Keep home and contents insurance policy records, provider/contact details, premium, payment frequency, coverage summary, status, renewal date and notes.
+- Surface active policies that are overdue or due within 30 days, and estimate annual premium spend from the entered amounts and payment frequency.
+- Search/filter records, edit renewal dates/status/premiums, delete records and export CSV.
+- Data is stored in the current browser only; no cross-device sync, alerts, insurer integration or claims processing. Renewal status is a personal reminder, not confirmation of cover. The initial example is clearly labelled and must be replaced with real details.
+- Currency display uses INR (₹).
