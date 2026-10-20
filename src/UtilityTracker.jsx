@@ -14,7 +14,8 @@ const seed = [
   { id: 'sample-water', type: 'Water', provider: 'Sample provider', period: '2026-09', amount: 420, usage: 12, dueDate: '', paid: true, notes: 'Illustrative amount only' },
   { id: 'sample-internet', type: 'Internet', provider: 'Sample provider', period: '2026-09', amount: 799, usage: 1, dueDate: '', paid: false, notes: '' },
 ]
-const empty = { type: 'Electricity', provider: '', period: new Date().toISOString().slice(0, 7), amount: '', usage: '', dueDate: '', paid: false, notes: '' }
+const monthKey = (date = new Date()) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+const empty = { type: 'Electricity', provider: '', period: monthKey(), amount: '', usage: '', dueDate: '', paid: false, notes: '' }
 const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(n) || 0)
 const monthName = value => { if (!value) return 'Period not set'; const [y, m] = value.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) }
 const csv = value => '"' + String(value ?? '').replace(/"/g, '""') + '"'
@@ -30,15 +31,15 @@ export default function UtilityTracker() {
   const [message, setMessage] = useState('')
   const persist = next => { setBills(next); try { localStorage.setItem(KEY, JSON.stringify(next)); setMessage('Saved on this device') } catch { setMessage('Browser storage unavailable — export a backup') } }
   const update = (key, value) => setForm(prev => ({ ...prev, [key]: value }))
-  const thisMonth = new Date().toISOString().slice(0, 7)
+  const thisMonth = monthKey()
   const current = bills.filter(b => b.period === thisMonth)
   const monthlySpend = current.reduce((sum, b) => sum + (Number(b.amount) || 0), 0)
   const unpaid = bills.filter(b => !b.paid).reduce((sum, b) => sum + (Number(b.amount) || 0), 0)
-  const previousPeriod = (() => { const d = new Date(); d.setMonth(d.getMonth() - 1); return d.toISOString().slice(0, 7) })()
+  const previousPeriod = (() => { const d = new Date(); d.setMonth(d.getMonth() - 1); return monthKey(d) })()
   const previousSpend = bills.filter(b => b.period === previousPeriod).reduce((sum, b) => sum + (Number(b.amount) || 0), 0)
   const change = previousSpend && current.length ? Math.round(((monthlySpend - previousSpend) / previousSpend) * 100) : null
   const monthlyHistory = useMemo(() => {
-    const periods = Array.from({ length: 6 }, (_, i) => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - (5 - i)); return d.toISOString().slice(0, 7) })
+    const periods = Array.from({ length: 6 }, (_, i) => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - (5 - i)); return monthKey(d) })
     return periods.map(period => ({ period, total: bills.filter(b => b.period === period).reduce((sum, b) => sum + (Number(b.amount) || 0), 0) }))
   }, [bills])
   const visible = bills.filter(b => {
