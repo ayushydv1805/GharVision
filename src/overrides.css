@@ -1503,3 +1503,23 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 .floor-import-button{white-space:nowrap}
 @media(max-width:900px){.floor-library-controls .floor-import-button{grid-column:1/-1}}
 @media(max-width:520px){.floor-library-controls .floor-import-button{grid-column:auto}}
+
+
+/* Phase 41 — floor-plan layout review */
+.layout-review{margin:0 0 18px;padding:17px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.layout-review-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px}
+.layout-review-heading .eyebrow{display:flex;align-items:center;gap:6px}
+.layout-review-heading h2{font-size:17px;letter-spacing:-.35px;margin:7px 0 4px}
+.layout-review-heading p{font-size:11px;line-height:1.55;color:var(--muted);margin:0}
+.layout-review-heading>button{flex-shrink:0;white-space:nowrap}
+.layout-review-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.layout-check{display:flex;align-items:flex-start;gap:9px;min-width:0;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.layout-check-mark{display:grid;place-items:center;flex-shrink:0;width:24px;height:24px;border-radius:7px;font-size:13px;font-weight:800;background:var(--green-soft);color:var(--green-deep)}
+.layout-check>div{flex:1;min-width:0}
+.layout-check strong{display:block;font-size:11px;line-height:1.45;color:var(--text)}
+.layout-check p{font-size:10px;line-height:1.55;color:var(--muted);margin:4px 0 0;overflow-wrap:anywhere}
+.layout-check-status{flex-shrink:0;font-size:8px;font-weight:800;letter-spacing:.35px;text-transform:uppercase;color:var(--green-deep);padding:4px 5px;border-radius:5px;background:var(--green-soft)}
+.layout-check-warning .layout-check-mark,.layout-check-warning .layout-check-status{background:#f9f0d7;color:#87631d}
+.layout-check-error .layout-check-mark,.layout-check-error .layout-check-status{background:#fce9df;color:#a44928}
+.layout-review-note{font-size:10px;line-height:1.6;color:var(--muted);margin:12px 0 0}
+@media(max-width:720px){.layout-review{padding:12px}.layout-review-heading{flex-direction:column}.layout-review-heading>button{width:100%;justify-content:center}.layout-review-grid{grid-template-columns:minmax(0,1fr)}}
