@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import FloorPlanner from './FloorPlanner.jsx'
 import AIPlanGenerator from './AIPlanGenerator.jsx'
 import RoomMakeover from './RoomMakeover.jsx'
+import DesignPhotoStudio from './DesignPhotoStudio.jsx'
 import PaintMaterials from './PaintMaterials.jsx'
 import InteriorDesign from './InteriorDesign.jsx'
 import HomeView3D from './HomeView3D.jsx'
@@ -54,6 +55,7 @@ const navGroups = [
   { label: 'DESIGN STUDIO', items: [
     { id: 'Floor planner', icon: PanelsTopLeft },
     { id: 'AI floor plan', icon: WandSparkles, tag: 'NEW' },
+    { id: 'Photo-to-design studio', icon: ImagePlus, tag: 'PHASE 43' },
     { id: 'Room makeover', icon: ImagePlus, tag: 'NEW' },
     { id: 'Interior design', icon: Sofa, tag: 'NEW' },
     { id: 'Paint & materials', icon: Palette, tag: 'NEW' },
@@ -89,6 +91,7 @@ const navGroups = [
 
 const toolCards = [
   { icon: PanelsTopLeft, title: 'Floor planner', desc: 'Bring your layout to life', tone: 'green', badge: 'READY TO USE' },
+  { icon: ImagePlus, title: 'Photo-to-design studio', desc: 'Extract colours from inspiration images and compare five custom-size plan concepts', tone: 'peach', badge: 'NEW IN PHASE 43' },
   { icon: Sofa, title: 'Interior studio', desc: 'Make every room feel like you', tone: 'peach', badge: 'READY TO USE' },
   { icon: Paintbrush, title: 'Paint & materials', desc: 'Find your perfect finish', tone: 'lavender', badge: 'READY TO USE' },
   { icon: Box, title: '3D home view', desc: 'See the bigger picture', tone: 'blue', badge: 'READY TO USE' },
@@ -285,6 +288,7 @@ export default function App() {
       {active === 'My projects' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">YOUR IDEAS, ALL IN ONE PLACE</p><h1>My projects<span className="wave">✳</span></h1><p className="heading-subtitle">A little progress is still progress.</p></div><button className="primary-button welcome-cta" onClick={() => setModalOpen(true)}><Plus size={17}/> New project</button></section><div className="projects-toolbar"><label className="project-search"><Search size={16}/><input placeholder="Find a project..." value={search} onChange={e => setSearch(e.target.value)}/></label><button className="filter-button" onClick={() => { setSearch(''); setToast('Showing all projects.'); window.setTimeout(() => setToast(''),2200) }}><SlidersHorizontal size={15}/> Clear filters</button></div>{visibleProjects.length ? <div className="projects-grid projects-all-grid">{visibleProjects.map(p => <ProjectCard key={p.id} project={p} onOpen={openProject}/>)}<button className="add-project-card" onClick={() => setModalOpen(true)}><span className="add-project-icon"><Plus size={22}/></span><strong>Something new?</strong><span>Start a fresh project</span><span className="add-project-arrow"><ArrowUpRight size={16}/></span></button></div> : <div className="empty-state"><Search size={25}/><h3>No projects found</h3><p>Try another search, or start a new project.</p><button className="primary-button" onClick={() => { setSearch(''); setModalOpen(true) }}>Create a project <Plus size={15}/></button></div>}<footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
       {active === 'Floor planner' && <div className="page-content"><FloorPlanner/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 02</span></footer></div>}
       {active === 'AI floor plan' && <div className="page-content"><AIPlanGenerator onOpenPlanner={openGeneratedPlan}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 04</span></footer></div>}
+      {active === 'Photo-to-design studio' && <div className="page-content"><DesignPhotoStudio/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 43</span></footer></div>}
       {active === 'Room makeover' && <div className="page-content"><RoomMakeover/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 05</span></footer></div>}
       {active === 'Paint & materials' && <div className="page-content"><PaintMaterials/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 06</span></footer></div>}
       {active === 'Interior design' && <div className="page-content"><InteriorDesign/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 07</span></footer></div>}
