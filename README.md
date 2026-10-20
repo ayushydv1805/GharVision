@@ -111,3 +111,13 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search and filter the register, update status/cost/day estimates inline, delete records, and export the register as CSV.
 - Includes clearly labelled example requests that can be edited or deleted. Records are stored in the current browser on this device; there is no cloud sync, automatic notification, quote validation or contractor communication.
 - Cost and time impact figures are user-entered planning estimates, not a forecast, contractual approval or substitute for a signed change order and professional advice.
+
+
+## Phase 28 — Home document vault
+
+- Keep a searchable register of property papers, floor plans/drawings, permits, invoices, warranties, insurance, contracts and maintenance records.
+- Record document type, safe file-location reference, issue/purchase date, expiry/renewal date, status and notes.
+- Highlight active records with past expiry dates or expiry within 30 days; filter by type, status, expiring soon and expired.
+- Update record status and expiry date, archive records, remove outdated entries and export the register to CSV.
+- Starter entries are examples and should be replaced or deleted. The vault stores document metadata only—not the actual files—and keeps it in the current browser on this device. It does not upload/encrypt files, send reminders, validate legal documents or sync across devices.
+- Avoid storing passwords, full identity numbers, bank details or other secrets. Keep actual documents in a secure location and export CSV backups carefully.
