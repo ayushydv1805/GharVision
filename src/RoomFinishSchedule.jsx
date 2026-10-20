@@ -12,7 +12,7 @@ const blank={room:'Living room',surface:'Floor',material:'',colour:'',supplier:'
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0)
 const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"'
 export default function RoomFinishSchedule(){
-const [items,setItems]=useState(()=>{try{const s=localStorage.getItem(KEY);return s?JSON.parse(s):SEED}catch{return SEED}})
+const [items,setItems]=useState(()=>{try{const s=localStorage.getItem(KEY);if(!s)return SEED;const parsed=JSON.parse(s);return Array.isArray(parsed)?parsed.filter(x=>x&&typeof x.material==='string'):SEED}catch{return SEED}})
 const [form,setForm]=useState(blank),[open,setOpen]=useState(false),[q,setQ]=useState(''),[filter,setFilter]=useState('all'),[notice,setNotice]=useState('')
 useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch{setNotice('Browser storage is unavailable; export a CSV backup.')}},[items])
 const visible=useMemo(()=>items.filter(x=>[x.room,x.surface,x.material,x.colour,x.supplier,x.status,x.notes].join(' ').toLowerCase().includes(q.toLowerCase())&&(filter==='all'||x.status===filter)),[items,q,filter])
