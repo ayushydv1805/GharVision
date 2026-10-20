@@ -90,3 +90,13 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Compare planned and actual amounts, calculate remaining budget or overspend, show overall usage, and flag line items over estimate.
 - Track status, date, vendor and notes; search/filter entries; edit planned and actual costs inline; delete entries and export a CSV backup.
 - Amounts are displayed in INR. Data is stored in the current browser only; no cloud sync, bank integration, invoicing or tax/financing calculation. The initial sample is clearly labelled as an example and should be replaced or deleted.
+
+
+## Phase 26 — Home handover & snag checklist
+
+- Record inspection issues and checks with area/trade, severity, target date, assigned person and notes.
+- Track each item through Open, In progress, Ready to verify, Resolved or Accepted / deferred.
+- View unresolved, high-priority and overdue counts; monitor resolved-item progress.
+- Search and filter by issue, area, assigned person, status or severity; edit status, severity and due date inline; delete items; export a CSV register.
+- Includes clearly labelled example entries that can be edited or deleted. Records are stored in the current browser on this device; there is no cloud sync, photo upload, contractor messaging or reminder service.
+- This is a record-keeping aid, not a professional building inspection or safety/compliance certificate. Have safety-critical or technical concerns assessed by qualified professionals.
