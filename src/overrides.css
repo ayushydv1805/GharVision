@@ -1431,3 +1431,13 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 .planner-canvas-panel{min-width:0}
 .floor-canvas{display:block;width:100%;height:auto;touch-action:none}
 @media(max-width:650px){.planner-heading-actions{width:100%;display:flex;gap:8px}.planner-heading-actions button{flex:1;justify-content:center}.planner-sidebar .plot-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.planner-inspector .inspector-dimensions{grid-template-columns:minmax(0,1fr) 12px minmax(0,1fr)}}
+
+
+/* Phase 30 — floor plan editing and layout validation */
+.planner-overlap-warning{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:11px 13px;border:1px solid #e8b7a1;border-radius:10px;background:#fff4ed;color:#8c3e22;font-size:11px;line-height:1.55}
+.planner-overlap-warning strong{font-weight:800;white-space:nowrap}
+.planner-overlap-warning span{flex:1;min-width:180px}
+.planner-overlap-warning button{border:1px solid #e8b7a1;border-radius:6px;padding:4px 8px;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.planner-overlap-warning button:hover{background:#ffe7d9}
+.planner-canvas-panel .planner-overlap-warning{margin:0 14px 12px}
+@media(prefers-color-scheme:dark){.planner-overlap-warning{background:#38271f;border-color:#7d4a34;color:#ffd0b8}}
