@@ -12,7 +12,13 @@ const todayString = () => {
   const now = new Date()
   return [now.getFullYear(), String(now.getMonth() + 1).padStart(2, '0'), String(now.getDate()).padStart(2, '0')].join('-')
 }
-const dayOffset = (date, today) => Math.ceil((new Date(date + 'T00:00:00').getTime() - new Date(today + 'T00:00:00').getTime()) / 86400000)
+const isValidDate = value => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const [year, month, day] = value.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+}
+const dayOffset = (date, today) => Math.round((new Date(date + 'T00:00:00').getTime() - new Date(today + 'T00:00:00').getTime()) / 86400000)
 const readArray = key => {
   try {
     const parsed = JSON.parse(localStorage.getItem(key) || 'null')
@@ -40,7 +46,7 @@ export default function HomeActionCenter({ onNavigate }) {
         const status = String(record[source.status] || '')
         if (source.done?.includes(status) || (source.active && !source.active.includes(status))) return
         const due = String(record[source.date] || '')
-        if (!due || !/^\d{4}-\d{2}-\d{2}$/.test(due)) return
+        if (!isValidDate(due)) return
         const delta = dayOffset(due, today)
         if (delta > 30) return
         const title = source.title ? source.title(record) : record.title || record.name || record.vendor || 'Untitled item'
@@ -60,7 +66,7 @@ export default function HomeActionCenter({ onNavigate }) {
     const tasks = readProjectTasks()
     const projectTasks = Array.isArray(tasks) ? tasks : []
     projectTasks.forEach((task, index) => {
-      if (!task || !task.due || task.status === 'Complete' || !/^\d{4}-\d{2}-\d{2}$/.test(task.due)) return
+      if (!task || task.status === 'Complete' || !isValidDate(task.due)) return
       const delta = dayOffset(task.due, today)
       if (delta > 30) return
       rows.push({ id: 'project-task-' + String(task.id ?? index), title: String(task.title || 'Untitled project task'), source: 'Home project tracker', area: 'Project task', due: task.due, delta, status: task.status || 'Not started', route: 'Home project tracker', urgency: delta < 0 ? 'Overdue' : delta <= 7 ? 'Due this week' : 'Due within 30 days' })
@@ -73,9 +79,10 @@ export default function HomeActionCenter({ onNavigate }) {
     const snags = readArray('gharvision-handover-checklist-v1') || []
     snags.forEach((snag, index) => {
       if (!snag || !['High', 'Critical'].includes(snag.severity) || ['Resolved', 'Accepted / deferred'].includes(snag.status)) return
-      const hasUpcomingDeadline = snag.due && /^\d{4}-\d{2}-\d{2}$/.test(snag.due) && dayOffset(snag.due, today) <= 30
+      const validSnagDue = isValidDate(snag.due)
+      const hasUpcomingDeadline = validSnagDue && dayOffset(snag.due, today) <= 30
       if (hasUpcomingDeadline) return
-      rows.push({ id: 'priority-snag-' + String(snag.id ?? index), title: String(snag.title || 'High-priority snag'), source: 'Handover & snag list', area: 'Priority issue', due: snag.due || '', delta: snag.due && /^\d{4}-\d{2}-\d{2}$/.test(snag.due) ? dayOffset(snag.due, today) : null, status: snag.status || 'Open', route: 'Handover & snag list', urgency: snag.severity + ' severity' })
+      rows.push({ id: 'priority-snag-' + String(snag.id ?? index), title: String(snag.title || 'High-priority snag'), source: 'Handover & snag list', area: 'Priority issue', due: validSnagDue ? snag.due : '', delta: validSnagDue ? dayOffset(snag.due, today) : null, status: snag.status || 'Open', route: 'Handover & snag list', urgency: snag.severity + ' severity' })
     })
     const rank = row => row.urgency === 'Overdue' ? 0 : row.urgency === 'Critical severity' ? 1 : row.urgency === 'High severity' ? 2 : row.urgency === 'Due this week' ? 3 : row.urgency === 'Decision pending' ? 4 : 5
     return rows.sort((a, b) => rank(a) - rank(b) || (a.due || '9999').localeCompare(b.due || '9999'))
