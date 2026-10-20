@@ -29,6 +29,9 @@ The floor-plan generator and room-makeover suggestions are **rule-based demos, n
 
 - **Floor planning improvements:** enter plot dimensions (15–43 ft per side), choose bedroom/bathroom counts and optional dining, study, parking, puja and store rooms, compare three locally generated layout concepts, then open a selected plan in Floor Planner. Rooms can be dragged, resized from the bottom-right handle, renamed, dimensioned and removed; export the plan data as JSON.
 
+
+- **Phase 22 — Vendor & quote tracker:** record vendor/trade, contact details, quoted amount, duration, status and scope notes; search/filter the shortlist, mark a vendor selected, view quote totals and export CSV. Starter entries are examples, not real recommendations. Data is stored in local browser storage and does not sync across devices.
+
 ## Run locally
 
 Requires Node.js 20 or newer.
