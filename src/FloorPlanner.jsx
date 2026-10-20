@@ -38,6 +38,15 @@ export default function FloorPlanner() {
   const totalArea = useMemo(() => rooms.reduce((sum, room) => sum + (room.w / GRID) * (room.h / GRID), 0), [rooms])
   const roomArea = room => Math.round((room.w / GRID) * (room.h / GRID))
   useEffect(() => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)) } catch { /* The planner remains usable when browser storage is unavailable. */ } }, [rooms])
+  useEffect(() => {
+    const maxW = plotWidth * GRID
+    const maxH = plotHeight * GRID
+    setRooms(prev => prev.map(room => {
+      const w = Math.min(room.w, maxW)
+      const h = Math.min(room.h, maxH)
+      return { ...room, w, h, x: Math.max(0, Math.min(maxW - w, room.x)), y: Math.max(0, Math.min(maxH - h, room.y)) }
+    }))
+  }, [plotWidth, plotHeight])
 
   const addRoom = preset => {
     const count = rooms.filter(r => r.type === preset.type).length
