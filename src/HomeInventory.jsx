@@ -12,12 +12,18 @@ const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency:
 const readItems = () => { try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : seedItems } catch { return seedItems } }
 const warrantyEnd = item => {
   if (!item.purchaseDate || item.warrantyMonths === '' || item.warrantyMonths == null) return null
-  const d = new Date(item.purchaseDate + 'T12:00:00')
-  if (Number.isNaN(d.getTime())) return null
-  d.setMonth(d.getMonth() + Number(item.warrantyMonths))
+  const [year, month, day] = item.purchaseDate.split('-').map(Number)
+  if (!year || !month || !day || !Number.isFinite(Number(item.warrantyMonths))) return null
+  const d = new Date(year, month - 1, 1)
+  const targetMonth = d.getMonth() + Number(item.warrantyMonths)
+  d.setMonth(targetMonth)
+  const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()
+  d.setDate(Math.min(day, lastDay))
+  d.setHours(0, 0, 0, 0)
   return d
 }
 const dateLabel = value => value ? new Date(value + 'T12:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Not recorded'
+const localDateKey = value => value ? [value.getFullYear(), String(value.getMonth() + 1).padStart(2, '0'), String(value.getDate()).padStart(2, '0')].join('-') : ''
 const csvCell = value => '"' + String(value ?? '').replace(/"/g, '""') + '"'
 
 export default function HomeInventory() {
@@ -50,7 +56,7 @@ export default function HomeInventory() {
   }
   const exportCsv = () => {
     const headers = ['Item', 'Room', 'Category', 'Brand', 'Purchase date', 'Cost INR', 'Warranty months', 'Warranty end', 'Warranty status', 'Serial number', 'Notes', 'Starred']
-    const rows = enriched.map(i => [i.name, i.room, i.category, i.brand, i.purchaseDate, i.cost, i.warrantyMonths, i.warrantyEnd ? i.warrantyEnd.toISOString().slice(0, 10) : '', i.warrantyStatus, i.serial, i.notes, i.favourite ? 'Yes' : 'No'])
+    const rows = enriched.map(i => [i.name, i.room, i.category, i.brand, i.purchaseDate, i.cost, i.warrantyMonths, i.warrantyEnd ? localDateKey(i.warrantyEnd) : '', i.warrantyStatus, i.serial, i.notes, i.favourite ? 'Yes' : 'No'])
     const blob = new Blob([[headers, ...rows].map(row => row.map(csvCell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'gharvision-home-inventory.csv'; a.click(); URL.revokeObjectURL(url)
   }
