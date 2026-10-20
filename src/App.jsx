@@ -21,7 +21,7 @@ import VendorQuoteTracker from './VendorQuoteTracker.jsx'
 import HomeCareLog from './HomeCareLog.jsx'
 import InsuranceTracker from './InsuranceTracker.jsx'
 import {
-  House, HardHat, CalendarClock, ShieldCheck, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus, Calculator, CalendarDays, ClipboardList, Archive, ReceiptText, Leaf, ShieldCheck, CalendarCheck, Truck, ClipboardCheck,
+  House, HardHat, CalendarClock, ShieldCheck, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus, Calculator, CalendarDays, ClipboardList, Archive, ReceiptText, Leaf, CalendarCheck, Truck, ClipboardCheck,
   Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
   ArrowUpRight, ArrowRight, MoreHorizontal, Clock3, MapPin, Check, X,
   Menu, SlidersHorizontal, WandSparkles, Sofa, Paintbrush, Grid2X2, Layers3,
