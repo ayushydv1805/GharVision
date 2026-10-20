@@ -6,10 +6,10 @@ const SEED = [
   { id: 'm1', title: 'Example: Service air conditioner', area: 'HVAC', dueDate: '', frequency: 'Every 6 months', priority: 'Medium', status: 'Planned', notes: 'Example only — replace with your own task.' },
   { id: 'm2', title: 'Example: Check smoke alarms', area: 'Safety', dueDate: '', frequency: 'Every 3 months', priority: 'High', status: 'Planned', notes: 'Example only — verify the manufacturer instructions.' },
 ]
-const today = () => new Date().toISOString().slice(0, 10)
+const today = (date = new Date()) => [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-')
 const nextDue = task => task.dueDate && task.status !== 'Completed' && task.dueDate < today()
   ? 'Overdue'
-  : task.dueDate && task.status !== 'Completed' && task.dueDate <= new Date(Date.now() + 14 * 86400000).toISOString().slice(0, 10)
+  : task.dueDate && task.status !== 'Completed' && task.dueDate <= today(new Date(Date.now() + 14 * 86400000))
     ? 'Due soon'
     : task.status === 'Completed' ? 'Completed' : 'On track'
 
