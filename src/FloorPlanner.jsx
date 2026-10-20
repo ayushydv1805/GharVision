@@ -22,7 +22,7 @@ const freshRooms = () => STARTER_ROOMS.map(r => ({ ...r }))
 
 export default function FloorPlanner() {
   const [rooms, setRooms] = useState(() => {
-    try { const saved = localStorage.getItem('gharvision-floorplan'); return saved ? JSON.parse(saved) : freshRooms() } catch { return freshRooms() }
+    try { const saved = localStorage.getItem('gharvision-floorplan'); if (!saved) return freshRooms(); const parsed = JSON.parse(saved); return Array.isArray(parsed) ? parsed.filter(room => room && typeof room.id === 'string' && typeof room.name === 'string' && ['x','y','w','h'].every(key => Number.isFinite(Number(room[key])))) : freshRooms() } catch { return freshRooms() }
   })
   const [selectedId, setSelectedId] = useState('living')
   const [plotWidth, setPlotWidth] = useState(() => {
