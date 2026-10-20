@@ -24,7 +24,7 @@ const initialRooms=()=>{const s=read();if(Array.isArray(s)){const old=s.filter(v
 
 export default function FloorPlanner(){
  const [rooms,setRooms]=useState(initialRooms)
- const [selectedId,setSelectedId]=useState('living')
+ const [selectedId,setSelectedId]=useState(()=>initialRooms()[0]?.id||'living')
  const [plotWidth,setPlotWidth]=useState(()=>initialPlot('width'))
  const [plotHeight,setPlotHeight]=useState(()=>initialPlot('height'))
  const [plotWidthDraft,setPlotWidthDraft]=useState(()=>String(initialPlot('width'))),[plotHeightDraft,setPlotHeightDraft]=useState(()=>String(initialPlot('height')))
