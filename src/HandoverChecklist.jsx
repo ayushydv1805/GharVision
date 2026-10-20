@@ -9,7 +9,7 @@ const SAMPLE = [
   {id:'snag-example-1',title:'Example: Check paint finish near doorway',area:'Paint & finish',severity:'Low',status:'Open',due:'',assigned:'',notes:'Example only — replace or delete this item.'},
   {id:'snag-example-2',title:'Example: Test all kitchen sockets',area:'Electrical',severity:'High',status:'Open',due:'',assigned:'',notes:'Have electrical work checked by a qualified professional.'}
 ]
-const today = () => new Date().toISOString().slice(0,10)
+const today = () => { const d = new Date(); return [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-') }
 const escapeCsv = v => '"' + String(v ?? '').replaceAll('"','""') + '"'
 
 export default function HandoverChecklist() {
