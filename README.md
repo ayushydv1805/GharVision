@@ -231,3 +231,12 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Coordinate fields clamp values to the available plot area so a room cannot be positioned beyond the plot boundary. The values update the scaled canvas and remain part of the saved plan and JSON export.
 - Keep the existing room-overlap warning visible as a separate check: precise positioning does not automatically rearrange rooms or certify a layout.
 - This remains a local, browser-based concept planner; dimensions and placement must be verified for real construction with a qualified professional.
+
+
+## Phase 39 — Precise door and window placement
+
+- Set a door or window's wall offset in feet when adding it, rather than being limited to a centered marker.
+- Edit every opening's width and offset after placement; changes are clamped to the selected room's available wall length.
+- Detect overlapping openings on the same wall and display a warning to help resolve conflicting markers.
+- Opening dimensions and offsets remain part of the saved floor plan and exported JSON; existing plans without offset data remain supported.
+- These are schematic markers only. Confirm door swings, clearances, structural details, ventilation, egress and building requirements with a qualified professional.
