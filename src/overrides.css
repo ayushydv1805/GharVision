@@ -1485,3 +1485,14 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 
 /* Phase 38 — precise room positioning */
 .position-heading{margin-top:17px}.position-heading span{font-size:9px;color:var(--muted);white-space:nowrap}.position-dimensions{margin-top:8px}.position-dimensions label{min-width:0}.position-dimensions input{box-sizing:border-box;width:100%;min-width:0}.position-help{font-size:10px;line-height:1.55;color:var(--muted);margin:8px 0 12px}
+
+
+/* Phase 39 — precise door and window placement */
+.opening-row-editable{align-items:flex-start}
+.opening-row-content{display:flex;flex:1;flex-direction:column;gap:7px;min-width:0}
+.opening-row-content>strong{font-size:10px;color:var(--text);text-transform:capitalize}
+.opening-edit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;width:100%}
+.opening-edit-fields label{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:9px;color:var(--muted)}
+.opening-edit-fields input{box-sizing:border-box;width:100%;min-width:0;height:32px;padding:6px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--text);font:inherit;font-size:10px}
+.opening-row-editable>button{flex-shrink:0;margin-top:1px}
+.opening-fields label:last-child{grid-column:1/-1}
