@@ -188,3 +188,11 @@ React, Vite, Lucide, custom CSS and browser local storage.
 ## Reliability review — October 2026
 
 A focused cross-tool reliability pass corrected local-calendar date generation in the cleaning scheduler, maintenance planner, document vault, home project tracker and renovation tracker. This avoids UTC date drift around midnight and keeps due-date comparisons consistent with the user's local calendar. The document vault's 30-day filter now uses the same local-calendar helper. The overview tool cards now route to their matching tracker instead of sending several newer cards to the 3D view, the project count is dynamic, and the Home Action Center is labelled as Phase 35. Browser-local storage remains device-specific; export backups before clearing browser data.
+
+
+### Floor planner — custom dimensions update
+
+- Plot width and depth can be set independently from 10 ft to 100 ft, instead of being limited to a small preset range.
+- Room width and length can be entered directly in the room inspector, or adjusted by dragging the resize handle; dragging and resizing stay within the chosen plot.
+- Custom plot dimensions persist in this browser and are included in exported plan data. The canvas scales to the plot's actual aspect ratio; long/tall layouts can scroll.
+- This remains a schematic concept planner, not a construction-ready drawing or substitute for local code and professional review.
