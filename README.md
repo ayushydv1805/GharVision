@@ -249,3 +249,12 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Invalid files show an in-app error instead of replacing the current plan. Successful imports replace the current canvas and show a reminder to review overlaps and opening positions.
 - Use Export plan data to create a portable backup, then Import JSON on another browser/device. This does not create cloud sync or upload the plan to a server.
 - Imported layouts remain concept sketches; review the warnings and verify all dimensions and building requirements with a qualified professional before construction.
+
+
+## Phase 41 — Floor-plan layout review report
+
+- Added a live review panel to the floor planner that checks for rooms outside the plot, invalid room dimensions, intersecting room footprints, overlapping door/window markers and duplicate room names.
+- Shows plot area versus the sum of room footprints so area totals can be interpreted alongside overlap warnings.
+- Export the review and room measurements as a CSV file to share or keep with the plan.
+- The checks update as the layout changes. A passing result is only a geometry/data sanity check, not a professional approval or code-compliance result.
+- It does not evaluate wall thickness, circulation, door swings, accessibility clearances, structure, ventilation, fire egress, setbacks or local building regulations. Use a qualified architect/engineer before construction.
