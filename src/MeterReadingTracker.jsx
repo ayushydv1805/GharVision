@@ -8,7 +8,8 @@ const STARTER=[
 {id:'meter-example-2',type:'Water',meter:'Water meter',date:'2026-10-01',reading:86,unit:'kL',rate:45,notes:'Example reading only — replace with your actual meter value.'},
 {id:'meter-example-3',type:'Electricity',meter:'Main electricity meter',date:'2026-09-01',reading:1252,unit:'kWh',rate:8.5,notes:'Example previous reading for demonstration only.'}
 ]
-const blank={type:'Electricity',meter:'Main electricity meter',date:new Date().toISOString().slice(0,10),reading:'',unit:'kWh',rate:'',notes:''}
+const localDateString=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+const blank={type:'Electricity',meter:'Main electricity meter',date:localDateString(),reading:'',unit:'kWh',rate:'',notes:''}
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2}).format(Number(n)||0)
 const csv=v=>'"'+String(v??'').replace(/"/g,'""')+'"'
 export default function MeterReadingTracker(){
@@ -18,7 +19,7 @@ export default function MeterReadingTracker(){
  const readings=useMemo(()=>items.map(item=>{const prior=items.filter(x=>x.type===item.type&&x.meter===item.meter&&x.date<item.date).sort((a,b)=>b.date.localeCompare(a.date))[0];const usage=prior?Math.max(0,Number(item.reading)-Number(prior.reading)):null;return {...item,previous:prior?Number(prior.reading):null,usage,cost:usage===null?null:usage*(Number(item.rate)||0)}}).sort((a,b)=>b.date.localeCompare(a.date)),[items])
  const visible=readings.filter(x=>(typeFilter==='All'||x.type===typeFilter)&&[x.type,x.meter,x.date,x.unit,x.notes].join(' ').toLowerCase().includes(query.toLowerCase()))
  const totals=readings.filter(x=>x.usage!==null).reduce((a,x)=>({usage:a.usage+x.usage,cost:a.cost+(x.cost||0),count:a.count+1}),{usage:0,cost:0,count:0})
- const submit=e=>{e.preventDefault();if(!form.meter.trim()||form.reading===''||Number(form.reading)<0)return;setItems(old=>[...old,{...form,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),meter:form.meter.trim(),reading:Number(form.reading),rate:Math.max(0,Number(form.rate)||0),notes:form.notes.trim()}]);setForm({...blank,date:new Date().toISOString().slice(0,10)});setShowForm(false);setMessage('Meter reading saved.')}
+ const submit=e=>{e.preventDefault();if(!form.meter.trim()||form.reading===''||Number(form.reading)<0)return;setItems(old=>[...old,{...form,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),meter:form.meter.trim(),reading:Number(form.reading),rate:Math.max(0,Number(form.rate)||0),notes:form.notes.trim()}]);setForm({...blank,date:localDateString()});setShowForm(false);setMessage('Meter reading saved.')}
  const update=(id,patch)=>setItems(old=>old.map(x=>x.id===id?{...x,...patch}:x))
  const exportCsv=()=>{const rows=[['Date','Utility','Meter','Previous reading','Current reading','Usage','Unit','Rate per unit INR','Estimated cost INR','Notes'],...visible.map(x=>[x.date,x.type,x.meter,x.previous??'',x.reading,x.usage??'',x.unit,x.rate,x.cost??'',x.notes])];const blob=new Blob(['\uFEFF'+rows.map(r=>r.map(csv).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='gharvision-meter-readings.csv';a.click();URL.revokeObjectURL(url)}
  return <section className="meter-page">
