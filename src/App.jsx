@@ -27,10 +27,11 @@ import HomeDocumentVault from './HomeDocumentVault.jsx'
 import AccessibilityPlanner from './AccessibilityPlanner.jsx'
 import HomeActionCenter from './HomeActionCenter.jsx'
 import WarrantyClaimsTracker from './WarrantyClaimsTracker.jsx'
+import MeterReadingTracker from './MeterReadingTracker.jsx'
 import HomeEmergencyPlan from './HomeEmergencyPlan.jsx'
 import {
   House, HardHat, CalendarClock, ShieldCheck, Wallet, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus, Calculator, CalendarDays, ClipboardList, Archive, ReceiptText, Leaf, CalendarCheck, Truck, ClipboardCheck,
-  FileText, Accessibility, BadgeCheck, Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
+  FileText, Accessibility, BadgeCheck, Gauge, Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
   ArrowUpRight, ArrowRight, MoreHorizontal, Clock3, MapPin, Check, X,
   Menu, SlidersHorizontal, WandSparkles, Sofa, Paintbrush, Grid2X2, Layers3,
   CircleHelp, Command, MoveUpRight, Heart, Home, Building2, Trees, Lightbulb
@@ -76,6 +77,7 @@ const navGroups = [
     { id: 'Home document vault', icon: FileText, tag: 'NEW' },
     { id: 'Home accessibility planner', icon: Accessibility, tag: 'NEW' },
     { id: 'Warranty & claims tracker', icon: BadgeCheck, tag: 'NEW' },
+    { id: 'Meter reading tracker', icon: Gauge, tag: 'NEW' },
     { id: 'Home emergency plan', icon: ShieldCheck, tag: 'NEW' },
     { id: 'Home action center', icon: BellRing, tag: 'NEW' },
   ]},
@@ -108,6 +110,7 @@ const toolCards = [
   { icon: Accessibility, title: 'Home accessibility planner', desc: 'Review room access, reduce trip hazards and track practical improvements', tone: 'green', badge: 'NEW IN PHASE 29' },
   { icon: BellRing, title: 'Home action center', desc: 'See upcoming deadlines, pending decisions and priority home issues', tone: 'blue', badge: 'NEW IN PHASE 29' },
   { icon: BadgeCheck, title: 'Warranty & claims tracker', desc: 'Track warranty dates, claim progress, follow-ups and approved amounts', tone: 'green', badge: 'NEW IN PHASE 30' },
+  { icon: Gauge, title: 'Meter reading tracker', desc: 'Log electricity, water and gas readings and estimate usage between dates', tone: 'blue', badge: 'NEW IN PHASE 31' },
   { icon: ShieldCheck, title: 'Home emergency plan', desc: 'Organise emergency contacts, exit routes, utility locations and safety checks', tone: 'peach', badge: 'NEW IN PHASE 31' },
 ]
 
@@ -245,6 +248,7 @@ export default function App() {
       {active === 'Home document vault' && <div className="page-content"><HomeDocumentVault/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 28</span></footer></div>}
       {active === 'Home accessibility planner' && <div className="page-content"><AccessibilityPlanner/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 29</span></footer></div>}
       {active === 'Warranty & claims tracker' && <div className="page-content"><WarrantyClaimsTracker/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 30</span></footer></div>}
+      {active === 'Meter reading tracker' && <div className="page-content"><MeterReadingTracker/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 31</span></footer></div>}
       {active === 'Home emergency plan' && <div className="page-content"><HomeEmergencyPlan/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 31</span></footer></div>}
       {active === 'Home action center' && <div className="page-content"><HomeActionCenter onNavigate={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 29</span></footer></div>}
       {active === 'Settings' && <div className="page-content"><SettingsPage theme={theme} toggleTheme={toggleTheme} textSize={textSize} setTextSize={setTextSize}/></div>}
