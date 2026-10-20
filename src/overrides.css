@@ -972,3 +972,20 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 @media(max-width:700px){.hp-heading{flex-direction:column}.hp-heading h1{font-size:27px}.hp-actions{width:100%}.hp-actions button{flex:1;justify-content:center}.hp-panel{padding:13px}.hp-fields{grid-template-columns:1fr}}
 @media(max-width:460px){.hp-summary{gap:8px}.hp-summary article{padding:12px}.hp-summary article strong{font-size:19px}.hp-task{padding:9px}.hp-task-cost{grid-template-columns:1fr 1fr}.hp-task-cost label:last-child{grid-column:1/-1}.hp-heading h1{font-size:24px}.hp-toolbar select{width:118px}}
 @media print{.hp-actions,.hp-notice,.hp-toolbar,.hp-remove,.hp-form{display:none!important}.hp-panel,.hp-summary article,.hp-task{break-inside:avoid;box-shadow:none!important}}
+
+
+/* Floor plan workflow improvements: requirement intake, larger plot canvas and hands-on editing */
+.ai-requirements{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px!important}
+.ai-input-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
+.ai-input-pair label{display:grid;gap:7px;min-width:0;color:var(--muted);font-size:10px;font-weight:650}
+.ai-input-pair input,.ai-input-pair select{width:100%;min-width:0;padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:var(--input);color:var(--text);font:inherit;font-size:12px}
+.ai-room-options{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.ai-room-options>span{width:100%;font-size:10px;font-weight:700;color:var(--text)}
+.ai-room-options label{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}
+.ai-room-options input{accent-color:var(--green-deep)}
+.ai-generate-button{align-self:end;justify-content:center;min-height:39px}
+.ai-canvas-wrap svg{display:block;width:100%;height:auto;max-height:780px}
+.floor-canvas-wrap svg{display:block;width:100%;height:auto;max-height:780px}
+.floor-room-selected{filter:drop-shadow(0 2px 3px rgba(30,40,30,.15))}
+@media(max-width:950px){.ai-requirements{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.ai-requirements{grid-template-columns:1fr}.ai-input-pair{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-room-options{gap:10px}.ai-room-options label{font-size:10px}.ai-canvas-wrap svg,.floor-canvas-wrap svg{max-height:none}}
