@@ -14,7 +14,7 @@ const starter = [
   { id: 'inspect', title: 'Inspect new home and record existing damage', category: 'New home', due: '', status: 'Pending', priority: 'High', notes: '' },
 ]
 const money = value => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(value) || 0)
-const load = () => { try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : null } catch { return null } }
+const load = () => { try { const raw = localStorage.getItem(KEY); if (!raw) return null; const parsed = JSON.parse(raw); return parsed && typeof parsed === 'object' && Array.isArray(parsed.items) ? parsed : null } catch { return null } }
 
 export default function MovePlanner() {
   const [data, setData] = useState(() => load() || { moveDate: '', from: '', to: '', budget: '25000', spent: '0', items: starter })
