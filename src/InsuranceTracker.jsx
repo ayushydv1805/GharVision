@@ -5,7 +5,7 @@ const KEY = 'gharvision-insurance-policies-v1'
 const EXAMPLES = [
   { id: 'policy-example-1', provider: 'Example provider', type: 'Home insurance', policyNumber: '', premium: '', frequency: 'Yearly', renewalDate: '', coverage: '', contact: '', status: 'Active', notes: 'Example only. Replace with your actual policy details.' },
 ]
-const dateToday = () => new Date().toISOString().slice(0, 10)
+const dateToday = () => { const d = new Date(); return [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-') }
 const renewalState = p => {
   if (p.status !== 'Active') return p.status
   if (!p.renewalDate) return 'No renewal date'
