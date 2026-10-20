@@ -158,7 +158,7 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Avoid storing passwords, access codes or sensitive personal information. In an immediate emergency, follow local emergency guidance and contact emergency services. Do not attempt unfamiliar gas/electrical shut-off procedures; have qualified professionals explain safe steps.
 
 
-## Phase 31 — Meter reading tracker
+## Phase 32 — Meter reading tracker
 
 - Log dated readings for electricity, water, gas or another utility, with a meter name, unit label, optional per-unit rate and notes.
 - Compare each entry with the previous earlier reading for the same utility and meter; show usage and an estimated variable cost when a comparable earlier reading exists.
