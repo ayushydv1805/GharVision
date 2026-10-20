@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { ArrowDownToLine, ArrowLeft, ArrowRight, Bath, BedDouble, Check, ChevronDown, DoorOpen, Grid2X2, Minus, Plus, RotateCcw, Save, Sofa, Trash2, Utensils, WandSparkles } from 'lucide-react'
 
 const GRID = 20
-const CANVAS_W = 900
-const CANVAS_H = 900
+const MIN_PLOT = 10
+const MAX_PLOT = 100
 const STARTER_ROOMS = [
   { id: 'living', name: 'Living room', type: 'living', x: 60, y: 60, w: 240, h: 160, fill: '#dce8d4' },
   { id: 'kitchen', name: 'Kitchen', type: 'kitchen', x: 320, y: 60, w: 160, h: 120, fill: '#f2dfc8' },
@@ -26,10 +26,10 @@ export default function FloorPlanner() {
   })
   const [selectedId, setSelectedId] = useState('living')
   const [plotWidth, setPlotWidth] = useState(() => {
-    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(43, Number(generated?.width) || 40)) } catch { return 40 }
+    try { const custom = JSON.parse(localStorage.getItem('gharvision-floorplan-plot') || 'null'); const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(MIN_PLOT, Math.min(MAX_PLOT, Number(custom?.width) || Number(generated?.width) || 40)) } catch { return 40 }
   })
   const [plotHeight, setPlotHeight] = useState(() => {
-    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(43, Number(generated?.depth) || 28)) } catch { return 28 }
+    try { const custom = JSON.parse(localStorage.getItem('gharvision-floorplan-plot') || 'null'); const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(MIN_PLOT, Math.min(MAX_PLOT, Number(custom?.height) || Number(generated?.depth) || 28)) } catch { return 28 }
   })
   const [dragging, setDragging] = useState(null)
   const [resizing, setResizing] = useState(null)
@@ -39,6 +39,7 @@ export default function FloorPlanner() {
   const roomArea = room => Math.round((room.w / GRID) * (room.h / GRID))
   useEffect(() => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)) } catch { /* The planner remains usable when browser storage is unavailable. */ } }, [rooms])
   useEffect(() => {
+    try { localStorage.setItem('gharvision-floorplan-plot', JSON.stringify({ width: plotWidth, height: plotHeight })) } catch { /* Plot remains editable if storage is unavailable. */ }
     const maxW = plotWidth * GRID
     const maxH = plotHeight * GRID
     setRooms(prev => prev.map(room => {
@@ -53,19 +54,19 @@ export default function FloorPlanner() {
     const room = {
       id: `${preset.type}-${Date.now()}`, name: preset.type === 'bedroom' ? `Bedroom ${count + 1}` : preset.name,
       type: preset.type,
-      x: Math.max(0, Math.min(CANVAS_W - preset.w * GRID, 400 + (rooms.length % 3) * 35)),
-      y: Math.max(0, Math.min(CANVAS_H - preset.h * GRID, 210 + (rooms.length % 3) * 35)),
-      w: Math.min(CANVAS_W, preset.w * GRID), h: Math.min(CANVAS_H, preset.h * GRID), fill: preset.fill,
+      x: Math.max(0, Math.min(plotWidth * GRID - Math.min(preset.w * GRID, plotWidth * GRID), 40 + (rooms.length % 3) * 35)),
+      y: Math.max(0, Math.min(plotHeight * GRID - Math.min(preset.h * GRID, plotHeight * GRID), 40 + (rooms.length % 3) * 35)),
+      w: Math.min(plotWidth * GRID, preset.w * GRID), h: Math.min(plotHeight * GRID, preset.h * GRID), fill: preset.fill,
     }
     setRooms(prev => [...prev, room]); setSelectedId(room.id); setSaved(false)
   }
   const updateSelected = patch => { if (!selected) return; setRooms(prev => prev.map(room => room.id === selected.id ? { ...room, ...patch } : room)); setSaved(false) }
   const removeSelected = () => { if (!selected) return; const next = rooms.filter(room => room.id !== selected.id); setRooms(next); setSelectedId(next[0]?.id || null); setSaved(false) }
-  const resetPlan = () => { setRooms(freshRooms()); setSelectedId('living'); setSaved(false) }
+  const resetPlan = () => { setRooms(freshRooms()); setSelectedId('living'); setPlotWidth(40); setPlotHeight(28); setSaved(false) }
   const savePlan = () => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)); setSaved(true) } catch { setSaved(false); window.alert('Browser storage is unavailable. Your plan remains on screen, but could not be saved. Export the plan to keep a copy.') } }
   const pointFromEvent = event => {
     const bounds = (event.currentTarget.ownerSVGElement || event.currentTarget).getBoundingClientRect()
-    return { x: (event.clientX - bounds.left) * CANVAS_W / bounds.width, y: (event.clientY - bounds.top) * CANVAS_H / bounds.height }
+    return { x: (event.clientX - bounds.left) * plotWidth * GRID / bounds.width, y: (event.clientY - bounds.top) * plotHeight * GRID / bounds.height }
   }
   const startDrag = (event, room) => {
     event.preventDefault()
@@ -81,16 +82,16 @@ export default function FloorPlanner() {
   const moveDrag = event => {
     if (resizing) {
       const point = pointFromEvent(event); const target = rooms.find(r => r.id === resizing.id); if (!target) return
-      const w = Math.max(GRID * 4, Math.min(CANVAS_W - target.x, Math.round((resizing.startW + point.x - resizing.startX) / GRID) * GRID))
-      const h = Math.max(GRID * 4, Math.min(CANVAS_H - target.y, Math.round((resizing.startH + point.y - resizing.startY) / GRID) * GRID))
+      const w = Math.max(GRID * 4, Math.min(plotWidth * GRID - target.x, Math.round((resizing.startW + point.x - resizing.startX) / GRID) * GRID))
+      const h = Math.max(GRID * 4, Math.min(plotHeight * GRID - target.y, Math.round((resizing.startH + point.y - resizing.startY) / GRID) * GRID))
       setRooms(prev => prev.map(room => room.id === resizing.id ? { ...room, w, h } : room)); setSaved(false); return
     }
     if (!dragging) return
     const point = pointFromEvent(event)
     const target = rooms.find(r => r.id === dragging.id)
     if (!target) return
-    const x = Math.max(0, Math.min(CANVAS_W - target.w, Math.round((point.x - dragging.dx) / GRID) * GRID))
-    const y = Math.max(0, Math.min(CANVAS_H - target.h, Math.round((point.y - dragging.dy) / GRID) * GRID))
+    const x = Math.max(0, Math.min(plotWidth * GRID - target.w, Math.round((point.x - dragging.dx) / GRID) * GRID))
+    const y = Math.max(0, Math.min(plotHeight * GRID - target.h, Math.round((point.y - dragging.dy) / GRID) * GRID))
     setRooms(prev => prev.map(room => room.id === dragging.id ? { ...room, x, y } : room))
     setSaved(false)
   }
@@ -110,16 +111,16 @@ export default function FloorPlanner() {
         <div className="room-presets">{ROOM_TYPES.map(preset => { const Icon = preset.Icon; return <button className="room-preset" key={preset.type} onClick={() => addRoom(preset)}><span className="preset-icon" style={{ background: preset.fill }}><Icon size={17}/></span><span><strong>{preset.name}</strong><small>{preset.w} × {preset.h} ft</small></span><Plus size={15}/></button> })}</div>
         <div className="planner-divider"/>
         <div className="planner-panel-heading"><div><span className="eyebrow">PLOT SETTINGS</span><h3>Plot dimensions</h3></div></div>
-        <div className="plot-fields"><label>Width <span>ft</span><input type="number" min="10" max="43" value={plotWidth} onChange={e => setPlotWidth(Math.max(10, Math.min(43, Number(e.target.value) || 10)))}/></label><label>Depth <span>ft</span><input type="number" min="10" max="43" value={plotHeight} onChange={e => setPlotHeight(Math.max(MIN_PLOT, Math.min(MAX_PLOT, Number(e.target.value) || MIN_PLOT)))}/></label></div>
+        <div className="plot-fields"><label>Width <span>ft</span><input type="number" min="10" max={MAX_PLOT} step="1" value={plotWidth} onChange={e => setPlotWidth(Math.max(MIN_PLOT, Math.min(MAX_PLOT, Number(e.target.value) || MIN_PLOT)))}/></label><label>Depth <span>ft</span><input type="number" min="10" max={MAX_PLOT} step="1" value={plotHeight} onChange={e => setPlotHeight(Math.max(MIN_PLOT, Math.min(MAX_PLOT, Number(e.target.value) || MIN_PLOT)))}/></label></div>
         <div className="plot-area-note"><span className="live-dot"/><span>Plot area: <strong>{(plotWidth * plotHeight).toLocaleString('en-IN')} sq. ft.</strong></span></div>
         <div className="planner-tip"><WandSparkles size={16}/><p><strong>Designer tip</strong> Keep circulation space between rooms and group kitchens near dining areas for a practical layout.</p></div>
       </aside>
       <section className="planner-canvas-panel">
         <div className="canvas-toolbar"><div><strong>Untitled floor plan</strong><span>2D top view · Concept sketch</span></div><div className="canvas-toolbar-actions"><span className="grid-status"><span/> Grid on</span><button className="icon-button small-icon" title="Export plan as JSON" aria-label="Export plan" onClick={exportPlan}><ArrowDownToLine size={17}/></button></div></div>
-        <div className="floor-canvas-wrap"><svg className="floor-canvas" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} role="img" aria-label="Interactive 2D floor plan canvas" onPointerMove={moveDrag} onPointerUp={() => { setDragging(null); setResizing(null) }} onPointerCancel={() => { setDragging(null); setResizing(null) }}>
+        <div className="floor-canvas-wrap"><svg className="floor-canvas" viewBox={`0 0 ${plotWidth * GRID} ${plotHeight * GRID}`} role="img" aria-label="Interactive 2D floor plan canvas" onPointerMove={moveDrag} onPointerUp={() => { setDragging(null); setResizing(null) }} onPointerCancel={() => { setDragging(null); setResizing(null) }}>
           <defs><pattern id="floor-grid" width={GRID} height={GRID} patternUnits="userSpaceOnUse"><path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" stroke="var(--planner-grid)" strokeWidth=".8"/></pattern></defs>
-          <rect width={CANVAS_W} height={CANVAS_H} fill="var(--planner-canvas)"/><rect width={CANVAS_W} height={CANVAS_H} fill="url(#floor-grid)"/>
-          <rect x="16" y="16" width={CANVAS_W - 32} height={CANVAS_H - 32} rx="2" fill="none" stroke="var(--planner-border)" strokeDasharray="5 5"/>
+          <rect width={plotWidth * GRID} height={plotHeight * GRID} fill="var(--planner-canvas)"/><rect width={plotWidth * GRID} height={plotHeight * GRID} fill="url(#floor-grid)"/>
+          <rect x="16" y="16" width={plotWidth * GRID - 32} height={plotHeight * GRID - 32} rx="2" fill="none" stroke="var(--planner-border)" strokeDasharray="5 5"/>
           {rooms.map(room => <g key={room.id} className={`floor-room ${selectedId === room.id ? 'floor-room-selected' : ''}`} onPointerDown={event => startDrag(event, room)} style={{ cursor: dragging?.id === room.id ? 'grabbing' : 'grab', touchAction: 'none' }}>
             <rect x={room.x} y={room.y} width={room.w} height={room.h} rx="3" fill={room.fill} fillOpacity=".92" stroke={selectedId === room.id ? 'var(--planner-selected)' : '#ffffff'} strokeWidth={selectedId === room.id ? 3 : 2}/>
             <rect x={room.x + 7} y={room.y + 7} width={Math.max(0, room.w - 14)} height={Math.max(0, room.h - 14)} rx="2" fill="none" stroke="#65715f" strokeOpacity=".35" strokeDasharray="3 3"/>
@@ -135,7 +136,7 @@ export default function FloorPlanner() {
         {selected ? <><div className="inspector-room-preview" style={{ background: selected.fill }}><div className="inspector-room-lines"/><span>{selected.name}</span><small>{selected.type.toUpperCase()}</small></div>
           <label className="field-label" htmlFor="room-name">Room name</label><input id="room-name" className="inspector-input" value={selected.name} maxLength={28} onChange={e => updateSelected({ name: e.target.value })}/>
           <div className="inspector-size-heading"><strong>Room dimensions</strong><span>feet</span></div>
-          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max={Math.max(4, Math.floor((plotWidth * GRID - selected.x) / GRID))} value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(Math.floor((CANVAS_W - selected.x) / GRID), Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max={Math.max(4, Math.floor((plotHeight * GRID - selected.y) / GRID))} value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(Math.floor((CANVAS_H - selected.y) / GRID), Number(e.target.value) || 4)) * GRID })}/></label></div>
+          <div className="inspector-dimensions"><label>Width<input type="number" min="1" max={Math.max(1, Math.floor((plotWidth * GRID - selected.x) / GRID))} value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(1, Math.min(Math.floor((plotWidth * GRID - selected.x) / GRID), Number(e.target.value) || 1)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="1" max={Math.max(1, Math.floor((plotHeight * GRID - selected.y) / GRID))} value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(1, Math.min(Math.floor((plotHeight * GRID - selected.y) / GRID), Number(e.target.value) || 1)) * GRID })}/></label></div>
           <div className="room-area-total"><span>Estimated room area</span><strong>{roomArea(selected).toLocaleString('en-IN')} sq. ft.</strong></div>
           <button className="remove-room-button" onClick={removeSelected}><Trash2 size={15}/> Remove room</button>
         </> : <div className="inspector-empty"><Grid2X2 size={25}/><p>Add a room to start shaping your layout.</p></div>}
