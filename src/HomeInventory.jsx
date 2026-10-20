@@ -9,7 +9,7 @@ const seedItems = [
 ]
 const emptyForm = { name: '', room: 'Living room', category: 'Appliance', brand: '', purchaseDate: '', cost: '', warrantyMonths: '12', serial: '', notes: '', favourite: false }
 const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(n) || 0)
-const readItems = () => { try { const raw = localStorage.getItem(KEY); return raw ? JSON.parse(raw) : seedItems } catch { return seedItems } }
+const readItems = () => { try { const raw = localStorage.getItem(KEY); if (!raw) return seedItems; const parsed = JSON.parse(raw); return Array.isArray(parsed) ? parsed.filter(item => item && typeof item.name === 'string') : seedItems } catch { return seedItems } }
 const warrantyEnd = item => {
   if (!item.purchaseDate || item.warrantyMonths === '' || item.warrantyMonths == null) return null
   const [year, month, day] = item.purchaseDate.split('-').map(Number)
