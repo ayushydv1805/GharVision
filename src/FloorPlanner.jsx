@@ -62,7 +62,7 @@ export default function FloorPlanner(){
  const exportValidationReport=()=>{
   const escapeCsv=value=>'"'+String(value??'').replace(/"/g,'""')+'"'
   const rows=[['Check','Result','Details'],...validationChecks.map(c=>[c.title,c.severity.toUpperCase(),c.detail]),[],['Room','X (ft)','Y (ft)','Width (ft)','Length (ft)','Area (sq ft)','Openings'],...rooms.map(r=>[r.name,r.x,r.y,r.w,r.h,Math.round(r.w*r.h),(r.openings||[]).length])]
-  const blob=new Blob(['\\uFEFF'+rows.map(row=>row.map(escapeCsv).join(',')).join('\\r\\n')],{type:'text/csv;charset=utf-8;'})
+  const blob=new Blob(['\uFEFF'+rows.map(row=>row.map(escapeCsv).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8;'})
   const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='gharvision-floor-plan-review.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)
  }
 
