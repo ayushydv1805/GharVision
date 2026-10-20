@@ -1462,3 +1462,22 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 .opening-row strong{font-size:10px;color:var(--text)}.opening-row small{font-size:9px;color:var(--muted)}
 .opening-row button{display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--muted);cursor:pointer}
 .opening-note{display:block;margin-top:10px;color:var(--muted);font-size:9px;line-height:1.6}
+
+
+/* Phase 37 — floor plan library */
+.floor-library{margin:0 0 18px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--panel);min-width:0}
+.floor-library-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:13px}
+.floor-library-heading .eyebrow{display:flex;align-items:center;gap:6px}
+.floor-library-heading h3{font-size:15px;margin:7px 0 5px;color:var(--text)}
+.floor-library-heading p{font-size:11px;line-height:1.6;color:var(--muted);margin:0;max-width:640px}
+.floor-library-count{flex-shrink:0;padding:6px 8px;border-radius:7px;background:var(--panel-soft);font-size:10px;color:var(--muted)}
+.floor-library-controls{display:grid;grid-template-columns:minmax(150px,1.2fr) auto minmax(180px,1.2fr) auto auto;align-items:end;gap:8px}
+.floor-library-controls label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:10px;font-weight:650;color:var(--text)}
+.floor-library-controls input,.floor-library-controls select{box-sizing:border-box;width:100%;min-width:0;height:38px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--text);font:inherit;font-size:11px}
+.floor-library-controls button{height:38px;white-space:nowrap}
+.floor-library-controls button:disabled{opacity:.45;cursor:not-allowed}
+.floor-library-delete{color:#a44928}
+.floor-library-message{font-size:10px;line-height:1.5;color:var(--green-deep);margin:10px 0 0}
+.floor-library-note{font-size:10px;line-height:1.55;color:var(--muted);margin:10px 0 0}
+@media(max-width:900px){.floor-library-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.floor-library-controls>button{width:100%;justify-content:center}.floor-library-controls .floor-library-select{grid-column:1/-1}}
+@media(max-width:520px){.floor-library{padding:12px}.floor-library-heading h3{font-size:14px}.floor-library-heading p{font-size:10px}.floor-library-controls{grid-template-columns:minmax(0,1fr)}.floor-library-controls .floor-library-select{grid-column:auto}.floor-library-controls>button{width:100%}}
