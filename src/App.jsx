@@ -30,6 +30,7 @@ import WarrantyClaimsTracker from './WarrantyClaimsTracker.jsx'
 import MeterReadingTracker from './MeterReadingTracker.jsx'
 import HomeEmergencyPlan from './HomeEmergencyPlan.jsx'
 import HomeEnergyAudit from './HomeEnergyAudit.jsx'
+import RoomFinishSchedule from './RoomFinishSchedule.jsx'
 import {
   House, HardHat, CalendarClock, ShieldCheck, Wallet, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus, Calculator, CalendarDays, ClipboardList, Archive, ReceiptText, Leaf, CalendarCheck, Truck, ClipboardCheck,
   FileText, Accessibility, BadgeCheck, Gauge, Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
@@ -81,6 +82,7 @@ const navGroups = [
     { id: 'Meter reading tracker', icon: Gauge, tag: 'NEW' },
     { id: 'Home emergency plan', icon: ShieldCheck, tag: 'NEW' },
     { id: 'Home energy audit', icon: Leaf, tag: 'NEW' },
+    { id: 'Room finish schedule', icon: Layers3, tag: 'NEW' },
     { id: 'Home action center', icon: BellRing, tag: 'NEW' },
   ]},
 ]
@@ -115,6 +117,7 @@ const toolCards = [
   { icon: Gauge, title: 'Meter reading tracker', desc: 'Log electricity, water and gas readings and estimate usage between dates', tone: 'blue', badge: 'NEW IN PHASE 31' },
   { icon: ShieldCheck, title: 'Home emergency plan', desc: 'Organise emergency contacts, exit routes, utility locations and safety checks', tone: 'peach', badge: 'NEW IN PHASE 32' },
   { icon: Leaf, title: 'Home energy audit', desc: 'Plan efficiency upgrades, compare costs and estimate potential yearly savings', tone: 'green', badge: 'NEW IN PHASE 33' },
+  { icon: Layers3, title: 'Room finish schedule', desc: 'Organise materials, colours, suppliers, quantities and installation status by room', tone: 'peach', badge: 'NEW IN PHASE 34' },
 ]
 
 function Logo() {
@@ -254,6 +257,7 @@ export default function App() {
       {active === 'Meter reading tracker' && <div className="page-content"><MeterReadingTracker/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 32</span></footer></div>}
       {active === 'Home emergency plan' && <div className="page-content"><HomeEmergencyPlan/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 32</span></footer></div>}
       {active === 'Home energy audit' && <div className="page-content"><HomeEnergyAudit/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 33</span></footer></div>}
+      {active === 'Room finish schedule' && <div className="page-content"><RoomFinishSchedule/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 34</span></footer></div>}
       {active === 'Home action center' && <div className="page-content"><HomeActionCenter onNavigate={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 29</span></footer></div>}
       {active === 'Settings' && <div className="page-content"><SettingsPage theme={theme} toggleTheme={toggleTheme} textSize={textSize} setTextSize={setTextSize}/></div>}
       {active === 'Explore ideas' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">COLLECT THE FEELING</p><h1>Ideas worth coming home to<span className="wave">✳</span></h1><p className="heading-subtitle">A few starting points for the space you want to create.</p></div></section><div className="inspiration-grid"><button className="inspiration-card" onClick={() => setToast('Warm minimal style added to your inspiration list.') }><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85" alt="Warm minimal living room"/><span>01 / LESS, BUT BETTER</span><h3>Warm minimal</h3><p>Soft textures, honest materials, room to breathe.</p></button><button className="inspiration-card" onClick={() => setToast('Natural modern style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Natural modern architecture"/><span>02 / ROOTED IN NATURE</span><h3>Natural modern</h3><p>Wood, stone, greenery and light in harmony.</p></button><button className="inspiration-card" onClick={() => setToast('Modern Indian style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85" alt="Modern contemporary home"/><span>03 / OLD SOUL, NEW LINES</span><h3>Modern Indian</h3><p>Contemporary comfort with a sense of place.</p></button></div><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
