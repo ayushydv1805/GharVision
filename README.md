@@ -147,3 +147,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - See open claim count, follow-ups due in the next seven days, claimed value and approved value; search and filter the register and update status, amounts or follow-up dates inline.
 - Export the register to CSV. Includes clearly labelled example records that can be edited or deleted.
 - Data is stored in the current browser on this device only. The app does not upload evidence, contact providers, submit claims, send notifications, or determine policy/contract eligibility. Verify all dates, coverage and submission requirements with the relevant provider and review your policy or contract.
+
+
+## Phase 31 — Home emergency plan
+
+- Organise emergency contacts, exit routes, household meeting points, utility shut-off locations, safety equipment and important instructions in one checklist.
+- Track category, location/details, optional contact name and phone, priority, verification status and notes.
+- View readiness counts, highlight unchecked high-priority items, search/filter records, edit status and priority inline, delete entries and export a CSV backup.
+- Includes clearly labelled example checklist items that can be edited or removed. Data is stored in the current browser on this device only; there is no cloud sync, calling, automatic alerting or emergency-service connection.
+- Avoid storing passwords, access codes or sensitive personal information. In an immediate emergency, follow local emergency guidance and contact emergency services. Do not attempt unfamiliar gas/electrical shut-off procedures; have qualified professionals explain safe steps.
