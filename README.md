@@ -65,3 +65,11 @@ React, Vite, Lucide, custom CSS and browser local storage.
 
 
 - **Stability fixes:** the floor planner now keeps room positions and resize limits within the configured plot, clamps plot dimensions to the canvas-supported range (10–43 ft), and clamps existing rooms when plot dimensions change. Vendor quote loading now ignores malformed saved data, and CSV export keeps its temporary download URL alive long enough for browsers to process the download.
+
+
+## Phase 23 — Home care log
+
+- Add and manage household maintenance tasks by area, due date, recurrence label, priority, status, and notes.
+- Search and filter tasks; mark work complete or reopen it; edit due dates/status and remove tasks.
+- Dashboard counts highlight overdue work, tasks due within 14 days, and completed tasks.
+- Export the task list as CSV. Data is stored in this browser only; it does not sync between devices or send notifications. Recurrence is recorded as a label and does not automatically generate future tasks. Seed tasks are clearly labelled examples.
