@@ -10,7 +10,7 @@ const starterItems = [
   { id: 'r3', title: 'Finalise materials and finishes', category: 'Materials', owner: 'You', due: plusDays(9), cost: 15000, status: 'Not started', priority: 'Medium', notes: 'Confirm quantities and return policies.' },
   { id: 'r4', title: 'Schedule site preparation', category: 'Work', owner: 'Contractor', due: plusDays(14), cost: 5000, status: 'Not started', priority: 'Medium', notes: 'Confirm access, utilities and waste removal.' },
 ]
-const readPlan = () => { try { const raw = localStorage.getItem('gharvision-renovation'); if (!raw) return null; const data = JSON.parse(raw); return data && Array.isArray(data.items) ? data : null } catch { return null } }
+const readPlan = () => { try { const raw = localStorage.getItem('gharvision-renovation'); if (!raw) return null; const data = JSON.parse(raw); return data && Array.isArray(data.items) ? { ...data, project: data.project && typeof data.project === 'object' ? data.project : null, expenses: Array.isArray(data.expenses) ? data.expenses : [] } : null } catch { return null } }
 const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Math.max(0, Number(n) || 0))
 const categories = ['Planning', 'Design', 'Contractor', 'Materials', 'Work', 'Inspection', 'Other']
 const statuses = ['Not started', 'In progress', 'Done', 'Blocked']
