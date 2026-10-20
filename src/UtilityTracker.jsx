@@ -19,7 +19,7 @@ const empty = { type: 'Electricity', provider: '', period: monthKey(), amount: '
 const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(n) || 0)
 const monthName = value => { if (!value) return 'Period not set'; const [y, m] = value.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) }
 const csv = value => '"' + String(value ?? '').replace(/"/g, '""') + '"'
-const read = () => { try { const saved = localStorage.getItem(KEY); return saved ? JSON.parse(saved) : seed } catch { return seed } }
+const read = () => { try { const saved = localStorage.getItem(KEY); if (!saved) return seed; const parsed = JSON.parse(saved); return Array.isArray(parsed) ? parsed.filter(b => b && typeof b === 'object' && typeof b.period === 'string') : seed } catch { return seed } }
 
 export default function UtilityTracker() {
   const [bills, setBills] = useState(read)
