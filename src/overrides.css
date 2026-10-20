@@ -1481,3 +1481,7 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 .floor-library-note{font-size:10px;line-height:1.55;color:var(--muted);margin:10px 0 0}
 @media(max-width:900px){.floor-library-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.floor-library-controls>button{width:100%;justify-content:center}.floor-library-controls .floor-library-select{grid-column:1/-1}}
 @media(max-width:520px){.floor-library{padding:12px}.floor-library-heading h3{font-size:14px}.floor-library-heading p{font-size:10px}.floor-library-controls{grid-template-columns:minmax(0,1fr)}.floor-library-controls .floor-library-select{grid-column:auto}.floor-library-controls>button{width:100%}}
+
+
+/* Phase 38 — precise room positioning */
+.position-heading{margin-top:17px}.position-heading span{font-size:9px;color:var(--muted);white-space:nowrap}.position-dimensions{margin-top:8px}.position-dimensions label{min-width:0}.position-dimensions input{box-sizing:border-box;width:100%;min-width:0}.position-help{font-size:10px;line-height:1.55;color:var(--muted);margin:8px 0 12px}
