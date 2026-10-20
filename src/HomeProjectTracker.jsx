@@ -12,7 +12,7 @@ const starter = [
 ]
 const today = () => { const d = new Date(); return [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-') }
 const money = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0)
-const load = () => { try { const v=localStorage.getItem(KEY); if (!v) return null; const parsed=JSON.parse(v); return parsed && typeof parsed === 'object' && Array.isArray(parsed.tasks) ? parsed : null } catch { return null } }
+const load = () => { try { const v=localStorage.getItem(KEY); if (!v) return null; const parsed=JSON.parse(v); return parsed && typeof parsed === 'object' && Array.isArray(parsed.tasks) ? { ...parsed, tasks: parsed.tasks.filter(task => task && typeof task.title === 'string') } : null } catch { return null } }
 
 export default function HomeProjectTracker() {
  const [data,setData]=useState(()=>load()||{projectName:'My home project',startDate:'',targetDate:'',tasks:starter})
