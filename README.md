@@ -240,3 +240,12 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Detect overlapping openings on the same wall and display a warning to help resolve conflicting markers.
 - Opening dimensions and offsets remain part of the saved floor plan and exported JSON; existing plans without offset data remain supported.
 - These are schematic markers only. Confirm door swings, clearances, structural details, ventilation, egress and building requirements with a qualified professional.
+
+
+## Phase 40 — Portable floor-plan import
+
+- Import a previously exported GharVision floor-plan JSON file, including custom plot dimensions, room dimensions and positions, room names/types, and door/window markers.
+- Supports the current exported JSON format and the planner's stored room-object shape; imported dimensions are bounded to the supported plot size and rooms are fitted inside the plot.
+- Invalid files show an in-app error instead of replacing the current plan. Successful imports replace the current canvas and show a reminder to review overlaps and opening positions.
+- Use Export plan data to create a portable backup, then Import JSON on another browser/device. This does not create cloud sync or upload the plan to a server.
+- Imported layouts remain concept sketches; review the warnings and verify all dimensions and building requirements with a qualified professional before construction.
