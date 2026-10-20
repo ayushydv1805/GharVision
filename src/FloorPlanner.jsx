@@ -26,10 +26,10 @@ export default function FloorPlanner() {
   })
   const [selectedId, setSelectedId] = useState('living')
   const [plotWidth, setPlotWidth] = useState(() => {
-    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(200, Number(generated?.width) || 40)) } catch { return 40 }
+    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(43, Number(generated?.width) || 40)) } catch { return 40 }
   })
   const [plotHeight, setPlotHeight] = useState(() => {
-    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(200, Number(generated?.depth) || 28)) } catch { return 28 }
+    try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(43, Number(generated?.depth) || 28)) } catch { return 28 }
   })
   const [dragging, setDragging] = useState(null)
   const [resizing, setResizing] = useState(null)
@@ -110,7 +110,7 @@ export default function FloorPlanner() {
         <div className="room-presets">{ROOM_TYPES.map(preset => { const Icon = preset.Icon; return <button className="room-preset" key={preset.type} onClick={() => addRoom(preset)}><span className="preset-icon" style={{ background: preset.fill }}><Icon size={17}/></span><span><strong>{preset.name}</strong><small>{preset.w} × {preset.h} ft</small></span><Plus size={15}/></button> })}</div>
         <div className="planner-divider"/>
         <div className="planner-panel-heading"><div><span className="eyebrow">PLOT SETTINGS</span><h3>Plot dimensions</h3></div></div>
-        <div className="plot-fields"><label>Width <span>ft</span><input type="number" min="10" max="43" value={plotWidth} onChange={e => setPlotWidth(Math.max(10, Math.min(43, Number(e.target.value) || 10)))}/></label><label>Depth <span>ft</span><input type="number" min="10" max="43" value={plotHeight} onChange={e => setPlotHeight(Math.max(10, Math.min(200, Number(e.target.value) || 10)))}/></label></div>
+        <div className="plot-fields"><label>Width <span>ft</span><input type="number" min="10" max="43" value={plotWidth} onChange={e => setPlotWidth(Math.max(10, Math.min(43, Number(e.target.value) || 10)))}/></label><label>Depth <span>ft</span><input type="number" min="10" max="43" value={plotHeight} onChange={e => setPlotHeight(Math.max(10, Math.min(43, Number(e.target.value) || 10)))}/></label></div>
         <div className="plot-area-note"><span className="live-dot"/><span>Plot area: <strong>{(plotWidth * plotHeight).toLocaleString('en-IN')} sq. ft.</strong></span></div>
         <div className="planner-tip"><WandSparkles size={16}/><p><strong>Designer tip</strong> Keep circulation space between rooms and group kitchens near dining areas for a practical layout.</p></div>
       </aside>
@@ -135,7 +135,7 @@ export default function FloorPlanner() {
         {selected ? <><div className="inspector-room-preview" style={{ background: selected.fill }}><div className="inspector-room-lines"/><span>{selected.name}</span><small>{selected.type.toUpperCase()}</small></div>
           <label className="field-label" htmlFor="room-name">Room name</label><input id="room-name" className="inspector-input" value={selected.name} maxLength={28} onChange={e => updateSelected({ name: e.target.value })}/>
           <div className="inspector-size-heading"><strong>Room dimensions</strong><span>feet</span></div>
-          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max={Math.max(4, Math.floor((CANVAS_W - selected.x) / GRID))} value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(Math.floor((CANVAS_W - selected.x) / GRID), Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max={Math.max(4, Math.floor((CANVAS_H - selected.y) / GRID))} value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(Math.floor((CANVAS_H - selected.y) / GRID), Number(e.target.value) || 4)) * GRID })}/></label></div>
+          <div className="inspector-dimensions"><label>Width<input type="number" min="4" max={Math.max(4, Math.floor((plotWidth * GRID - selected.x) / GRID))} value={Math.round(selected.w / GRID)} onChange={e => updateSelected({ w: Math.max(4, Math.min(Math.floor((CANVAS_W - selected.x) / GRID), Number(e.target.value) || 4)) * GRID })}/></label><span>×</span><label>Length<input type="number" min="4" max={Math.max(4, Math.floor((plotHeight * GRID - selected.y) / GRID))} value={Math.round(selected.h / GRID)} onChange={e => updateSelected({ h: Math.max(4, Math.min(Math.floor((CANVAS_H - selected.y) / GRID), Number(e.target.value) || 4)) * GRID })}/></label></div>
           <div className="room-area-total"><span>Estimated room area</span><strong>{roomArea(selected).toLocaleString('en-IN')} sq. ft.</strong></div>
           <button className="remove-room-button" onClick={removeSelected}><Trash2 size={15}/> Remove room</button>
         </> : <div className="inspector-empty"><Grid2X2 size={25}/><p>Add a room to start shaping your layout.</p></div>}
