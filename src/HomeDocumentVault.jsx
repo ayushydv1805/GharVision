@@ -8,7 +8,9 @@ const SAMPLE=[
  {id:'doc-example-1',title:'Example: Property purchase papers',type:'Property papers',reference:'Example reference only',issued:'',expiry:'',status:'Active',notes:'Record where the original is stored; do not enter sensitive ID numbers.'},
  {id:'doc-example-2',title:'Example: Kitchen appliance invoice',type:'Invoice / receipt',reference:'Example reference only',issued:'',expiry:'',status:'Active',notes:'Keep the original invoice and warranty terms in a secure location.'}
 ]
-const today=()=>new Date().toISOString().slice(0,10)
+const localDateString=(date=new Date())=>[date.getFullYear(),String(date.getMonth()+1).padStart(2,'0'),String(date.getDate()).padStart(2,'0')].join('-')
+const today=()=>localDateString()
+const dateAfter=days=>{const d=new Date();d.setDate(d.getDate()+days);return localDateString(d)}
 const csvCell=v=>'"'+String(v??'').replaceAll('"','""')+'"'
 export default function HomeDocumentVault(){
  const [docs,setDocs]=useState(()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'null');return Array.isArray(v)?v.filter(x=>x&&typeof x.title==='string'):SAMPLE}catch{return SAMPLE}})
@@ -20,7 +22,7 @@ export default function HomeDocumentVault(){
  const expiryState=d=>{if(!d.expiry)return 'No expiry date';if(d.expiry<today())return 'Expired / review';const days=Math.ceil((new Date(d.expiry+'T00:00:00')-new Date(today()+'T00:00:00'))/86400000);if(days<=30)return 'Due within 30 days';return 'Not due soon'}
  const active=docs.filter(d=>d.status!=='Archived')
  const expired=active.filter(d=>d.expiry&&d.expiry<today())
- const upcoming=active.filter(d=>d.expiry&&d.expiry>=today()&&d.expiry<=new Date(Date.now()+30*86400000).toISOString().slice(0,10))
+ const upcoming=active.filter(d=>d.expiry&&d.expiry>=today()&&d.expiry<=dateAfter(30))
  const filtered=useMemo(()=>docs.filter(d=>(filter==='All'||(filter==='Expiring soon'&&d.expiry&&d.expiry>=today()&&d.expiry<=new Date(Date.now()+30*86400000).toISOString().slice(0,10))||(filter==='Expired'&&d.expiry&&d.expiry<today())||d.type===filter||d.status===filter)&&[d.title,d.type,d.reference,d.notes].join(' ').toLowerCase().includes(query.toLowerCase())),[docs,filter,query])
  const add=e=>{e.preventDefault();if(!draft.title.trim())return;setDocs(p=>[{...draft,id:'doc-'+Date.now(),title:draft.title.trim(),reference:draft.reference.trim(),notes:draft.notes.trim()},...p]);setDraft({title:'',type:'Property papers',reference:'',issued:'',expiry:'',status:'Active',notes:''});setNotice('Document record added on this device.')}
  const update=(id,patch)=>setDocs(p=>p.map(d=>d.id===id?{...d,...patch}:d))
