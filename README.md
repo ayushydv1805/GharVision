@@ -196,3 +196,12 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Room width and length can be entered directly in the room inspector, or adjusted by dragging the resize handle; dragging and resizing stay within the chosen plot.
 - Custom plot dimensions persist in this browser and are included in exported plan data. The canvas scales to the plot's actual aspect ratio; long/tall layouts can scroll.
 - This remains a schematic concept planner, not a construction-ready drawing or substitute for local code and professional review.
+
+
+## Phase 30 — Floor plan editing and layout validation
+
+- Room width and length fields now support natural typing: values are applied and bounded when you leave the field or press Enter, instead of being clamped after each keystroke.
+- New rooms are placed in the first available whole-foot position when space permits, reducing accidental room overlap.
+- The planner detects and lists intersecting rooms, so overlaps caused by moving, resizing or changing plot dimensions are visible and can be corrected.
+- Existing room positions and dimensions remain constrained to the plot; save and JSON export remain available.
+- Overlap checks are geometric planning aids only. They do not validate wall thickness, door swings, circulation clearances, structural safety or local building codes.
