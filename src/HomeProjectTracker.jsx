@@ -10,6 +10,7 @@ const starter = [
   { id: 'fixtures', title: 'Select fittings and hardware', category: 'Materials', status: 'Not started', priority: 'Medium', due: '', budget: '8000', spent: '0', notes: '' },
   { id: 'cleanup', title: 'Schedule final clean and walkthrough', category: 'Finishing', status: 'Not started', priority: 'Low', due: '', budget: '2500', spent: '0', notes: '' },
 ]
+const today = () => { const d = new Date(); return [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-') }
 const money = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0)
 const load = () => { try { const v=localStorage.getItem(KEY); return v?JSON.parse(v):null } catch { return null } }
 
@@ -25,7 +26,7 @@ export default function HomeProjectTracker() {
  const done=data.tasks.filter(t=>t.status==='Complete').length
  const budget=data.tasks.reduce((n,t)=>n+(Number(t.budget)||0),0)
  const spent=data.tasks.reduce((n,t)=>n+(Number(t.spent)||0),0)
- const overdue=data.tasks.filter(t=>t.status!=='Complete'&&t.due&&t.due<new Date().toISOString().slice(0,10)).length
+ const overdue=data.tasks.filter(t=>t.status!=='Complete'&&t.due&&t.due<today()).length
  const add=e=>{e.preventDefault();if(!form.title.trim())return;persist({...data,tasks:[{...form,id:Date.now().toString(),title:form.title.trim(),status:'Not started'},...data.tasks]});setForm({title:'',category:'Other',priority:'Medium',due:'',budget:'0',spent:'0',notes:''})}
  const change=(id,key,value)=>persist({...data,tasks:data.tasks.map(t=>t.id===id?{...t,[key]:value}:t)})
  const remove=id=>persist({...data,tasks:data.tasks.filter(t=>t.id!==id)})
