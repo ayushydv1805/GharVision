@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { HardHat, Plus, Trash2, Download, Search, CheckCircle2, Circle, IndianRupee, ClipboardList } from 'lucide-react'
+import { HardHat, Plus, Trash2, Download, Search, CheckCircle2, ClipboardList } from 'lucide-react'
 
 const KEY = 'gharvision-vendor-quotes-v1'
 const seed = [
@@ -9,7 +9,7 @@ const seed = [
 const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(Number(n) || 0)
 
 export default function VendorQuoteTracker() {
-  const [items, setItems] = useState(() => { try { const saved = localStorage.getItem(KEY); return saved ? JSON.parse(saved) : seed } catch { return seed } })
+  const [items, setItems] = useState(() => { try { const saved = localStorage.getItem(KEY); const parsed = saved ? JSON.parse(saved) : seed; return Array.isArray(parsed) ? parsed.filter(item => item && typeof item === 'object' && typeof item.vendor === 'string') : seed } catch { return seed } })
   const [search, setSearch] = useState('')
   const [tradeFilter, setTradeFilter] = useState('All trades')
   const [draft, setDraft] = useState({ vendor: '', trade: 'General contractor', contact: '', quote: '', timeline: '', status: 'Requested', notes: '' })
@@ -31,7 +31,7 @@ export default function VendorQuoteTracker() {
     const cols = ['vendor','trade','contact','quote','timeline','status','notes']
     const csv = [cols.join(','), ...items.map(i => cols.map(k => '"' + String(i[k] ?? '').replaceAll('"','""') + '"').join(','))].join('\n')
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }))
-    const a = document.createElement('a'); a.href = url; a.download = 'gharvision-vendor-quotes.csv'; a.click(); URL.revokeObjectURL(url)
+    const a = document.createElement('a'); a.href = url; a.download = 'gharvision-vendor-quotes.csv'; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
   return <div className="vendor-tracker">
     <header className="vendor-heading"><div><p className="eyebrow"><HardHat size={14}/> HOME OPERATIONS · PHASE 22</p><h1>Vendor & quote tracker <span className="wave">✳</span></h1><p className="heading-subtitle">Keep contractor details, estimates and timelines together before you commit to home work.</p></div><button className="filter-button" onClick={exportCsv}><Download size={15}/> Export CSV</button></header>
