@@ -139,3 +139,11 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search and filter actions, update status/priority/cost inline, delete entries and export a CSV backup.
 - Includes clearly labelled example checks that can be edited or removed. Records are stored in the current browser on this device; there is no cloud sync, professional assessment, compliance certification or automatic reminder.
 - This is a planning aid only. Needs vary by person and property. Consult qualified professionals for ramps, grab bars, handrails, electrical work, structural changes and local accessibility requirements.
+
+
+## Phase 30 — Warranty & claims tracker
+
+- Record warranty/claim type, provider, safe reference or evidence location, warranty expiry, claim date, follow-up date, status, claimed amount, approved amount and notes.
+- See open claim count, follow-ups due in the next seven days, claimed value and approved value; search and filter the register and update status, amounts or follow-up dates inline.
+- Export the register to CSV. Includes clearly labelled example records that can be edited or deleted.
+- Data is stored in the current browser on this device only. The app does not upload evidence, contact providers, submit claims, send notifications, or determine policy/contract eligibility. Verify all dates, coverage and submission requirements with the relevant provider and review your policy or contract.
