@@ -12,7 +12,7 @@ const blank={name:'',category:'Lighting',status:'To assess',cost:'0',saving:'0',
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0)
 const cell=v=>'"'+String(v??'').replace(/"/g,'""')+'"'
 export default function HomeEnergyAudit(){
-const [items,setItems]=useState(()=>{try{const v=localStorage.getItem(KEY);return v?JSON.parse(v):SEED}catch{return SEED}})
+const [items,setItems]=useState(()=>{try{const v=localStorage.getItem(KEY);if(!v)return SEED;const parsed=JSON.parse(v);return Array.isArray(parsed)?parsed.filter(x=>x&&typeof x.name==='string'):SEED}catch{return SEED}})
 const [form,setForm]=useState(blank),[open,setOpen]=useState(false),[q,setQ]=useState(''),[filter,setFilter]=useState('all'),[notice,setNotice]=useState('')
 useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch{setNotice('Browser storage is unavailable. Export a CSV backup.')}},[items])
 const visible=useMemo(()=>items.filter(x=>[x.name,x.category,x.status,x.notes].join(' ').toLowerCase().includes(q.toLowerCase())&&(filter==='all'||x.status===filter)),[items,q,filter])
