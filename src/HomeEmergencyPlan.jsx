@@ -17,7 +17,7 @@ export default function HomeEmergencyPlan(){
  const [items,setItems]=useState(()=>{try{const saved=localStorage.getItem(KEY);return saved?JSON.parse(saved):starter}catch{return starter}})
  const [form,setForm]=useState(blank),[showForm,setShowForm]=useState(false),[query,setQuery]=useState(''),[filter,setFilter]=useState('all'),[notice,setNotice]=useState('')
  useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch{setNotice('Browser storage is unavailable. Export a CSV backup before leaving this page.')}},[items])
- const visible=useMemo(()=>items.filter(x=>[x.category,x.title,x.location,x.contact,x.phone,x.priority,x.status,x.notes].join(' ').toLowerCase().includes(query.toLowerCase())&&(filter==='all'||(filter==='open'?x.status!=='Checked':filter==='high'?x.priority==='High':x.status===filter)),[items,query,filter])
+ const visible=useMemo(()=>items.filter(x=>[x.category,x.title,x.location,x.contact,x.phone,x.priority,x.status,x.notes].join(' ').toLowerCase().includes(query.toLowerCase())&&(filter==='all'||(filter==='open'?x.status!=='Checked':filter==='high'?x.priority==='High':x.status===filter))),[items,query,filter])
  const checked=items.filter(x=>x.status==='Checked').length
  const urgent=items.filter(x=>x.priority==='High'&&x.status!=='Checked').length
  const needsAction=items.filter(x=>x.status==='Needs action').length
