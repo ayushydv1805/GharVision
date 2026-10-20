@@ -258,3 +258,11 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Export the review and room measurements as a CSV file to share or keep with the plan.
 - The checks update as the layout changes. A passing result is only a geometry/data sanity check, not a professional approval or code-compliance result.
 - It does not evaluate wall thickness, circulation, door swings, accessibility clearances, structure, ventilation, fire egress, setbacks or local building regulations. Use a qualified architect/engineer before construction.
+
+
+## Phase 42 — Precision floor-plan dimensions
+
+- Plot width and depth accept custom half-foot increments between 10 and 200 ft instead of whole-foot-only sizing.
+- Room width, length, X/Y position, and drag/resize interactions snap to half-foot increments for consistent edits.
+- The current plot size and existing rooms continue to be saved locally; existing layouts remain compatible.
+- Room dimensions are still conceptual measurements. Verify site measurements, wall thickness, clearances, and code requirements with a qualified architect or engineer before construction.
