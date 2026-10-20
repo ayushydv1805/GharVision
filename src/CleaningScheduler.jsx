@@ -2,8 +2,9 @@ import { useMemo, useState } from 'react'
 import { CalendarCheck, CheckCircle2, Circle, Download, Plus, Search, Trash2, RotateCcw, Sparkles, Clock3 } from 'lucide-react'
 
 const KEY = 'gharvision-cleaning-scheduler-v1'
-const today = () => new Date().toISOString().slice(0, 10)
-const addDays = days => { const d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10) }
+const localDateString = (date = new Date()) => [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-')
+const today = () => localDateString()
+const addDays = days => { const d = new Date(); d.setDate(d.getDate() + days); return localDateString(d) }
 const starterTasks = [
   { id: 'kitchen-counter', title: 'Wipe kitchen counters and table', room: 'Kitchen', frequency: 'Daily', dueDate: today(), assignee: '', notes: '' },
   { id: 'dishes', title: 'Wash dishes and clean the sink', room: 'Kitchen', frequency: 'Daily', dueDate: today(), assignee: '', notes: '' },
