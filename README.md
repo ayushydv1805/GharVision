@@ -223,3 +223,11 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - The library preserves independent snapshots in browser storage and includes the saved-plan count and clear status feedback.
 - Current plan export remains available as JSON for portable backups. Library records are stored locally in this browser and device only; they do not sync between devices or users.
 - Saved layouts are concept sketches, not construction-ready drawings. Validate dimensions, openings, circulation, structural requirements, setbacks and local building regulations with a qualified professional.
+
+
+## Phase 38 — Precise room positioning
+
+- Set the selected room's exact X (left offset) and Y (top offset) coordinates in feet, measured from the plot's top-left corner, in addition to editable width and length.
+- Coordinate fields clamp values to the available plot area so a room cannot be positioned beyond the plot boundary. The values update the scaled canvas and remain part of the saved plan and JSON export.
+- Keep the existing room-overlap warning visible as a separate check: precise positioning does not automatically rearrange rooms or certify a layout.
+- This remains a local, browser-based concept planner; dimensions and placement must be verified for real construction with a qualified professional.
