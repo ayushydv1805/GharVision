@@ -1441,3 +1441,24 @@ html[data-text-size="large"] .main-area .page-content .eyebrow{font-size:10px}
 .planner-overlap-warning button:hover{background:#ffe7d9}
 .planner-canvas-panel .planner-overlap-warning{margin:0 14px 12px}
 @media(prefers-color-scheme:dark){.planner-overlap-warning{background:#38271f;border-color:#7d4a34;color:#ffd0b8}}
+
+
+/* Phase 30 — floor-plan doors and windows */
+.opening-editor{margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--bg)}
+.opening-editor-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.opening-editor-heading strong{font-size:12px;color:var(--text)}
+.opening-editor-heading span{font-size:9px;color:var(--muted);background:var(--panel);padding:5px 7px;border-radius:6px}
+.opening-editor>p{font-size:10px;color:var(--muted);line-height:1.55;margin:7px 0 10px}
+.opening-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opening-fields label{display:flex;flex-direction:column;gap:5px;font-size:10px;color:var(--muted)}
+.opening-fields label:last-child{grid-column:1/-1}
+.opening-fields input,.opening-fields select{box-sizing:border-box;width:100%;min-width:0;min-height:35px;padding:7px 8px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--text);font:inherit;font-size:10px}
+.opening-add{width:100%;justify-content:center;margin-top:9px;min-height:35px}
+.opening-list{display:grid;gap:6px;margin-top:10px}
+.opening-row{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.opening-dot{width:8px;height:8px;flex-shrink:0;border-radius:3px}
+.opening-dot.door{background:#b86d43}.opening-dot.window{background:#3986b8}
+.opening-row>span:nth-child(2){display:flex;flex:1;flex-direction:column;gap:3px;min-width:0}
+.opening-row strong{font-size:10px;color:var(--text)}.opening-row small{font-size:9px;color:var(--muted)}
+.opening-row button{display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--muted);cursor:pointer}
+.opening-note{display:block;margin-top:10px;color:var(--muted);font-size:9px;line-height:1.6}
