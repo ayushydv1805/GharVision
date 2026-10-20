@@ -17,7 +17,7 @@ const tiers = {
   premium: { label:'Premium', multiplier:1.48, desc:'Higher-grade finishes and upgraded fittings' },
 }
 const money = value => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number.isFinite(value)?value:0)
-const safeRead = () => { try { const raw=localStorage.getItem('gharvision-build-budget'); return raw ? JSON.parse(raw) : null } catch { return null } }
+const safeRead = () => { try { const raw=localStorage.getItem('gharvision-build-budget'); if (!raw) return null; const parsed=JSON.parse(raw); if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null; return { ...parsed, tier: Object.prototype.hasOwnProperty.call(tiers, parsed.tier) ? parsed.tier : 'standard', items: Array.isArray(parsed.items) ? parsed.items.filter(item => item && typeof item.name === 'string' && Number.isFinite(Number(item.rate))) : defaults } } catch { return null } }
 
 export default function BuildBudget() {
   const saved = useMemo(() => safeRead(), [])
