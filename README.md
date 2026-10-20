@@ -174,3 +174,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search/filter actions, change status and estimates inline, remove entries and export a CSV backup.
 - Starter entries are illustrative examples, not verified savings. Records are stored in this browser on this device only; there is no utility account connection, automatic meter data, cloud sync or alerting.
 - Simple payback is upfront cost divided by user-entered annual savings. It excludes maintenance, financing, tariff changes and other costs; actual savings can differ. Consult qualified professionals for electrical, solar and structural work.
+
+
+## Phase 34 — Room finish schedule
+
+- Keep a room-by-room register of floor, wall, ceiling, countertop, cabinetry, fixtures and exterior finish selections.
+- Record material/product, colour or finish, supplier, quantity and unit, estimated cost, status and notes.
+- Track ideas, requested samples, approvals, quotes, orders, installation and holds; search/filter the register and update status, cost and finish inline.
+- Export the schedule to CSV for sharing with a designer or contractor. Example entries are illustrative and can be edited or deleted.
+- Data is stored in the current browser on this device only. This is not a measured quantity take-off or supplier quote; confirm dimensions, specifications, product suitability and supplier terms before purchasing.
