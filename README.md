@@ -165,3 +165,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search/filter history, edit readings and rates inline, delete records and export the visible register to CSV.
 - Includes clearly labelled demonstration readings that should be replaced or removed. Data is stored in the current browser on this device only; no utility-account connection, bill import, cross-device sync or automatic alerts are provided.
 - Estimates exclude fixed charges, taxes, tiered tariffs, adjustments and other bill-specific rules. Use consistent meter units and verify calculations against the actual utility bill. A meter replacement or reset needs a new meter name or explanatory note to avoid misleading comparisons.
+
+
+## Phase 33 — Home energy audit
+
+- Track efficiency ideas for lighting, insulation, appliances, heating/cooling, water heating, solar and water saving.
+- Enter estimated upfront cost and estimated annual saving; see open planned cost, potential annual savings, installed count and simple payback estimate.
+- Search/filter actions, change status and estimates inline, remove entries and export a CSV backup.
+- Starter entries are illustrative examples, not verified savings. Records are stored in this browser on this device only; there is no utility account connection, automatic meter data, cloud sync or alerting.
+- Simple payback is upfront cost divided by user-entered annual savings. It excludes maintenance, financing, tariff changes and other costs; actual savings can differ. Consult qualified professionals for electrical, solar and structural work.
