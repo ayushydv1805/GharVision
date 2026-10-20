@@ -33,7 +33,7 @@ import HomeEnergyAudit from './HomeEnergyAudit.jsx'
 import RoomFinishSchedule from './RoomFinishSchedule.jsx'
 import {
   House, HardHat, CalendarClock, ShieldCheck, Wallet, LayoutDashboard, FolderKanban, Compass, PanelsTopLeft, Palette, ImagePlus, Calculator, CalendarDays, ClipboardList, Archive, ReceiptText, Leaf, CalendarCheck, Truck, ClipboardCheck,
-  FileText, Accessibility, BadgeCheck, Gauge, Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
+  FileText, Accessibility, BadgeCheck, Gauge, BellRing, Box, Ruler, Sparkles, Settings, Sun, Moon, Plus, Search, Bell, ChevronDown,
   ArrowUpRight, ArrowRight, MoreHorizontal, Clock3, MapPin, Check, X,
   Menu, SlidersHorizontal, WandSparkles, Sofa, Paintbrush, Grid2X2, Layers3,
   CircleHelp, Command, MoveUpRight, Heart, Home, Building2, Trees, Lightbulb
