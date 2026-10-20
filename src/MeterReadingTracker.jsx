@@ -13,7 +13,7 @@ const blank={type:'Electricity',meter:'Main electricity meter',date:localDateStr
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2}).format(Number(n)||0)
 const csv=v=>'"'+String(v??'').replace(/"/g,'""')+'"'
 export default function MeterReadingTracker(){
- const [items,setItems]=useState(()=>{try{const x=localStorage.getItem(KEY);return x?JSON.parse(x):STARTER}catch{return STARTER}})
+ const [items,setItems]=useState(()=>{try{const x=localStorage.getItem(KEY);if(!x)return STARTER;const parsed=JSON.parse(x);return Array.isArray(parsed)?parsed.filter(item=>item&&typeof item.meter==='string'&&typeof item.date==='string'&&Number.isFinite(Number(item.reading))):STARTER}catch{return STARTER}})
  const [form,setForm]=useState(blank),[showForm,setShowForm]=useState(false),[query,setQuery]=useState(''),[typeFilter,setTypeFilter]=useState('All'),[message,setMessage]=useState('')
  useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch{setMessage('Browser storage unavailable. Export a CSV backup before leaving this page.')}},[items])
  const readings=useMemo(()=>items.map(item=>{const prior=items.filter(x=>x.type===item.type&&x.meter===item.meter&&x.date<item.date).sort((a,b)=>b.date.localeCompare(a.date))[0];const usage=prior?Math.max(0,Number(item.reading)-Number(prior.reading)):null;return {...item,previous:prior?Number(prior.reading):null,usage,cost:usage===null?null:usage*(Number(item.rate)||0)}}).sort((a,b)=>b.date.localeCompare(a.date)),[items])
