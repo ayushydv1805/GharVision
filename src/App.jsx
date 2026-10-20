@@ -118,13 +118,47 @@ const toolCards = [
   { icon: ShieldCheck, title: 'Home emergency plan', desc: 'Organise emergency contacts, exit routes, utility locations and safety checks', tone: 'peach', badge: 'NEW IN PHASE 32' },
   { icon: Leaf, title: 'Home energy audit', desc: 'Plan efficiency upgrades, compare costs and estimate potential yearly savings', tone: 'green', badge: 'NEW IN PHASE 33' },
   { icon: Layers3, title: 'Room finish schedule', desc: 'Organise materials, colours, suppliers, quantities and installation status by room', tone: 'peach', badge: 'NEW IN PHASE 34' },
+  { icon: BellRing, title: 'Home action center', desc: 'See upcoming deadlines, pending decisions and priority home issues', tone: 'blue', badge: 'NEW IN PHASE 35' },
 ]
+
+const toolRoutes = {
+  'Floor planner': 'Floor planner',
+  'Interior studio': 'Interior design',
+  'Paint & materials': 'Paint & materials',
+  '3D home view': '3D home view',
+  'Exterior design': 'Exterior design',
+  'Build budget': 'Build budget',
+  'Maintenance planner': 'Maintenance planner',
+  'Renovation tracker': 'Renovation tracker',
+  'Material estimator': 'Material estimator',
+  'Home inventory': 'Home inventory',
+  'Utility tracker': 'Utility tracker',
+  'Sustainability planner': 'Sustainability planner',
+  'Home safety plan': 'Home safety plan',
+  'Cleaning scheduler': 'Cleaning scheduler',
+  'Moving planner': 'Moving planner',
+  'Home project tracker': 'Home project tracker',
+  'Vendor & quote tracker': 'Vendor & quote tracker',
+  'Home care log': 'Home care log',
+  'Insurance & renewals': 'Insurance & renewals',
+  'Home budget planner': 'Home budget planner',
+  'Handover & snag list': 'Handover & snag list',
+  'Change order & decision log': 'Change order & decision log',
+  'Home document vault': 'Home document vault',
+  'Home accessibility planner': 'Home accessibility planner',
+  'Home action center': 'Home action center',
+  'Warranty & claims tracker': 'Warranty & claims tracker',
+  'Meter reading tracker': 'Meter reading tracker',
+  'Home emergency plan': 'Home emergency plan',
+  'Home energy audit': 'Home energy audit',
+  'Room finish schedule': 'Room finish schedule',
+}
 
 function Logo() {
   return <div className="brand-mark"><House size={19} strokeWidth={2.1} /><span className="brand-spark">✳</span></div>
 }
 
-function Sidebar({ active, setActive, onCreate, mobileOpen, setMobileOpen }) {
+function Sidebar({ active, setActive, onCreate, mobileOpen, setMobileOpen, projectCount }) {
   return <>
     {mobileOpen && <button className="mobile-scrim" aria-label="Close navigation" onClick={() => setMobileOpen(false)} />}
     <aside className={`sidebar ${mobileOpen ? 'sidebar-open' : ''}`}>
@@ -134,7 +168,7 @@ function Sidebar({ active, setActive, onCreate, mobileOpen, setMobileOpen }) {
       <nav className="side-nav">
         {navGroups.map(group => <div className="nav-group" key={group.label}><p className="nav-label">{group.label}</p>{group.items.map(item => {
           const Icon = item.icon
-          return <button key={item.id} className={`nav-item ${active === item.id ? 'nav-active' : ''}`} onClick={() => { setActive(item.id); setMobileOpen(false) }}><Icon size={17} strokeWidth={1.8}/><span>{item.id}</span>{item.count && <span className="nav-count">{item.count}</span>}{item.tag && <span className="soon-tag">{item.tag}</span>}</button>
+          return <button key={item.id} className={`nav-item ${active === item.id ? 'nav-active' : ''}`} onClick={() => { setActive(item.id); setMobileOpen(false) }}><Icon size={17} strokeWidth={1.8}/><span>{item.id}</span>{item.count && <span className="nav-count">{item.id === 'My projects' ? String(projectCount).padStart(2, '0') : item.count}</span>}{item.tag && <span className="soon-tag">{item.tag}</span>}</button>
         })}</div>)}
       </nav>
       <div className="sidebar-spacer" />
@@ -214,7 +248,7 @@ export default function App() {
   const openGeneratedPlan = (rooms, plot) => { try { localStorage.setItem('gharvision-floorplan', JSON.stringify(rooms)); localStorage.setItem('gharvision-generated-plot', JSON.stringify(plot)) } catch { setToast('Browser storage is unavailable. Enable site storage to transfer this layout.'); window.setTimeout(() => setToast(''), 3200); return } setActive('Floor planner'); setToast('Layout opened in Floor Planner. You can now move, resize and rename rooms.'); window.setTimeout(() => setToast(''), 3200) }
   const visibleProjects = projects.filter(p => (p.name + ' ' + p.type + ' ' + p.location).toLowerCase().includes(search.toLowerCase()))
   return <div className="app-shell">
-    <Sidebar active={active} setActive={setActive} onCreate={() => setModalOpen(true)} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}/>
+    <Sidebar active={active} setActive={setActive} onCreate={() => setModalOpen(true)} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} projectCount={projects.length}/>
     <main className="main-area">
       <header className="topbar"><div className="breadcrumbs"><button className="mobile-menu-button icon-button" onClick={() => setMobileOpen(true)} aria-label="Open navigation"><Menu size={20}/></button><span>Workspace</span><span className="crumb-slash">/</span><strong>{active}</strong></div><div className="topbar-actions"><label className="top-search"><Search size={16}/><input ref={searchInputRef} aria-label="Search projects" placeholder="Search anything..." value={search} onChange={e => { setSearch(e.target.value); if(e.target.value) setActive('My projects') }}/><kbd>⌘ K</kbd></label><button className="icon-button theme-toggle" onClick={toggleTheme} aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}>{theme === 'light' ? <Moon size={18}/> : <Sun size={18}/>}</button><div className="notification-wrap"><button className={`icon-button notification-button ${notificationOpen ? 'icon-selected' : ''}`} onClick={() => setNotificationOpen(v => !v)} aria-label="Notifications"><Bell size={18}/><i/></button>{notificationOpen && <div className="notification-popover"><div className="notification-head"><strong>You're all caught up</strong><span>Just now</span></div><p>Your GharVision workspace is ready. Your next big idea starts here.</p><button onClick={() => setNotificationOpen(false)}>Got it <Check size={14}/></button></div>}</div><div className="top-avatar">AY</div></div></header>
       {active === 'Overview' && <div className="page-content">
@@ -223,7 +257,7 @@ export default function App() {
         <section className="projects-section"><div className="section-heading"><div><div className="section-title-line"><h2>Your projects</h2><span className="count-pill">{projects.length.toString().padStart(2,'0')}</span></div><p>Every dream has a starting point.</p></div><button className="text-link" onClick={() => { setActive('My projects'); setSearch('') }}>View all projects <ArrowRight size={15}/></button></div>
           <div className="projects-grid">{projects.slice(0,3).map(p => <ProjectCard key={p.id} project={p} onOpen={openProject}/>)}<button className="add-project-card" onClick={() => setModalOpen(true)}><span className="add-project-icon"><Plus size={22}/></span><strong>Something new?</strong><span>Start a fresh project</span><span className="add-project-arrow"><ArrowUpRight size={16}/></span></button></div>
         </section>
-        <section className="tools-section"><div className="section-heading"><div><h2>Make it yours</h2><p>Tools to turn your ideas into a place to call home.</p></div><span className="phase-label"><Sparkles size={13}/> THE DESIGN STUDIO</span></div><div className="tools-grid">{toolCards.map(tool => { const Icon = tool.icon; return <button key={tool.title} className="tool-card" onClick={() => setActive(tool.title === 'Vendor & quote tracker' ? 'Vendor & quote tracker' : tool.title === 'Floor planner' ? 'Floor planner' : tool.title === 'Interior studio' ? 'Interior design' : tool.title === 'Paint & materials' ? 'Paint & materials' : tool.title === 'Exterior design' ? 'Exterior design' : tool.title === 'Build budget' ? 'Build budget' : tool.title === 'Maintenance planner' ? 'Maintenance planner' : tool.title === 'Renovation tracker' ? 'Renovation tracker' : tool.title === 'Material estimator' ? 'Material estimator' : tool.title === 'Home inventory' ? 'Home inventory' : tool.title === 'Utility tracker' ? 'Utility tracker' : tool.title === 'Sustainability planner' ? 'Sustainability planner' : tool.title === 'Home safety plan' ? 'Home safety plan' : tool.title === 'Cleaning scheduler' ? 'Cleaning scheduler' : tool.title === 'Moving planner' ? 'Moving planner' : tool.title === 'Home project tracker' ? 'Home project tracker' : tool.title === 'Home budget planner' ? 'Home budget planner' : tool.title === 'Handover & snag list' ? 'Handover & snag list' : tool.title === 'Change order & decision log' ? 'Change order & decision log' : '3D home view')}><div className={`tool-icon ${tool.tone}`}><Icon size={19}/></div><span className="tool-badge">{tool.badge}</span><h3>{tool.title}</h3><p>{tool.desc}</p><span className="tool-arrow"><ArrowUpRight size={16}/></span></button> })}</div></section>
+        <section className="tools-section"><div className="section-heading"><div><h2>Make it yours</h2><p>Tools to turn your ideas into a place to call home.</p></div><span className="phase-label"><Sparkles size={13}/> THE DESIGN STUDIO</span></div><div className="tools-grid">{toolCards.map(tool => { const Icon = tool.icon; return <button key={tool.title} className="tool-card" onClick={() => setActive(toolRoutes[tool.title] || '3D home view')}><div className={`tool-icon ${tool.tone}`}><Icon size={19}/></div><span className="tool-badge">{tool.badge}</span><h3>{tool.title}</h3><p>{tool.desc}</p><span className="tool-arrow"><ArrowUpRight size={16}/></span></button> })}</div></section>
         <footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer>
       </div>}
       {active === 'My projects' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">YOUR IDEAS, ALL IN ONE PLACE</p><h1>My projects<span className="wave">✳</span></h1><p className="heading-subtitle">A little progress is still progress.</p></div><button className="primary-button welcome-cta" onClick={() => setModalOpen(true)}><Plus size={17}/> New project</button></section><div className="projects-toolbar"><label className="project-search"><Search size={16}/><input placeholder="Find a project..." value={search} onChange={e => setSearch(e.target.value)}/></label><button className="filter-button" onClick={() => { setSearch(''); setToast('Showing all projects.'); window.setTimeout(() => setToast(''),2200) }}><SlidersHorizontal size={15}/> Clear filters</button></div>{visibleProjects.length ? <div className="projects-grid projects-all-grid">{visibleProjects.map(p => <ProjectCard key={p.id} project={p} onOpen={openProject}/>)}<button className="add-project-card" onClick={() => setModalOpen(true)}><span className="add-project-icon"><Plus size={22}/></span><strong>Something new?</strong><span>Start a fresh project</span><span className="add-project-arrow"><ArrowUpRight size={16}/></span></button></div> : <div className="empty-state"><Search size={25}/><h3>No projects found</h3><p>Try another search, or start a new project.</p><button className="primary-button" onClick={() => { setSearch(''); setModalOpen(true) }}>Create a project <Plus size={15}/></button></div>}<footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
@@ -258,7 +292,7 @@ export default function App() {
       {active === 'Home emergency plan' && <div className="page-content"><HomeEmergencyPlan/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 32</span></footer></div>}
       {active === 'Home energy audit' && <div className="page-content"><HomeEnergyAudit/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 33</span></footer></div>}
       {active === 'Room finish schedule' && <div className="page-content"><RoomFinishSchedule/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 34</span></footer></div>}
-      {active === 'Home action center' && <div className="page-content"><HomeActionCenter onNavigate={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 29</span></footer></div>}
+      {active === 'Home action center' && <div className="page-content"><HomeActionCenter onNavigate={setActive}/><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 35</span></footer></div>}
       {active === 'Settings' && <div className="page-content"><SettingsPage theme={theme} toggleTheme={toggleTheme} textSize={textSize} setTextSize={setTextSize}/></div>}
       {active === 'Explore ideas' && <div className="page-content"><section className="welcome-row"><div><p className="eyebrow">COLLECT THE FEELING</p><h1>Ideas worth coming home to<span className="wave">✳</span></h1><p className="heading-subtitle">A few starting points for the space you want to create.</p></div></section><div className="inspiration-grid"><button className="inspiration-card" onClick={() => setToast('Warm minimal style added to your inspiration list.') }><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=85" alt="Warm minimal living room"/><span>01 / LESS, BUT BETTER</span><h3>Warm minimal</h3><p>Soft textures, honest materials, room to breathe.</p></button><button className="inspiration-card" onClick={() => setToast('Natural modern style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="Natural modern architecture"/><span>02 / ROOTED IN NATURE</span><h3>Natural modern</h3><p>Wood, stone, greenery and light in harmony.</p></button><button className="inspiration-card" onClick={() => setToast('Modern Indian style added to your inspiration list.')}><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85" alt="Modern contemporary home"/><span>03 / OLD SOUL, NEW LINES</span><h3>Modern Indian</h3><p>Contemporary comfort with a sense of place.</p></button></div><footer className="page-footer"><span><Logo/> Thoughtfully made for the home you're dreaming of.</span><span>GHARVISION <span className="footer-dot">·</span> PHASE 01</span></footer></div>}
       {modalOpen && <CreateProjectModal onClose={() => setModalOpen(false)} onCreate={createProject}/>}
