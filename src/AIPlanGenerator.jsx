@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { WandSparkles, Home, BedDouble, Bath, ChefHat, Sofa, Check, ArrowRight, RefreshCw, Download, Info, CarFront, BookOpen, Flower2, Utensils, Sparkles } from 'lucide-react'
 
 const palette = { living: '#dce8d4', bedroom: '#dce4f4', kitchen: '#f2dfc8', bathroom: '#d5e9e8', dining: '#f0dce8', study: '#e6def5', parking: '#e4e7eb', puja: '#f4e4c9', store: '#e9e2d9' }
-const GRID = 20, CANVAS_W = 900, CANVAS_H = 560
+const GRID = 20, CANVAS_W = 900, CANVAS_H = 900
 const ROOM_LIBRARY = {
   living: { label: 'Living room', w: 12, h: 12, fill: palette.living },
   kitchen: { label: 'Kitchen', w: 8, h: 8, fill: palette.kitchen },
@@ -95,7 +95,7 @@ export default function AIPlanGenerator({ onOpenPlanner }) {
   return <div className="ai-planner-page">
     <header className="ai-planner-heading"><div><p className="eyebrow"><WandSparkles size={14}/> DESIGN STUDIO · AI FLOOR PLAN</p><h1>Generate your floor plan <span className="wave">✳</span></h1><p className="heading-subtitle">Enter your plot dimensions and room requirements, compare three concepts, then drag, resize and rename rooms by hand.</p></div><button className="filter-button" onClick={generate}><RefreshCw size={15}/> Regenerate</button></header>
     <section className="ai-planner-controls ai-requirements">
-      <div className="ai-input-pair"><label>Plot width (ft)<input type="number" min="15" max="45" value={plotWidth} onChange={e => setPlotWidth(clamp(Number(e.target.value)||15,15,45))}/></label><label>Plot depth (ft)<input type="number" min="15" max="45" value={plotDepth} onChange={e => setPlotDepth(clamp(Number(e.target.value)||15,15,45))}/></label></div>
+      <div className="ai-input-pair"><label>Plot width (ft)<input type="number" min="15" max="43" value={plotWidth} onChange={e => setPlotWidth(clamp(Number(e.target.value)||15,15,43))}/></label><label>Plot depth (ft)<input type="number" min="15" max="43" value={plotDepth} onChange={e => setPlotDepth(clamp(Number(e.target.value)||15,15,43))}/></label></div>
       <div className="ai-input-pair"><label>Bedrooms<select value={bedrooms} onChange={e => setBedrooms(Number(e.target.value))}>{[1,2,3,4,5].map(n=><option key={n} value={n}>{n} bedroom{n>1?'s':''}</option>)}</select></label><label>Bathrooms<select value={bathrooms} onChange={e => setBathrooms(Number(e.target.value))}>{[1,2,3,4].map(n=><option key={n} value={n}>{n} bathroom{n>1?'s':''}</option>)}</select></label></div>
       <div className="ai-input-pair"><label>Layout style<select value={preference} onChange={e => setPreference(e.target.value)}><option value="balanced">Balanced family</option><option value="open">Open social areas</option><option value="compact">Compact layout</option></select></label><label>Plan name<input value={name} maxLength={60} onChange={e => setName(e.target.value)} placeholder="My home"/></label></div>
       <div className="ai-room-options">
