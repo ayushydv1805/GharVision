@@ -192,7 +192,7 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 
 ### Floor planner — custom dimensions update
 
-- Plot width and depth can be set independently from 10 ft to 100 ft, instead of being limited to a small preset range.
+- Plot width and depth can be set independently from 10 ft to 200 ft, instead of being limited to a small preset range.
 - Room width and length can be entered directly in the room inspector, or adjusted by dragging the resize handle; dragging and resizing stay within the chosen plot.
 - Custom plot dimensions persist in this browser and are included in exported plan data. The canvas scales to the plot's actual aspect ratio; long/tall layouts can scroll.
 - This remains a schematic concept planner, not a construction-ready drawing or substitute for local code and professional review.
