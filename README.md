@@ -205,3 +205,12 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - The planner detects and lists intersecting rooms, so overlaps caused by moving, resizing or changing plot dimensions are visible and can be corrected.
 - Existing room positions and dimensions remain constrained to the plot; save and JSON export remain available.
 - Overlap checks are geometric planning aids only. They do not validate wall thickness, door swings, circulation clearances, structural safety or local building codes.
+
+
+## Phase 36 — Floor-plan doors and windows
+
+- Add door or window markers to the selected room's top, right, bottom or left wall, choose a width in feet, and remove markers when the layout changes.
+- Markers are rendered on the scaled 2D canvas and saved with the existing floor plan in browser storage.
+- Exported floor-plan JSON now uses version 3 and includes each opening's type, wall, offset and width in feet.
+- Existing plans remain compatible; rooms without opening metadata simply start with no door/window markers.
+- Openings are conceptual markers, not construction drawings. Confirm swing direction, actual dimensions, structure, ventilation, egress and local building requirements with a qualified professional.
