@@ -26,11 +26,11 @@ export default function InsuranceTracker() {
   const [filter, setFilter] = useState('All')
   const [notice, setNotice] = useState('')
   useEffect(() => { try { localStorage.setItem(KEY, JSON.stringify(policies)) } catch { setNotice('Browser storage is unavailable. Export a backup to avoid losing changes.') } }, [policies])
-  const filtered = useMemo(() => policies.filter(p => (filter === 'All' || renewalState(p) === filter || p.type === filter) && [p.provider,p.type,p.policyNumber,p.coverage,p.contact,p.notes].join(' ').toLowerCase().includes(search.toLowerCase())), [policies,filter,search])
+  const filtered = useMemo(() => policies.filter(p => (filter === 'All' || renewalState(p) === filter || p.type === filter || p.status === filter) && [p.provider,p.type,p.policyNumber,p.coverage,p.contact,p.notes].join(' ').toLowerCase().includes(search.toLowerCase())), [policies,filter,search])
   const active = policies.filter(p => p.status === 'Active')
   const overdue = active.filter(p => renewalState(p) === 'Overdue').length
   const soon = active.filter(p => renewalState(p) === 'Due soon').length
-  const annualCost = active.reduce((sum,p) => { const n = Number(p.premium); if (!Number.isFinite(n) || n < 0) return sum; return sum + n * (p.frequency === 'Monthly' ? 12 : p.frequency === 'Quarterly' ? 4 : p.frequency === 'Half-yearly' ? 2 : 1) }, 0)
+  const annualCost = active.reduce((sum,p) => { const n = Number(p.premium); if (!Number.isFinite(n) || n < 0 || p.frequency === 'One-time') return sum; return sum + n * (p.frequency === 'Monthly' ? 12 : p.frequency === 'Quarterly' ? 4 : p.frequency === 'Half-yearly' ? 2 : 1) }, 0)
   const update = (id, patch) => setPolicies(prev => prev.map(p => p.id === id ? { ...p, ...patch } : p))
   const add = e => {
     e.preventDefault()
