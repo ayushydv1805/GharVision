@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react'
 import { ClipboardList, Plus, Download, Trash2, CheckCircle2, Circle, CalendarDays, IndianRupee, Users, Flag, X, Search, RotateCcw } from 'lucide-react'
 
-const today = () => new Date().toISOString().slice(0, 10)
-const plusDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10) }
+const localDateString = (date = new Date()) => [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-')
+const today = () => localDateString()
+const plusDays = n => { const d = new Date(); d.setDate(d.getDate() + n); return localDateString(d) }
 const starterItems = [
   { id: 'r1', title: 'Confirm scope and room measurements', category: 'Planning', owner: 'You', due: plusDays(2), cost: 0, status: 'In progress', priority: 'High', notes: 'Verify dimensions before ordering materials.' },
   { id: 'r2', title: 'Collect contractor estimates', category: 'Contractor', owner: 'You', due: plusDays(5), cost: 0, status: 'Not started', priority: 'High', notes: 'Compare scope, exclusions and timelines.' },
