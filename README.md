@@ -82,3 +82,11 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search/filter records, edit renewal dates/status/premiums, delete records and export CSV.
 - Data is stored in the current browser only; no cross-device sync, alerts, insurer integration or claims processing. Renewal status is a personal reminder, not confirmation of cover. The initial example is clearly labelled and must be replaced with real details.
 - Currency display uses INR (₹).
+
+
+## Phase 25 — Home budget planner
+
+- Create budget line items for construction, interiors, furniture, appliances, labour, repairs and other home costs.
+- Compare planned and actual amounts, calculate remaining budget or overspend, show overall usage, and flag line items over estimate.
+- Track status, date, vendor and notes; search/filter entries; edit planned and actual costs inline; delete entries and export a CSV backup.
+- Amounts are displayed in INR. Data is stored in the current browser only; no cloud sync, bank integration, invoicing or tax/financing calculation. The initial sample is clearly labelled as an example and should be replaced or deleted.
