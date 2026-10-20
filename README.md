@@ -130,3 +130,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Filter the action list, jump directly to the source tracker, refresh after edits and export the visible list to CSV.
 - Reads each tool's existing browser-local data without editing it. Refresh the page after making changes in another tool; no cloud sync, background monitoring, push/email notifications or automatic task updates are provided.
 - This is a planning aid, not a professional safety inspection or guarantee that every deadline has been entered. Review source records and confirm critical issues with qualified professionals.
+
+
+## Phase 29 — Home accessibility planner
+
+- Create a room-by-room list of accessibility checks and practical improvements for safer movement, comfort and everyday independence.
+- Track area, priority, status, notes and estimated cost in INR; highlight open high-priority actions and total open estimated cost.
+- Search and filter actions, update status/priority/cost inline, delete entries and export a CSV backup.
+- Includes clearly labelled example checks that can be edited or removed. Records are stored in the current browser on this device; there is no cloud sync, professional assessment, compliance certification or automatic reminder.
+- This is a planning aid only. Needs vary by person and property. Consult qualified professionals for ramps, grab bars, handrails, electrical work, structural changes and local accessibility requirements.
