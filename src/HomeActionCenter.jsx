@@ -73,7 +73,9 @@ export default function HomeActionCenter({ onNavigate }) {
     const snags = readArray('gharvision-handover-checklist-v1') || []
     snags.forEach((snag, index) => {
       if (!snag || !['High', 'Critical'].includes(snag.severity) || ['Resolved', 'Accepted / deferred'].includes(snag.status)) return
-      rows.push({ id: 'priority-snag-' + String(snag.id ?? index), title: String(snag.title || 'High-priority snag'), source: 'Handover & snag list', area: 'Priority issue', due: snag.due || '', delta: snag.due ? dayOffset(snag.due, today) : null, status: snag.status || 'Open', route: 'Handover & snag list', urgency: snag.severity + ' severity' })
+      const hasUpcomingDeadline = snag.due && /^\\d{4}-\\d{2}-\\d{2}$/.test(snag.due) && dayOffset(snag.due, today) <= 30
+      if (hasUpcomingDeadline) return
+      rows.push({ id: 'priority-snag-' + String(snag.id ?? index), title: String(snag.title || 'High-priority snag'), source: 'Handover & snag list', area: 'Priority issue', due: snag.due || '', delta: snag.due && /^\\d{4}-\\d{2}-\\d{2}$/.test(snag.due) ? dayOffset(snag.due, today) : null, status: snag.status || 'Open', route: 'Handover & snag list', urgency: snag.severity + ' severity' })
     })
     const rank = row => row.urgency === 'Overdue' ? 0 : row.urgency === 'Critical severity' ? 1 : row.urgency === 'High severity' ? 2 : row.urgency === 'Due this week' ? 3 : row.urgency === 'Decision pending' ? 4 : 5
     return rows.sort((a, b) => rank(a) - rank(b) || (a.due || '9999').localeCompare(b.due || '9999'))
