@@ -15,7 +15,7 @@ const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',ma
 const csv=v=>'"'+String(v??'').replace(/"/g,'""')+'"'
 
 export default function AccessibilityPlanner(){
- const [items,setItems]=useState(()=>{try{const saved=localStorage.getItem(KEY);return saved?JSON.parse(saved):STARTER}catch{return STARTER}})
+ const [items,setItems]=useState(()=>{try{const saved=localStorage.getItem(KEY);if(!saved)return STARTER;const parsed=JSON.parse(saved);return Array.isArray(parsed)?parsed.filter(x=>x&&typeof x.item==='string'):STARTER}catch{return STARTER}})
  const [form,setForm]=useState(blank),[showForm,setShowForm]=useState(false),[query,setQuery]=useState(''),[filter,setFilter]=useState('all'),[message,setMessage]=useState('')
  useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch{setMessage('Browser storage is unavailable; export a CSV backup before leaving this page.')}},[items])
  const visible=useMemo(()=>items.filter(x=>[x.area,x.item,x.priority,x.status,x.notes].join(' ').toLowerCase().includes(query.toLowerCase())&&(filter==='all'||(filter==='open'&&x.status!=='Done'&&x.status!=='Not applicable')||(filter==='high'&&x.priority==='High')||x.status===filter)),[items,query,filter])
