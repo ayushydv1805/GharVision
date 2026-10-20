@@ -51,8 +51,8 @@ body{background:var(--bg);color:var(--text);transition:background .2s,color .2s}
 .canvas-toolbar-actions{display:flex;align-items:center;gap:8px}
 .grid-status{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted);white-space:nowrap}
 .grid-status span,.canvas-foot-dot{width:6px;height:6px;background:#84a777;border-radius:50%;display:inline-block}
-.floor-canvas-wrap{padding:13px;background:var(--planner-canvas);min-width:0}
-.floor-canvas{display:block;width:100%;height:auto;max-height:600px;touch-action:none;user-select:none}
+.floor-canvas-wrap{padding:13px;background:var(--planner-canvas);min-width:0;max-height:75vh;overflow:auto}
+.floor-canvas{display:block;width:100%;height:auto;max-height:none;touch-action:none;user-select:none}
 .floor-room{outline:none}
 .floor-room-selected rect:first-child{filter:drop-shadow(0 2px 3px #263c2018)}
 .canvas-foot{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;border-top:1px solid var(--line);color:var(--muted);font-size:9px;line-height:1.5}
