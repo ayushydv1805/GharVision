@@ -153,6 +153,29 @@ const toolRoutes = {
   'Room finish schedule': 'Room finish schedule',
 }
 
+function loadProjects() {
+  try {
+    const raw = localStorage.getItem('gharvision-projects')
+    if (!raw) return initialProjects
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return initialProjects
+    const saved = parsed.filter(project =>
+      project && typeof project === 'object' &&
+      typeof project.name === 'string' && project.name.trim() &&
+      typeof project.type === 'string'
+    ).map(project => ({
+      ...project,
+      name: project.name.trim(),
+      location: typeof project.location === 'string' ? project.location : 'Location not set',
+      progress: Number.isFinite(Number(project.progress)) ? Math.min(100, Math.max(0, Number(project.progress))) : 0,
+      image: typeof project.image === 'string' && project.image ? project.image : initialProjects[0].image,
+    }))
+    return [...saved, ...initialProjects.filter(project => !saved.some(item => item.name === project.name))]
+  } catch {
+    return initialProjects
+  }
+}
+
 function Logo() {
   return <div className="brand-mark"><House size={19} strokeWidth={2.1} /><span className="brand-spark">✳</span></div>
 }
@@ -228,7 +251,7 @@ export default function App() {
   const [theme, setTheme] = useState(() => { try { return localStorage.getItem('gharvision-theme') || 'light' } catch { return 'light' } })
   const [textSize, setTextSize] = useState(() => { try { const value = localStorage.getItem('gharvision-text-size'); return ['small','normal','large'].includes(value) ? value : 'normal' } catch { return 'normal' } })
   const [active, setActive] = useState('Overview')
-  const [projects, setProjects] = useState(() => { try { const saved = localStorage.getItem('gharvision-projects'); return saved ? [...JSON.parse(saved), ...initialProjects.filter(p => !JSON.parse(saved).some(s => s.name === p.name))] : initialProjects } catch { return initialProjects } })
+  const [projects, setProjects] = useState(loadProjects)
   const [modalOpen, setModalOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [search, setSearch] = useState('')
