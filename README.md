@@ -156,3 +156,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - View readiness counts, highlight unchecked high-priority items, search/filter records, edit status and priority inline, delete entries and export a CSV backup.
 - Includes clearly labelled example checklist items that can be edited or removed. Data is stored in the current browser on this device only; there is no cloud sync, calling, automatic alerting or emergency-service connection.
 - Avoid storing passwords, access codes or sensitive personal information. In an immediate emergency, follow local emergency guidance and contact emergency services. Do not attempt unfamiliar gas/electrical shut-off procedures; have qualified professionals explain safe steps.
+
+
+## Phase 31 — Meter reading tracker
+
+- Log dated readings for electricity, water, gas or another utility, with a meter name, unit label, optional per-unit rate and notes.
+- Compare each entry with the previous earlier reading for the same utility and meter; show usage and an estimated variable cost when a comparable earlier reading exists.
+- Search/filter history, edit readings and rates inline, delete records and export the visible register to CSV.
+- Includes clearly labelled demonstration readings that should be replaced or removed. Data is stored in the current browser on this device only; no utility-account connection, bill import, cross-device sync or automatic alerts are provided.
+- Estimates exclude fixed charges, taxes, tiered tariffs, adjustments and other bill-specific rules. Use consistent meter units and verify calculations against the actual utility bill. A meter replacement or reset needs a new meter name or explanatory note to avoid misleading comparisons.
