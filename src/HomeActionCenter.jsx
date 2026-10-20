@@ -6,7 +6,6 @@ const SOURCES = [
   { key: 'gharvision-insurance-policies-v1', label: 'Insurance & renewals', area: 'Insurance', date: 'renewalDate', status: 'status', active: ['Active'], route: 'Insurance & renewals', title: x => x.provider },
   { key: 'gharvision-document-vault-v1', label: 'Home document vault', area: 'Documents', date: 'expiry', status: 'status', done: ['Archived'], route: 'Home document vault' },
   { key: 'gharvision-handover-checklist-v1', label: 'Handover & snag list', area: 'Handover', date: 'due', status: 'status', done: ['Resolved', 'Accepted / deferred'], route: 'Handover & snag list' },
-  { key: 'gharvision-home-projects-v1', label: 'Home project tracker', area: 'Project task', date: 'due', status: 'status', done: ['Complete'], route: 'Home project tracker' },
 ]
 
 const todayString = () => {
