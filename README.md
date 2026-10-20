@@ -100,3 +100,14 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Search and filter by issue, area, assigned person, status or severity; edit status, severity and due date inline; delete items; export a CSV register.
 - Includes clearly labelled example entries that can be edited or deleted. Records are stored in the current browser on this device; there is no cloud sync, photo upload, contractor messaging or reminder service.
 - This is a record-keeping aid, not a professional building inspection or safety/compliance certificate. Have safety-critical or technical concerns assessed by qualified professionals.
+
+
+## Phase 27 — Change order & decision log
+
+- Record requested design changes, material substitutions, extra work, omissions/credits, site conditions and schedule changes.
+- Track decision status from Proposed and Under review to Approved, Rejected or Implemented.
+- Store request date, requester, notes/reference, estimated cost impact in INR and schedule impact in days.
+- Review requests awaiting a decision, approved/implemented cost impact, non-rejected cost exposure and the summed potential schedule impact.
+- Search and filter the register, update status/cost/day estimates inline, delete records, and export the register as CSV.
+- Includes clearly labelled example requests that can be edited or deleted. Records are stored in the current browser on this device; there is no cloud sync, automatic notification, quote validation or contractor communication.
+- Cost and time impact figures are user-entered planning estimates, not a forecast, contractual approval or substitute for a signed change order and professional advice.
