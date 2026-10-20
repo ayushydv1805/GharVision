@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import './DesignPhotoStudio.css'
 import { ImagePlus, Upload, Palette, Download, Home, Check, Sparkles, RotateCcw, Info } from 'lucide-react'
 
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n))
