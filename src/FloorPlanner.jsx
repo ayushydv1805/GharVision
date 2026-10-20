@@ -3,7 +3,7 @@ import { ArrowDownToLine, ArrowLeft, ArrowRight, Bath, BedDouble, Check, Chevron
 
 const GRID = 20
 const CANVAS_W = 900
-const CANVAS_H = 560
+const CANVAS_H = 900
 const STARTER_ROOMS = [
   { id: 'living', name: 'Living room', type: 'living', x: 60, y: 60, w: 240, h: 160, fill: '#dce8d4' },
   { id: 'kitchen', name: 'Kitchen', type: 'kitchen', x: 320, y: 60, w: 160, h: 120, fill: '#f2dfc8' },
@@ -32,6 +32,7 @@ export default function FloorPlanner() {
     try { const generated = JSON.parse(localStorage.getItem('gharvision-generated-plot') || 'null'); return Math.max(10, Math.min(200, Number(generated?.depth) || 28)) } catch { return 28 }
   })
   const [dragging, setDragging] = useState(null)
+  const [resizing, setResizing] = useState(null)
   const [saved, setSaved] = useState(false)
   const selected = rooms.find(room => room.id === selectedId) || rooms[0]
   const totalArea = useMemo(() => rooms.reduce((sum, room) => sum + (room.w / GRID) * (room.h / GRID), 0), [rooms])
@@ -64,7 +65,17 @@ export default function FloorPlanner() {
     setSelectedId(room.id)
     setDragging({ id: room.id, dx: point.x - room.x, dy: point.y - room.y })
   }
+  const startResize = (event, room) => {
+    event.preventDefault(); event.stopPropagation(); event.currentTarget.setPointerCapture?.(event.pointerId)
+    const point = pointFromEvent(event); setSelectedId(room.id); setResizing({ id: room.id, startX: point.x, startY: point.y, startW: room.w, startH: room.h })
+  }
   const moveDrag = event => {
+    if (resizing) {
+      const point = pointFromEvent(event); const target = rooms.find(r => r.id === resizing.id); if (!target) return
+      const w = Math.max(GRID * 4, Math.min(CANVAS_W - target.x, Math.round((resizing.startW + point.x - resizing.startX) / GRID) * GRID))
+      const h = Math.max(GRID * 4, Math.min(CANVAS_H - target.y, Math.round((resizing.startH + point.y - resizing.startY) / GRID) * GRID))
+      setRooms(prev => prev.map(room => room.id === resizing.id ? { ...room, w, h } : room)); setSaved(false); return
+    }
     if (!dragging) return
     const point = pointFromEvent(event)
     const target = rooms.find(r => r.id === dragging.id)
@@ -90,13 +101,13 @@ export default function FloorPlanner() {
         <div className="room-presets">{ROOM_TYPES.map(preset => { const Icon = preset.Icon; return <button className="room-preset" key={preset.type} onClick={() => addRoom(preset)}><span className="preset-icon" style={{ background: preset.fill }}><Icon size={17}/></span><span><strong>{preset.name}</strong><small>{preset.w} × {preset.h} ft</small></span><Plus size={15}/></button> })}</div>
         <div className="planner-divider"/>
         <div className="planner-panel-heading"><div><span className="eyebrow">PLOT SETTINGS</span><h3>Plot dimensions</h3></div></div>
-        <div className="plot-fields"><label>Width <span>ft</span><input type="number" min="10" max="200" value={plotWidth} onChange={e => setPlotWidth(Math.max(10, Math.min(200, Number(e.target.value) || 10)))}/></label><label>Depth <span>ft</span><input type="number" min="10" max="200" value={plotHeight} onChange={e => setPlotHeight(Math.max(10, Math.min(200, Number(e.target.value) || 10)))}/></label></div>
+        <div className="plot-fields"><label>Width <span>ft</span><input type="number" min="10" max="43" value={plotWidth} onChange={e => setPlotWidth(Math.max(10, Math.min(43, Number(e.target.value) || 10)))}/></label><label>Depth <span>ft</span><input type="number" min="10" max="43" value={plotHeight} onChange={e => setPlotHeight(Math.max(10, Math.min(200, Number(e.target.value) || 10)))}/></label></div>
         <div className="plot-area-note"><span className="live-dot"/><span>Plot area: <strong>{(plotWidth * plotHeight).toLocaleString('en-IN')} sq. ft.</strong></span></div>
         <div className="planner-tip"><WandSparkles size={16}/><p><strong>Designer tip</strong> Keep circulation space between rooms and group kitchens near dining areas for a practical layout.</p></div>
       </aside>
       <section className="planner-canvas-panel">
         <div className="canvas-toolbar"><div><strong>Untitled floor plan</strong><span>2D top view · Concept sketch</span></div><div className="canvas-toolbar-actions"><span className="grid-status"><span/> Grid on</span><button className="icon-button small-icon" title="Export plan as JSON" aria-label="Export plan" onClick={exportPlan}><ArrowDownToLine size={17}/></button></div></div>
-        <div className="floor-canvas-wrap"><svg className="floor-canvas" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} role="img" aria-label="Interactive 2D floor plan canvas" onPointerMove={moveDrag} onPointerUp={() => setDragging(null)} onPointerCancel={() => setDragging(null)}>
+        <div className="floor-canvas-wrap"><svg className="floor-canvas" viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`} role="img" aria-label="Interactive 2D floor plan canvas" onPointerMove={moveDrag} onPointerUp={() => { setDragging(null); setResizing(null) }} onPointerCancel={() => { setDragging(null); setResizing(null) }}>
           <defs><pattern id="floor-grid" width={GRID} height={GRID} patternUnits="userSpaceOnUse"><path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" stroke="var(--planner-grid)" strokeWidth=".8"/></pattern></defs>
           <rect width={CANVAS_W} height={CANVAS_H} fill="var(--planner-canvas)"/><rect width={CANVAS_W} height={CANVAS_H} fill="url(#floor-grid)"/>
           <rect x="16" y="16" width={CANVAS_W - 32} height={CANVAS_H - 32} rx="2" fill="none" stroke="var(--planner-border)" strokeDasharray="5 5"/>
@@ -105,10 +116,10 @@ export default function FloorPlanner() {
             <rect x={room.x + 7} y={room.y + 7} width={Math.max(0, room.w - 14)} height={Math.max(0, room.h - 14)} rx="2" fill="none" stroke="#65715f" strokeOpacity=".35" strokeDasharray="3 3"/>
             <text x={room.x + room.w / 2} y={room.y + room.h / 2 - 4} textAnchor="middle" fontSize={Math.max(10, Math.min(15, room.w / 13))} fontWeight="600" fill="#344136" pointerEvents="none">{room.name.length > 18 ? room.name.slice(0, 17) + '…' : room.name}</text>
             <text x={room.x + room.w / 2} y={room.y + room.h / 2 + 14} textAnchor="middle" fontSize="11" fill="#4d5b4b" pointerEvents="none">{roomArea(room).toLocaleString('en-IN')} sq ft</text>
-            {selectedId === room.id && <rect x={room.x + room.w - 5} y={room.y - 5} width="10" height="10" rx="2" fill="var(--planner-selected)" stroke="white" strokeWidth="1.5" pointerEvents="none"/>}
+            {selectedId === room.id && <><rect x={room.x + room.w - 5} y={room.y - 5} width="10" height="10" rx="2" fill="var(--planner-selected)" stroke="white" strokeWidth="1.5" pointerEvents="none"/><rect x={room.x + room.w - 9} y={room.y + room.h - 9} width="18" height="18" rx="3" fill="var(--planner-selected)" stroke="white" strokeWidth="1.5" style={{ cursor: 'nwse-resize', touchAction: 'none' }} onPointerDown={event => startResize(event, room)}/></>}
           </g>)}
         </svg></div>
-        <div className="canvas-foot"><span><span className="canvas-foot-dot"/> Drag any room to move it. Rooms snap to the grid.</span><span>{rooms.length} rooms · {plotWidth} × {plotHeight} ft plot</span></div>
+        <div className="canvas-foot"><span><span className="canvas-foot-dot"/> Drag a room to move it; drag its bottom-right handle to resize. Rooms snap to the grid.</span><span>{rooms.length} rooms · {plotWidth} × {plotHeight} ft plot</span></div>
       </section>
       <aside className="planner-inspector">
         <div className="planner-panel-heading"><div><span className="eyebrow">ROOM DETAILS</span><h3>{selected ? selected.name : 'Select a room'}</h3></div><ChevronDown size={16}/></div>
