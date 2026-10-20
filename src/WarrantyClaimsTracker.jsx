@@ -9,7 +9,7 @@ const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',ma
 const csv=v=>'"'+String(v??'').replace(/"/g,'""')+'"'
 const days=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||'')?Math.ceil((new Date(s+'T00:00:00').getTime()-new Date().setHours(0,0,0,0))/86400000):null
 export default function WarrantyClaimsTracker(){
- const [items,setItems]=useState(()=>{try{const v=localStorage.getItem(KEY);return v?JSON.parse(v):examples}catch{return examples}})
+ const [items,setItems]=useState(()=>{try{const v=localStorage.getItem(KEY);if(!v)return examples;const parsed=JSON.parse(v);return Array.isArray(parsed)?parsed.filter(x=>x&&typeof x.title==='string'):examples}catch{return examples}})
  const [form,setForm]=useState(blank),[showForm,setShowForm]=useState(false),[query,setQuery]=useState(''),[filter,setFilter]=useState('all'),[message,setMessage]=useState('')
  useEffect(()=>{try{localStorage.setItem(KEY,JSON.stringify(items))}catch{setMessage('Browser storage unavailable — export a CSV backup.')}},[items])
  const visible=useMemo(()=>items.filter(x=>[x.title,x.type,x.provider,x.reference,x.status,x.notes].join(' ').toLowerCase().includes(query.toLowerCase())&&(filter==='all'||(filter==='open'&&!['Approved','Rejected','Closed'].includes(x.status))||(filter==='due'&&days(x.followUpDate)!==null&&days(x.followUpDate)>=0&&days(x.followUpDate)<=7&&!['Approved','Rejected','Closed'].includes(x.status))||x.status===filter)),[items,query,filter])
