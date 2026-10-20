@@ -7,9 +7,10 @@ const SEED = [
   { id: 'm2', title: 'Example: Check smoke alarms', area: 'Safety', dueDate: '', frequency: 'Every 3 months', priority: 'High', status: 'Planned', notes: 'Example only — verify the manufacturer instructions.' },
 ]
 const today = (date = new Date()) => [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-')
+const dateAfterDays = days => { const d = new Date(); d.setDate(d.getDate() + days); return today(d) }
 const nextDue = task => task.dueDate && task.status !== 'Completed' && task.dueDate < today()
   ? 'Overdue'
-  : task.dueDate && task.status !== 'Completed' && task.dueDate <= today(new Date(Date.now() + 14 * 86400000))
+  : task.dueDate && task.status !== 'Completed' && task.dueDate <= dateAfterDays(14)
     ? 'Due soon'
     : task.status === 'Completed' ? 'Completed' : 'On track'
 
