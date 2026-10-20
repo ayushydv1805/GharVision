@@ -112,7 +112,6 @@ const toolCards = [
   { icon: ClipboardList, title: 'Change order & decision log', desc: 'Record scope changes and see cost and schedule impact', tone: 'peach', badge: 'NEW IN PHASE 27' },
   { icon: FileText, title: 'Home document vault', desc: 'Organise property papers, invoices, warranties and renewal dates', tone: 'lavender', badge: 'NEW IN PHASE 28' },
   { icon: Accessibility, title: 'Home accessibility planner', desc: 'Review room access, reduce trip hazards and track practical improvements', tone: 'green', badge: 'NEW IN PHASE 29' },
-  { icon: BellRing, title: 'Home action center', desc: 'See upcoming deadlines, pending decisions and priority home issues', tone: 'blue', badge: 'NEW IN PHASE 29' },
   { icon: BadgeCheck, title: 'Warranty & claims tracker', desc: 'Track warranty dates, claim progress, follow-ups and approved amounts', tone: 'green', badge: 'NEW IN PHASE 30' },
   { icon: Gauge, title: 'Meter reading tracker', desc: 'Log electricity, water and gas readings and estimate usage between dates', tone: 'blue', badge: 'NEW IN PHASE 31' },
   { icon: ShieldCheck, title: 'Home emergency plan', desc: 'Organise emergency contacts, exit routes, utility locations and safety checks', tone: 'peach', badge: 'NEW IN PHASE 32' },
