@@ -266,3 +266,13 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Room width, length, X/Y position, and drag/resize interactions snap to half-foot increments for consistent edits.
 - The current plot size and existing rooms continue to be saved locally; existing layouts remain compatible.
 - Room dimensions are still conceptual measurements. Verify site measurements, wall thickness, clearances, and code requirements with a qualified architect or engineer before construction.
+
+
+## Phase 43 — Photo-to-design studio
+
+- Upload a local inspiration image (up to 12 MB) for browser-side dominant-colour sampling; receive a five-colour palette with suggested main-wall, accent, trim, ceiling and feature uses for interior or exterior projects.
+- Choose a design direction (warm minimal, modern Indian, soft contemporary, modern luxury or coastal light), copy individual hex values, and export palette recommendations as JSON.
+- Generate five different concept-layout alternatives from custom plot width and depth in feet (10–200 ft, half-foot increments): balanced family, privacy-first, open-plan social, compact efficient and work-from-home.
+- Compare room dimension estimates for the selected concept and export one concept or all five as JSON.
+- Privacy: the image is processed locally in the browser; it is not uploaded to a server by this feature.
+- Honest limitation: this is pixel sampling plus rule-based design guidance, not a trained AI vision model or photorealistic image redesign. The five layouts are conceptual proportions and do not solve architectural adjacency, circulation, setbacks, wall thickness, structure, ventilation or local code compliance. Have a qualified architect/engineer review all plans before construction.
