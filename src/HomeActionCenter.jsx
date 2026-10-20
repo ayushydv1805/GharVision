@@ -93,7 +93,7 @@ export default function HomeActionCenter({ onNavigate }) {
     const a = document.createElement('a'); a.href = url; a.download = 'gharvision-action-center.csv'; document.body.appendChild(a); a.click(); a.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
   return <section className="action-center">
-    <div className="action-center-heading"><div><p className="eyebrow">PHASE 29 · ONE CLEAR NEXT STEP</p><h1>Home action center</h1><p className="heading-subtitle">A cross-tool view of deadlines, decisions and high-priority home issues saved in this browser.</p></div><div className="action-center-head-actions"><button className="filter-button" onClick={() => setVersion(v => v + 1)}><RefreshCw size={15}/> Refresh</button><button className="filter-button" onClick={exportCsv}><Download size={15}/> Export CSV</button></div></div>
+    <div className="action-center-heading"><div><p className="eyebrow">PHASE 35 · ONE CLEAR NEXT STEP</p><h1>Home action center</h1><p className="heading-subtitle">A cross-tool view of deadlines, decisions and high-priority home issues saved in this browser.</p></div><div className="action-center-head-actions"><button className="filter-button" onClick={() => setVersion(v => v + 1)}><RefreshCw size={15}/> Refresh</button><button className="filter-button" onClick={exportCsv}><Download size={15}/> Export CSV</button></div></div>
     <div className="action-center-stats">
       <article className={overdue ? 'action-stat-alert' : ''}><span><AlertTriangle size={18}/></span><div><small>OVERDUE</small><strong>{overdue}</strong><p>Dates that have passed</p></div></article>
       <article><span><CalendarClock size={18}/></span><div><small>COMING UP</small><strong>{upcoming}</strong><p>Next 30 days</p></div></article>
