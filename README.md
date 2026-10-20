@@ -121,3 +121,12 @@ React, Vite, Lucide, custom CSS and browser local storage.
 - Update record status and expiry date, archive records, remove outdated entries and export the register to CSV.
 - Starter entries are examples and should be replaced or deleted. The vault stores document metadata only—not the actual files—and keeps it in the current browser on this device. It does not upload/encrypt files, send reminders, validate legal documents or sync across devices.
 - Avoid storing passwords, full identity numbers, bank details or other secrets. Keep actual documents in a secure location and export CSV backups carefully.
+
+
+## Phase 29 — Home action center
+
+- Bring together dated actions from the Home care log, Insurance & renewals, Home document vault, Handover & snag list and Home project tracker, plus pending change-order decisions and open high/critical snags.
+- Prioritise overdue dates, items due this week / within 30 days, pending decisions and high-priority issues.
+- Filter the action list, jump directly to the source tracker, refresh after edits and export the visible list to CSV.
+- Reads each tool's existing browser-local data without editing it. Refresh the page after making changes in another tool; no cloud sync, background monitoring, push/email notifications or automatic task updates are provided.
+- This is a planning aid, not a professional safety inspection or guarantee that every deadline has been entered. Review source records and confirm critical issues with qualified professionals.
