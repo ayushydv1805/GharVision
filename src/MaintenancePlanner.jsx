@@ -9,7 +9,7 @@ const starterTasks = [
   {id:'m5',title:'Deep clean kitchen exhaust hood',room:'Kitchen',category:'Cleaning',frequency:'Quarterly',due:dateAfter(18),cost:250,priority:'Low',status:'Upcoming',notes:'Follow appliance cleaning guidance.'},
   {id:'m6',title:'Inspect doors, windows and seals',room:'Whole home',category:'Repairs',frequency:'Quarterly',due:dateAfter(25),cost:0,priority:'Low',status:'Upcoming',notes:'Look for sticking hinges, damaged seals and drafts.'},
 ]
-function dateAfter(days){const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)}
+function dateAfter(days){const d=new Date();d.setDate(d.getDate()+days);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
 const readTasks=()=>{try{const s=localStorage.getItem('gharvision-maintenance');if(!s)return starterTasks;const p=JSON.parse(s);return Array.isArray(p)?p:starterTasks}catch{return starterTasks}}
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Math.max(0,Number(n)||0))
 const categories=['Safety','Cleaning','Plumbing','Electrical','HVAC','Appliances','Exterior','Repairs','Garden','Other']
