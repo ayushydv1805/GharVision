@@ -214,3 +214,12 @@ A focused cross-tool reliability pass corrected local-calendar date generation i
 - Exported floor-plan JSON now uses version 3 and includes each opening's type, wall, offset and width in feet.
 - Existing plans remain compatible; rooms without opening metadata simply start with no door/window markers.
 - Openings are conceptual markers, not construction drawings. Confirm swing direction, actual dimensions, structure, ventilation, egress and local building requirements with a qualified professional.
+
+
+## Phase 37 — Floor plan library
+
+- Save multiple named floor-plan snapshots instead of relying on a single current canvas. Useful for comparing layout options such as "Ground floor A" and "Ground floor B".
+- Load a saved snapshot to restore its plot dimensions, room locations, room sizes and door/window markers; delete a saved snapshot without deleting the current canvas.
+- The library preserves independent snapshots in browser storage and includes the saved-plan count and clear status feedback.
+- Current plan export remains available as JSON for portable backups. Library records are stored locally in this browser and device only; they do not sync between devices or users.
+- Saved layouts are concept sketches, not construction-ready drawings. Validate dimensions, openings, circulation, structural requirements, setbacks and local building regulations with a qualified professional.
